@@ -1,15 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using CocktailHeaven.Infrastructure.Models.Identity;
+﻿using CocktailHeaven.Infrastructure.Models.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace CocktailHeaven.Infrastructure.Models
 {
-    public class UserCollection
+	public class UserCollection
     {
         [Key]
         public int Id { get; set; }
 
-        public Guid ApplicationUserId { get; set; }
+        public Guid AddedByUserId { get; set; }
 
         public virtual ApplicationUser AddedByUser { get; set; } = null!;
 

@@ -1,6 +1,5 @@
 ﻿using CocktailHeaven.Infrastructure.Models.Identity;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using static CocktailHeaven.Infrastructure.Models.DataConstants.RatingConstants;
 
 namespace CocktailHeaven.Infrastructure.Models
@@ -13,7 +12,7 @@ namespace CocktailHeaven.Infrastructure.Models
         [MaxLength(MaxRatingValue)]
         public float Value { get; set; }
 
-        public Guid ApplicationUserId { get; set; }
+        public Guid AddedByUserId { get; set; }
 
         public virtual ApplicationUser AddedByUser { get; set; } = null!;
 

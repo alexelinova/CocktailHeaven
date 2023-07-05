@@ -1,9 +1,9 @@
-﻿using CocktailHeaven.Infrastructure.Models;
+﻿using CocktailHeaven.Infrastructure.Data.Configuration;
+using CocktailHeaven.Infrastructure.Models;
 using CocktailHeaven.Infrastructure.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 
 namespace CocktailHeaven.Infrastructure.Data;
 
@@ -16,25 +16,12 @@ public class CocktailHeavenDbContext : IdentityDbContext<ApplicationUser, Identi
 
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
-		builder.Entity<CocktailIngredient>()
-		   .HasKey(x => new { x.CocktailId, x.IngredientId });
-
-		builder.Entity<Cocktail>()
-			.HasOne(c => c.Image)
-			.WithOne(i => i.Cocktail)
-			.HasForeignKey<Image>(i => i.CocktailId);
-
-		builder.Entity<Rating>()
-		   .HasOne(e => e.Cocktail)
-		   .WithMany(c => c.Ratings)
-		   .HasForeignKey(c => c.CocktailId)
-		   .OnDelete(DeleteBehavior.Restrict);
-
-		builder.Entity<UserCollection>()
-	   .HasOne(e => e.Cocktail)
-	   .WithMany(c => c.UserCollection)
-	   .HasForeignKey(c => c.CocktailId)
-	   .OnDelete(DeleteBehavior.Restrict);
+		builder.ApplyConfiguration(new CategoryConfiguration());
+		builder.ApplyConfiguration(new CocktailConfiguration());
+		builder.ApplyConfiguration(new CocktailIngredientConfiguration());
+		builder.ApplyConfiguration(new ImageConfiguration());
+		builder.ApplyConfiguration(new RatingConfiguration());
+		builder.ApplyConfiguration(new UserCollectionConfiguration());
 
 		base.OnModelCreating(builder);
 	}

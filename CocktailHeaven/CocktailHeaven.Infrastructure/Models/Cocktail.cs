@@ -42,7 +42,7 @@ namespace CocktailHeaven.Infrastructure.Models
 
         public Image? Image { get; set; } 
 
-		public Guid ApplicationUserId { get; set; }
+		public Guid AddedByUserId { get; set; }
 
 		public virtual ApplicationUser AddedByUser { get; set; } = null!;
 

@@ -18,6 +18,6 @@ namespace CocktailHeaven.Infrastructure.Models
 
 		public Cocktail Cocktail { get; set; } = null!;
 
-        public bool isDeleted { get; set; } = false;
+        public bool IsDeleted { get; set; } = false;
     }
 }
