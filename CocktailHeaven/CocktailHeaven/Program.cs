@@ -1,4 +1,5 @@
 using CocktailHeaven.Infrastructure.Data;
+using CocktailHeaven.Infrastructure.Data.Common;
 using CocktailHeaven.Infrastructure.Models.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
 	.AddEntityFrameworkStores<CocktailHeavenDbContext>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IRepository, CocktailHeavenRepository>();
 
 var app = builder.Build();
 
