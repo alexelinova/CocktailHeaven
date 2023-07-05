@@ -15,4 +15,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.14" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CocktailHeaven.Core\CocktailHeaven.Core.csproj" />
+  </ItemGroup>
+
 </Project>

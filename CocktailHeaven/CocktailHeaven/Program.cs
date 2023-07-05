@@ -1,4 +1,4 @@
-using CocktailHeaven.Data;
+using CocktailHeaven.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
