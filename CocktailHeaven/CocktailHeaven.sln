@@ -3,7 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CocktailHeaven", "CocktailHeaven\CocktailHeaven.csproj", "{A3E80FB7-ABFD-4FCD-9BD9-8036B0189D3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CocktailHeaven", "CocktailHeaven\CocktailHeaven.csproj", "{A3E80FB7-ABFD-4FCD-9BD9-8036B0189D3E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{970D93D9-3424-4670-9EA9-E3C9A861A3E2} = {970D93D9-3424-4670-9EA9-E3C9A861A3E2}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CocktailHeaven.Infrastructure", "CocktailHeaven.Infrastructure\CocktailHeaven.Infrastructure.csproj", "{061FE7A3-8855-4D24-9E50-D58DEFB843E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CocktailHeaven.Core", "CocktailHeaven.Core\CocktailHeaven.Core.csproj", "{970D93D9-3424-4670-9EA9-E3C9A861A3E2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{061FE7A3-8855-4D24-9E50-D58DEFB843E2} = {061FE7A3-8855-4D24-9E50-D58DEFB843E2}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +25,14 @@ Global
 		{A3E80FB7-ABFD-4FCD-9BD9-8036B0189D3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3E80FB7-ABFD-4FCD-9BD9-8036B0189D3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3E80FB7-ABFD-4FCD-9BD9-8036B0189D3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{061FE7A3-8855-4D24-9E50-D58DEFB843E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{061FE7A3-8855-4D24-9E50-D58DEFB843E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{061FE7A3-8855-4D24-9E50-D58DEFB843E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{061FE7A3-8855-4D24-9E50-D58DEFB843E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{970D93D9-3424-4670-9EA9-E3C9A861A3E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{970D93D9-3424-4670-9EA9-E3C9A861A3E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{970D93D9-3424-4670-9EA9-E3C9A861A3E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{970D93D9-3424-4670-9EA9-E3C9A861A3E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
