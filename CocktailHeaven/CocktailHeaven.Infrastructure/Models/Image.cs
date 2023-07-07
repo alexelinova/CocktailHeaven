@@ -1,18 +1,17 @@
-﻿using CocktailHeaven.Infrastructure.Models.Identity;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 using static CocktailHeaven.Infrastructure.Models.DataConstants.ImageConstants;
 
 namespace CocktailHeaven.Infrastructure.Models
 {
-	public class Image
+    public class Image
 	{
         [Key]
         public Guid Id { get; set; }
 
-        [Required]
         [MaxLength(MaxExtensionLength)]
-        public string Extension { get; set; } = null!;
+        public string? Extension { get; set; }
+
+        public string? ExternalURL { get; set; }
 
         public int CocktailId { get; set; }
 

@@ -4,6 +4,7 @@ using CocktailHeaven.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CocktailHeaven.Infrastructure.Migrations
 {
     [DbContext(typeof(CocktailHeavenDbContext))]
-    partial class CocktailHeavenDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230707075540_NewColumnToImageTable")]
+    partial class NewColumnToImageTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,10 +230,12 @@ namespace CocktailHeaven.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Extension")
+                        .IsRequired()
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
 
                     b.Property<string>("ExternalURL")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")

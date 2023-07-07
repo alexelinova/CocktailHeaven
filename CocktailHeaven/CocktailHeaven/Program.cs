@@ -1,3 +1,5 @@
+using CocktailHeaven.Core;
+using CocktailHeaven.Core.Contracts;
 using CocktailHeaven.Infrastructure.Data;
 using CocktailHeaven.Infrastructure.Data.Common;
 using CocktailHeaven.Infrastructure.Models.Identity;
@@ -11,16 +13,25 @@ builder.Services.AddDbContext<CocktailHeavenDbContext>(options =>
 	options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+{
+	options.SignIn.RequireConfirmedAccount = false;
+	options.Password.RequireNonAlphanumeric = false;
+	options.Password.RequiredLength = 5;
+	options.Password.RequireUppercase = false;
+})
 	.AddEntityFrameworkStores<CocktailHeavenDbContext>();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IRepository, CocktailHeavenRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICocktailService, CocktailService>();
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+	app.UseDeveloperExceptionPage();
 	app.UseMigrationsEndPoint();
 }
 else
