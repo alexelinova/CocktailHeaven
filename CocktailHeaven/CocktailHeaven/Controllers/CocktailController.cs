@@ -26,10 +26,10 @@ namespace CocktailHeaven.Controllers
 		{
 			if (count <= 0)
 			{
-				return View();
+				return this.View();
 			}
 
-			return RedirectToAction(nameof(Create), new { ingredientCount = count });
+			return this.RedirectToAction(nameof(Create), new { ingredientCount = count });
 		}
 
 		public async Task<IActionResult> Create(int ingredientCount)
@@ -40,7 +40,7 @@ namespace CocktailHeaven.Controllers
 				CountOfIngredients = ingredientCount
 			};
 
-			return View(model);
+			return this.View(model);
 		}
 
 		[HttpPost]
@@ -60,7 +60,14 @@ namespace CocktailHeaven.Controllers
 				await this.cocktailService.CreateCocktailAsync(model, id);
 			}
 
-			return View();
+			return this.RedirectToAction("Index", "Home");
+		}
+
+		public async Task<IActionResult> RandomCocktail()
+		{
+			var model = await this.cocktailService.GetRandomCocktailAsync();
+
+			return this.View(model);
 		}
 	}
 }

@@ -5,5 +5,7 @@ namespace CocktailHeaven.Core.Contracts
 	public interface ICocktailService
 	{
 		Task CreateCocktailAsync(AddCocktailFormModel model, Guid userId);
+
+		Task<RandomCocktailModel> GetRandomCocktailAsync();
 	}
 }
