@@ -11,7 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<CocktailHeavenDbContext>(options =>
 	options.UseSqlServer(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {
@@ -21,11 +20,18 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 	options.Password.RequireUppercase = false;
 })
 	.AddEntityFrameworkStores<CocktailHeavenDbContext>();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+      options.LoginPath = "/Account/Login";
+});
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IRepository, CocktailHeavenRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICocktailService, CocktailService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 var app = builder.Build();
 

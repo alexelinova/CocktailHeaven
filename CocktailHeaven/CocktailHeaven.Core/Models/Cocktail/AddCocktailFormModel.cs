@@ -1,7 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CocktailHeaven.Core.Models.Category;
+using CocktailHeaven.Core.Models.Ingredient;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using static CocktailHeaven.Infrastructure.Models.DataConstants.CocktailConstants;
-using CocktailHeaven.Core.Models.Category;
 
 namespace CocktailHeaven.Core.Models.Cocktail
 {
@@ -27,12 +28,15 @@ namespace CocktailHeaven.Core.Models.Cocktail
 		[Display(Name = "Category")]
 		public int CategoryId { get; set; }
 
+		[Range(0, 20)]
         public int CountOfIngredients { get; set; }
 
+		[Url]
         public string? ImageURL { get; set; }
-        public List<IngredientFormModel> Ingredients { get; set; }
 
-		public IEnumerable<CategoryViewModel> Categories { get; set; } = new List<CategoryViewModel>();
+		public List<IngredientFormModel> Ingredients { get; set; } = null!;
+
+		public IEnumerable<CategoryViewModel>? Categories { get; set; }
 	}
 }
 

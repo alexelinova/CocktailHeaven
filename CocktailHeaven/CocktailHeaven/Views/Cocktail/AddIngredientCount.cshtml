@@ -6,9 +6,13 @@
 	<h2 class="heading-margin text-center"></h2>
     <form method="post">
         <div class="mb-3">
-            <label for="numberOfProducts">Number of Ingredients</label>
-            <input type="number" class="form-control" id="count" name="count" min="1" required />
+            <label for="count">Number of Ingredients</label>
+            <input type="number" class="form-control" id="count" name="count" min="1" required/>
         </div>
         <button type="submit" class="btn btn-primary mb-3">Next</button>
     </form>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

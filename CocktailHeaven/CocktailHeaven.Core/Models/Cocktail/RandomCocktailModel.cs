@@ -1,4 +1,6 @@
-﻿namespace CocktailHeaven.Core.Models.Cocktail
+﻿using CocktailHeaven.Core.Models.Ingredient;
+
+namespace CocktailHeaven.Core.Models.Cocktail
 {
     public class RandomCocktailModel
     {

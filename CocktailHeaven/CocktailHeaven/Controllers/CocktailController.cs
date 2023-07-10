@@ -1,7 +1,6 @@
 ﻿using CocktailHeaven.Core.Contracts;
 using CocktailHeaven.Core.Models.Cocktail;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace CocktailHeaven.Controllers
 {
@@ -52,15 +51,17 @@ namespace CocktailHeaven.Controllers
 				return this.View(model);
 			}
 
-			var userId = User.Claims
-				.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+			//var userId = User.Claims
+			//	.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
 
-			if (userId != null && Guid.TryParse(userId.Value, out Guid id))
-			{
-				await this.cocktailService.CreateCocktailAsync(model, id);
-			}
+			//if (userId != null && Guid.TryParse(userId.Value, out Guid id))
+			//{
+			//	await this.cocktailService.CreateCocktailAsync(model, id);
+			//}
 
-			return this.RedirectToAction("Index", "Home");
+			//return this.RedirectToAction("Index", "Home");
+
+			return Json(model);
 		}
 
 		public async Task<IActionResult> RandomCocktail()

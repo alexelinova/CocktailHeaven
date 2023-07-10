@@ -1,12 +1,13 @@
 ﻿using CocktailHeaven.Core.Contracts;
 using CocktailHeaven.Core.Models.Cocktail;
+using CocktailHeaven.Core.Models.Ingredient;
 using CocktailHeaven.Infrastructure.Data.Common;
 using CocktailHeaven.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CocktailHeaven.Core
 {
-    public class CocktailService : ICocktailService
+	public class CocktailService : ICocktailService
     {
         private readonly IRepository repo;
 
@@ -58,7 +59,7 @@ namespace CocktailHeaven.Core
 
         public async Task<RandomCocktailModel> GetRandomCocktailAsync()
         {
-            Random rand = new Random();
+            var rand = new Random();
             int skipper = rand.Next(0, repo.AllReadonly<Cocktail>().Count());
 
             var randomCocktail = await repo.AllReadonly<Cocktail>()

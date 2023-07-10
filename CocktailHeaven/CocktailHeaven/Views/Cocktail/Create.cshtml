@@ -38,9 +38,15 @@
 				</div>
 				<div class="mb-3">
 					<label asp-for="Garnish"></label>
-					<input asp-for="Garnish" class="form-control" />
+					<input asp-for="Garnish" placeholder="optional" class="form-control" />
 					<span asp-validation-for="Garnish" class="text-danger"></span>
 				</div>
+				<div class="mb-3">
+					<label asp-for="CountOfIngredients"></label>
+					<input asp-for="CountOfIngredients" type="hidden"/>
+					<span asp-validation-for="CountOfIngredients" class="text-danger"></span>
+				</div>
+
 				@for (int i = 0; i < Model.CountOfIngredients; i++)
 				{
 					<div class="row">
@@ -61,7 +67,7 @@
 						<div class="col-sm-4">
 							<div class="mb-3">
 								<label asp-for="Ingredients[i].Note"></label>
-								<input asp-for="Ingredients[i].Note" class="form-control" />
+								<input asp-for="Ingredients[i].Note" class="form-control" placeholder="optional"/>
 								<span asp-validation-for="Ingredients[i].Note" class="text-danger"></span>
 							</div>
 						</div>
