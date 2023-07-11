@@ -2,7 +2,7 @@
 
 namespace CocktailHeaven.Core.Models.Cocktail
 {
-    public class RandomCocktailModel
+    public class CocktailFullModel
     {
         public string Name { get; set; } = null!;
 

@@ -72,6 +72,13 @@ namespace CocktailHeaven.Controllers
 			return this.View(cocktails);
 		}
 
+		public async Task<IActionResult> ShowMore(int id)
+		{
+			var cocktail = await this.cocktailService.GetCocktailById(id);
+
+			return this.View(cocktail);
+		}
+
 		[AllowAnonymous]
 		public async Task<IActionResult> RandomCocktail()
 		{

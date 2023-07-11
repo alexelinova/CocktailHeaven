@@ -37,13 +37,10 @@ namespace CocktailHeaven.Core
 			{
 				var ingredient = repo.All<Ingredient>().FirstOrDefault(x => x.Name == input.IngredientName);
 
-				if (ingredient == null)
-				{
-					ingredient = new Ingredient()
+				ingredient ??= new Ingredient()
 					{
 						Name = input.IngredientName,
 					};
-				}
 
 				cocktail.Ingredients.Add(new CocktailIngredient()
 				{
@@ -57,12 +54,39 @@ namespace CocktailHeaven.Core
 			await repo.SaveChangesAsync();
 		}
 
+		public async Task<CocktailFullModel> GetCocktailById(int id)
+		{
+			var cocktail = await this.repo.All<Cocktail>()
+				.Where(c => c.Id == id && c.IsDeleted == false)
+				.Select(c => new CocktailFullModel()
+				{
+					Name = c.Name,
+					Description = c.Description,
+					Instructions = c.Instruction,
+					Image = c.Image.ExternalURL ?? string.Empty,
+					Ingredients = c.Ingredients.Select(i => new IngredientFormModel()
+					{
+						IngredientName = i.Ingredient.Name,
+						Quantity = i.Quantity,
+						Note = i.Note
+					}).ToList()
+				}).FirstOrDefaultAsync();
+
+			if (cocktail == null)
+			{
+				throw new ArgumentException("Cocktail not found!");
+			}
+
+			return cocktail;
+		}
+
 		public async Task<IEnumerable<CocktailDetailsModel>> GetCocktailDetailsAsync()
 		{
 			return await this.repo
 				 .AllReadonly<Cocktail>(c => c.IsDeleted == false)
 				 .Select(c => new CocktailDetailsModel()
 				 {
+					 Id = c.Id,
 					 Name = c.Name,
 					 Description = c.Description,
 					 Url = c.Image.ExternalURL ?? string.Empty,
@@ -70,7 +94,7 @@ namespace CocktailHeaven.Core
 				 .ToListAsync();
 		}
 
-		public async Task<RandomCocktailModel> GetRandomCocktailAsync()
+		public async Task<CocktailFullModel> GetRandomCocktailAsync()
 		{
 			var rand = new Random();
 			int skipper = rand.Next(0, repo.AllReadonly<Cocktail>().Count());
@@ -84,7 +108,7 @@ namespace CocktailHeaven.Core
 				.Skip(skipper)
 				.FirstOrDefaultAsync();
 
-			return new RandomCocktailModel()
+			return new CocktailFullModel()
 			{
 				Name = randomCocktail.Name,
 				Description = randomCocktail.Description,
