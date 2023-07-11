@@ -3,31 +3,34 @@
 @model UserLoginModel
 
 @{
-    ViewData["Title"] = "Log in";
+	ViewData["Title"] = "Log in";
 }
 
-
 <div class="row">
-    <div class="col-md-4 offset-md-4">
-        <section>
-            <form id="account" method="post">
-                <h2 class="text-center">Login</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="text-center mb-3">
-                    <label asp-for="Email" class="form-label"></label>
-                    <input asp-for="Email" class="form-control" autocomplete="username" aria-required="true" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-                <div class="text-center mb-3">
-                    <label asp-for="Password" class="form-label"></label>
-                    <input asp-for="Password" type="password" class="form-control" autocomplete="current-password" aria-required="true" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <div class="text-center">
-                    <button id="login-submit" type="submit" class="btn btn-primary">Log in</button>
-                </div>
-            </form>
-        </section>
-    </div>
+	<div class="col-md-4 offset-md-4">
+		<section>
+			<form id="account" method="post">
+				<h2 class="text-center">Login</h2>
+				<hr />
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<div class="text-center mb-3">
+					<label asp-for="Email" class="form-label"></label>
+					<input asp-for="Email" class="form-control" autocomplete="username" aria-required="true" />
+					<span asp-validation-for="Email" class="text-danger"></span>
+				</div>
+				<div class="text-center mb-3">
+					<label asp-for="Password" class="form-label"></label>
+					<input asp-for="Password" type="password" class="form-control" autocomplete="current-password" aria-required="true" />
+					<span asp-validation-for="Password" class="text-danger"></span>
+				</div>
+				<div class="text-center">
+					<button id="login-submit" type="submit" class="btn btn-primary">Log in</button>
+				</div>
+			</form>
+		</section>
+	</div>
 </div>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

@@ -1,20 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using static CocktailHeaven.Infrastructure.Models.DataConstants.UserLoginModel;
 
 namespace CocktailHeaven.Core.Models.ApplicationUser
 {
     public class UserRegisterModel
     {
         [Required]
-        [StringLength(20, MinimumLength = 5)]
+        [StringLength(MaxUserNameLength, MinimumLength = MinUserNameLength)]
         public string UserName { get; set; } = null!;
 
         [Required]
         [EmailAddress]
-        [StringLength(60, MinimumLength = 10)]
+        [StringLength(MaxEmailLength, MinimumLength = MinEmailLength)]
         public string Email { get; set; } = null!;
 
         [Required]
-        [StringLength(20, MinimumLength = 6)]
+        [StringLength(MaxPasswordLength, MinimumLength = MinPasswordLength)]
         [DataType(DataType.Password)]
         public string Password { get; set; } = null!;
 

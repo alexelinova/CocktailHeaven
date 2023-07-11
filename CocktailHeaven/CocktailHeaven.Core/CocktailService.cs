@@ -66,6 +66,7 @@ namespace CocktailHeaven.Core
 				.Include(c => c.Image)
                 .Include(c => c.Ingredients)
                 .ThenInclude(i => i.Ingredient)
+                .Where(c => !c.IsDeleted)
                 .OrderBy(c => Guid.NewGuid())
                 .Skip(skipper)
                 .FirstOrDefaultAsync();

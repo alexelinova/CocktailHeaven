@@ -17,7 +17,7 @@ namespace CocktailHeaven.Controllers
         {
             var model = new UserLoginModel();
 
-            return View(model);
+            return this.View(model);
         }
 
         [HttpPost]
@@ -25,7 +25,7 @@ namespace CocktailHeaven.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return this.View(model);
             }
 
             var result = await accountService.SignInUserAsync(model.Email, model.Password);
@@ -36,7 +36,7 @@ namespace CocktailHeaven.Controllers
 
             ModelState.AddModelError(string.Empty, "Invalid login!");
 
-            return View(model);
+            return this.View(model);
         }
 
 
@@ -44,14 +44,14 @@ namespace CocktailHeaven.Controllers
         {
             await this.accountService.SignOutUserAsync();
 
-            return RedirectToAction("Index", "Home");
+            return this.RedirectToAction("Index", "Home");
         }
 
         public IActionResult Register()
         {
             var model = new UserRegisterModel();
 
-            return View(model);
+            return this.View(model);
         }
 
         [HttpPost]
@@ -59,19 +59,22 @@ namespace CocktailHeaven.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return this.View(model);
             }
 
             var result = await accountService.RegisterUserAsync(model.UserName, model.Email, model.Password);
 
             if (result.Succeeded)
             {
-                return RedirectToAction("Index", "Home");
+                return this.RedirectToAction("Login");
             }
 
-            ModelState.AddModelError(string.Empty, "Invalid login!");
+            foreach (var item in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, item.Description);
+            }
 
-            return View(model);
+            return this.View(model);
         }
     }
 }

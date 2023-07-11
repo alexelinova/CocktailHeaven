@@ -46,5 +46,17 @@
 		{
 			public const int MaxExtensionLength = 3;
 		}
+
+        public class UserLoginModel
+        {
+			public const int MinUserNameLength = 5;
+			public const int MaxUserNameLength = 20;
+
+            public const int MinEmailLength = 10;
+			public const int MaxEmailLength = 60;
+
+			public const int MinPasswordLength = 6;
+			public const int MaxPasswordLength = 20;
+		}
 	}
 }

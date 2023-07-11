@@ -18,6 +18,7 @@ namespace CocktailHeaven.Core
         public async Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync()
 		{
 			return await repo.AllReadonly<Category>()
+				.Where(c => !c.IsDeleted)
 				.Select(x => new CategoryViewModel()
 				{
 					Id = x.Id,
