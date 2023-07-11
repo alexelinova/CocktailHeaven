@@ -1,10 +1,11 @@
 ﻿using CocktailHeaven.Core.Contracts;
 using CocktailHeaven.Core.Models.ApplicationUser;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CocktailHeaven.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly IAccountService accountService;
 
@@ -13,6 +14,7 @@ namespace CocktailHeaven.Controllers
             this.accountService = accountService;
         }
 
+        [AllowAnonymous]
         public IActionResult Login()
         {
             var model = new UserLoginModel();
@@ -21,6 +23,7 @@ namespace CocktailHeaven.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(UserLoginModel model)
         {
             if (!ModelState.IsValid)
@@ -47,6 +50,7 @@ namespace CocktailHeaven.Controllers
             return this.RedirectToAction("Index", "Home");
         }
 
+        [AllowAnonymous]
         public IActionResult Register()
         {
             var model = new UserRegisterModel();
@@ -55,6 +59,7 @@ namespace CocktailHeaven.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(UserRegisterModel model)
         {
             if (!ModelState.IsValid)

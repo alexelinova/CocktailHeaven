@@ -1,15 +1,17 @@
 ﻿using CocktailHeaven.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace CocktailHeaven.Controllers
 {
-	public class HomeController : Controller
+	public class HomeController : BaseController
 	{
 		public HomeController()
 		{
 		}
 
+		[AllowAnonymous]
 		public IActionResult Index()
 		{
 			return View();

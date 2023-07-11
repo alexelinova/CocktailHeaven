@@ -1,11 +1,12 @@
 ﻿using CocktailHeaven.Core.Contracts;
 using CocktailHeaven.Core.Models.Cocktail;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace CocktailHeaven.Controllers
 {
-	public class CocktailController : Controller
+	public class CocktailController : BaseController
 	{
 		private readonly ICategoryService categoryService;
 		private readonly ICocktailService cocktailService;
@@ -63,6 +64,7 @@ namespace CocktailHeaven.Controllers
 			return this.RedirectToAction("Index", "Home");
 		}
 
+		[AllowAnonymous]
 		public async Task<IActionResult> RandomCocktail()
 		{
 			var model = await this.cocktailService.GetRandomCocktailAsync();
