@@ -1,0 +1,26 @@
+﻿@model RandomCocktailModel
+
+<div class="container">
+	<h2 class="heading-margin text-center">Great choice! @Model.Name</h2>
+	<img src="@Model.Image" class="rounded float-start" alt="Coctail picture">
+	<div class="offset-7 col-3">
+		<div class="card" style="width: 24rem;">
+			<div class="card-header">
+				<div class="justify-align">
+					<p>@Model.Description</p>
+					<div>
+						<h5 class="text-decoration-underline">Instructions</h5>
+						<p>@Model.Instructions</p>
+					</div>
+				</div>
+				Ingredients:
+				@foreach (var ingredient in Model.Ingredients)
+				{
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">@ingredient.IngredientName - @ingredient.Quantity @(ingredient.Note != null ? (ingredient.Note) : null) </li>
+					</ul>
+				}
+			</div>
+		</div>
+	</div>
+</div>
