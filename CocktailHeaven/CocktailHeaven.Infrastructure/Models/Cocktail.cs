@@ -38,9 +38,10 @@ namespace CocktailHeaven.Infrastructure.Models
         [Required]
         public virtual Category Category { get; set; } = null!;
 
-        public Guid? ImageId { get; set; }
+        [Required]
+        public Guid ImageId { get; set; }
 
-        public Image? Image { get; set; } 
+        public Image Image { get; set; } 
 
 		public Guid AddedByUserId { get; set; }
 

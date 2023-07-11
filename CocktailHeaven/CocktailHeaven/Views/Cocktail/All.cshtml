@@ -1,0 +1,28 @@
+﻿@using CocktailHeaven.Core.Models.Cocktail
+
+@model IEnumerable<CocktailDetailsModel>
+
+@{
+	ViewBag.Title = "All";
+}
+
+<h2 class="text-center">Our Cocktails Collection</h2>
+<hr />
+<div class="text-center row">
+	@foreach (var cocktail in Model)
+	{
+		<div class="card col-md-4" style="width: 20rem;">
+			<img src="@cocktail.Url" class="card-img-top" alt="cocktail picture" style="width: 18rem;">
+			<div class="card-body">
+				<h5 class="card-title">@cocktail.Name</h5>
+				<p class="card-text">@cocktail.Description</p>
+			</div>
+			<div>
+				<a asp-controller="Cocktail" asp-action="ShowMore" asp-route-id="@cocktail.Id" class="btn btn-primary">Show More Details</a>
+			</div>
+			<hr>
+		</div>
+	}
+</div>
+
+

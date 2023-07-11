@@ -1,6 +1,6 @@
 ﻿@using CocktailHeaven.Core.Models.Cocktail
 
-@model AddCocktailFormModel
+@model CocktailFormModel
 
 @{
 	ViewBag.Title = "Create new recipe";
@@ -43,7 +43,7 @@
 				</div>
 				<div class="mb-3">
 					<label asp-for="CountOfIngredients"></label>
-					<input asp-for="CountOfIngredients" type="hidden"/>
+					<input asp-for="CountOfIngredients" type="hidden" />
 					<span asp-validation-for="CountOfIngredients" class="text-danger"></span>
 				</div>
 
@@ -67,7 +67,7 @@
 						<div class="col-sm-4">
 							<div class="mb-3">
 								<label asp-for="Ingredients[i].Note"></label>
-								<input asp-for="Ingredients[i].Note" class="form-control" placeholder="optional"/>
+								<input asp-for="Ingredients[i].Note" class="form-control" placeholder="optional" />
 								<span asp-validation-for="Ingredients[i].Note" class="text-danger"></span>
 							</div>
 						</div>
@@ -75,7 +75,7 @@
 				}
 				<div class="mb-3">
 					<label asp-for="ImageURL"></label>
-					<input asp-for="ImageURL" class="form-control"/>
+					<input asp-for="ImageURL" class="form-control" />
 					<span asp-validation-for="ImageURL" class="text-danger"></span>
 				</div>
 				<div class="mb-3">

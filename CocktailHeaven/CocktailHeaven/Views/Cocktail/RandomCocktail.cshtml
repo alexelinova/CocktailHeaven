@@ -20,11 +20,9 @@
 				Ingredients:
 				@foreach (var ingredient in Model.Ingredients)
 				{
-
 					<ul class="list-group list-group-flush">
 						<li class="list-group-item">@ingredient.IngredientName - @ingredient.Quantity @(ingredient.Note != null ? (ingredient.Note) : null) </li>
 					</ul>
-
 				}
 			</div>
 		</div>

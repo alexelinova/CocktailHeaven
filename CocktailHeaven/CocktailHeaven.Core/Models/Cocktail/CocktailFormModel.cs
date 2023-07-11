@@ -6,7 +6,7 @@ using static CocktailHeaven.Infrastructure.Models.DataConstants.CocktailConstant
 
 namespace CocktailHeaven.Core.Models.Cocktail
 {
-	public class AddCocktailFormModel
+	public class CocktailFormModel
 	{
 		[Required]
 		[StringLength(MaxNameLength, MinimumLength = MinNameLength)]

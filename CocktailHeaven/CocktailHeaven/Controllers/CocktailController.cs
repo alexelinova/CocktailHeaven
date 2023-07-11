@@ -35,7 +35,7 @@ namespace CocktailHeaven.Controllers
 
 		public async Task<IActionResult> Create(int ingredientCount)
 		{
-			var model = new AddCocktailFormModel
+			var model = new CocktailFormModel
 			{
 				Categories = await this.categoryService.GetAllCategoriesAsync(),
 				CountOfIngredients = ingredientCount
@@ -45,7 +45,7 @@ namespace CocktailHeaven.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Create(AddCocktailFormModel model)
+		public async Task<IActionResult> Create(CocktailFormModel model)
 		{
 			if (!this.ModelState.IsValid)
 			{
@@ -62,6 +62,14 @@ namespace CocktailHeaven.Controllers
 			}
 
 			return this.RedirectToAction("Index", "Home");
+		}
+
+		[AllowAnonymous]
+		public async Task<IActionResult> All()
+		{
+			var cocktails = await this.cocktailService.GetCocktailDetailsAsync();
+
+			return this.View(cocktails);
 		}
 
 		[AllowAnonymous]
