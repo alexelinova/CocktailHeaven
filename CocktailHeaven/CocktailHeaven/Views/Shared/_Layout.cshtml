@@ -19,9 +19,6 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
                         <li class="nav-item dropdown">
                             <div class="dropdown">
                                 <button class="btn dropdown-toggle" type="button"
@@ -32,8 +29,14 @@
                                     <li class="nav-item">
                                         <a class="dropdown-item" asp-controller="Cocktail" asp-action="All">All</a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-controller="Cocktail" asp-action="AddIngredientCount">Add New</a>
+                                    </li>
                                 </ul>
                             </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="UserCollection" asp-action="My Collections">My Collections</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />

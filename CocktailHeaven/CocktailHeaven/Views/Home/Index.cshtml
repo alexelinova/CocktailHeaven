@@ -13,6 +13,6 @@
         <a class="btn btn-primary" asp-controller="Cocktail" asp-action="RandomCocktail">Get a Random Cocktail</a>
     </div>
     <div class="text-center mt-3">
-        <a href="@Url.Action("AllCocktails", "Cocktail")" class="btn btn-secondary">View All Cocktails</a>
+        <a asp-controller="Cocktail" asp-action="All" class="btn btn-secondary">View All Cocktails</a>
     </div>
 </div>

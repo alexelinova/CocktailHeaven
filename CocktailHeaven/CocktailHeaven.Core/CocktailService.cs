@@ -110,6 +110,7 @@ namespace CocktailHeaven.Core
 
 			return new CocktailFullModel()
 			{
+				Id = randomCocktail.Id,
 				Name = randomCocktail.Name,
 				Description = randomCocktail.Description,
 				Instructions = randomCocktail.Instruction,
@@ -119,7 +120,8 @@ namespace CocktailHeaven.Core
 					IngredientName = i.Ingredient.Name,
 					Quantity = i.Quantity,
 					Note = i.Note,
-				}).ToList()
+				})
+				.ToList()
 			};
 		}
 	}
