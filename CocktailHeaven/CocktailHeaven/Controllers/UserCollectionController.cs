@@ -53,7 +53,7 @@ namespace CocktailHeaven.Controllers
 
 			await this.userCollectionService.AddToFavouriteAsync(userId, id);
 
-			return RedirectToAction("All", "Cocktail");
+			return RedirectToAction(nameof(ShowFavourite));
 		}
 
 		public async Task<IActionResult> AddToWishlist(int id)
@@ -67,7 +67,7 @@ namespace CocktailHeaven.Controllers
 
 			await this.userCollectionService.AddToWishListAsync(userId, id);
 
-			return RedirectToAction("All", "Cocktail");
+			return RedirectToAction(nameof(ShowWishlist));
 		}
 
 	
@@ -75,14 +75,42 @@ namespace CocktailHeaven.Controllers
 		{
 			var userId = this.User.Id();
 
-			if (await this.userCollectionService.IsCocktailInWishListAsync(userId, id))
+			if (await this.userCollectionService.IsCocktailInTriedAsync(userId, id))
 			{
 				return RedirectToAction("ShowMore", "Cocktail", new { id });
 			}
 
 			await this.userCollectionService.AddToTriedAsync(userId, id);
 
-			return RedirectToAction("All", "Cocktail");
+			return RedirectToAction(nameof(ShowTried));
+		}
+
+		public async Task<IActionResult> RemoveFromWishlist(int id)
+		{
+			var userId = User.Id();
+
+			await this.userCollectionService.RemoveFromWishListAsync(userId, id);
+
+			return RedirectToAction(nameof(ShowWishlist));
+		}
+
+		public async Task<IActionResult> RemoveFromTried(int id)
+		{
+			var userId = User.Id();
+
+			await this.userCollectionService.RemoveFromTriedAsync(userId, id);
+
+			return RedirectToAction(nameof(ShowTried));
+		}
+
+		public async Task<IActionResult> RemoveFromFavourite(int id)
+		{
+			var userId = User.Id();
+
+			await this.userCollectionService.RemoveFromFavouriteAsync(userId, id);
+
+			return RedirectToAction(nameof(ShowFavourite));
+
 		}
 	}
 }
