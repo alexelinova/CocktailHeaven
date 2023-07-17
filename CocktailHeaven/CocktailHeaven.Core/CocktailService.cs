@@ -60,6 +60,7 @@ namespace CocktailHeaven.Core
 				.Where(c => c.Id == id && c.IsDeleted == false)
 				.Select(c => new CocktailFullModel()
 				{
+					Id = c.Id,
 					Name = c.Name,
 					Description = c.Description,
 					Instructions = c.Instruction,

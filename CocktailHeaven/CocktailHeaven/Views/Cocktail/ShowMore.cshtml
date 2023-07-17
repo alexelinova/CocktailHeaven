@@ -7,7 +7,7 @@
 <partial name="_CocktailCardPartial" model="Model" />
 
 <div class="offset-7 col-4 mt-4 d-grid d-md-block">
-	<a asp-action="MarkAsWishlist" asp-route-id="@Model.Id" class="mb-3 btn btn-primary">Add to Wishlist</a>
-	<a asp-action="MarkAsTried" asp-route-id="@Model.Id" class="mb-3 btn btn-primary">Mark as Tried</a>
-	<a asp-action="MarkAsFavorite" asp-route-id="@Model.Id" class="mb-3 btn btn-primary">Add to Favorites</a>
+	<a asp-controller="UserCollection" asp-action="AddToWishlist" asp-route-id="@Model.Id" class="mb-3 btn btn-primary">Add to Wishlist</a>
+	<a asp-controller="UserCollection" asp-action="AddToTried" asp-route-id="@Model.Id" class="mb-3 btn btn-primary">Mark as Tried</a>
+	<a asp-controller="UserCollection" asp-action="AddToFavourite" asp-route-id="@Model.Id" class="mb-3 btn btn-primary">Add to Favorites</a>
 </div>

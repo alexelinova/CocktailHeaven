@@ -12,6 +12,7 @@ namespace Microsoft.Extensions.DependencyInjection
 			services.AddScoped<ICategoryService, CategoryService>();
 			services.AddScoped<ICocktailService, CocktailService>();
 			services.AddScoped<IAccountService, AccountService>();
+			services.AddScoped<IUserCollectionService, UserCollectionService>();
 
 			return services;
 		}

@@ -9,9 +9,9 @@ namespace CocktailHeaven.Controllers
     {
         private readonly IAccountService accountService;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountService _accountService)
         {
-            this.accountService = accountService;
+            this.accountService = _accountService;
         }
 
         [AllowAnonymous]

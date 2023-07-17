@@ -10,10 +10,10 @@ namespace CocktailHeaven.Controllers
 	{
 		private readonly ICategoryService categoryService;
 		private readonly ICocktailService cocktailService;
-		public CocktailController(ICategoryService categoryService, ICocktailService cocktailService)
+		public CocktailController(ICategoryService _categoryService, ICocktailService _cocktailService)
 		{
-			this.categoryService = categoryService;
-			this.cocktailService = cocktailService;
+			this.categoryService = _categoryService;
+			this.cocktailService = _cocktailService;
 		}
 
 		[HttpGet]

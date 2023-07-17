@@ -58,6 +58,24 @@ namespace CocktailHeaven.Core
 			return userCollection;
 		}
 
+		public async Task<bool> IsCocktailInFavourites(Guid userId, int cocktailId)
+		{
+			return await this.repo.AllReadonly<UserCollection>()
+				.AnyAsync(u => u.AddedByUserId == userId && u.CocktailId == cocktailId && u.IsFavourite == true);
+		}
+
+		public async Task<bool> IsCocktailInTried(Guid userId, int cocktailId)
+		{
+			return await this.repo.AllReadonly<UserCollection>()
+				.AnyAsync(u => u.AddedByUserId == userId && u.CocktailId == cocktailId && u.HasTried == true);
+		}
+
+		public async Task<bool> IsCocktailInWishList(Guid userId, int cocktailId)
+		{
+			return await this.repo.AllReadonly<UserCollection>()
+				.AnyAsync(u => u.AddedByUserId == userId && u.CocktailId == cocktailId && u.WishList == true);
+		}
+
 		public Task RemoveFromFavourite(Guid userId, int cocktailId)
 		{
 			return UpdateUserCollectionProperty(userId, cocktailId, uc => uc.IsFavourite = false);
@@ -85,6 +103,5 @@ namespace CocktailHeaven.Core
 				await this.repo.SaveChangesAsync();
 			}
 		}
-
 	}
 }

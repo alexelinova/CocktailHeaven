@@ -18,6 +18,12 @@ namespace CocktailHeaven.Core.Contracts
 
 		Task RemoveFromFavourite(Guid userId, int cocktailId);
 
+		Task<bool> IsCocktailInFavourites(Guid userId, int cocktailId);
+
+		Task<bool> IsCocktailInTried(Guid userId, int cocktailId);
+
+		Task<bool> IsCocktailInWishList(Guid userId, int cocktailId);
+
 		Task UpdateUserCollectionProperty(Guid userId, int cocktailId, Action<UserCollection> updateCollection);
 	}
 }

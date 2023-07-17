@@ -1,5 +1,6 @@
 using CocktailHeaven.Infrastructure.Data;
 using CocktailHeaven.Infrastructure.Models.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,7 +25,11 @@ builder.Services.ConfigureApplicationCookie(options =>
       options.LoginPath = "/Account/Login";
 });
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+	options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+});
+
 builder.Services.AddApplicationServices();
 
 var app = builder.Build();
