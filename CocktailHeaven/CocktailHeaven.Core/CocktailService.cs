@@ -54,7 +54,7 @@ namespace CocktailHeaven.Core
 			await repo.SaveChangesAsync();
 		}
 
-		public async Task<CocktailFullModel> GetCocktailById(int id)
+		public async Task<CocktailFullModel> GetCocktailByIdAsync(int id)
 		{
 			var cocktail = await this.repo.All<Cocktail>()
 				.Where(c => c.Id == id && c.IsDeleted == false)
@@ -92,6 +92,7 @@ namespace CocktailHeaven.Core
 					 Description = c.Description,
 					 Url = c.Image.ExternalURL ?? string.Empty,
 				 })
+				 .OrderBy(c => c.Name)
 				 .ToListAsync();
 		}
 

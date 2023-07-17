@@ -13,8 +13,6 @@ namespace CocktailHeaven.Infrastructure.Models
 
         public string? ExternalURL { get; set; }
 
-        public int CocktailId { get; set; }
-
 		public Cocktail Cocktail { get; set; } = null!;
 
         public bool IsDeleted { get; set; } = false;

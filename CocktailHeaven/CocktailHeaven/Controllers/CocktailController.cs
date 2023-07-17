@@ -74,7 +74,7 @@ namespace CocktailHeaven.Controllers
 
 		public async Task<IActionResult> ShowMore(int id)
 		{
-			var cocktail = await this.cocktailService.GetCocktailById(id);
+			var cocktail = await this.cocktailService.GetCocktailByIdAsync(id);
 
 			return this.View(cocktail);
 		}

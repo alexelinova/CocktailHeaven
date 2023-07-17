@@ -10,6 +10,6 @@ namespace CocktailHeaven.Core.Contracts
 
         Task SignOutUserAsync();
 
-        Task<bool> UserExists(string email);
+        Task<bool> UserExistsAsync(string email);
     }
 }

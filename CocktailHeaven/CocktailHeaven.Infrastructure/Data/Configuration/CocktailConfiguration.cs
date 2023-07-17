@@ -9,12 +9,6 @@ namespace CocktailHeaven.Infrastructure.Data.Configuration
 		public void Configure(EntityTypeBuilder<Cocktail> builder)
 		{
 			builder
-				.HasOne(c => c.Image)
-				.WithOne(i => i.Cocktail)
-				.HasForeignKey<Image>(i => i.CocktailId)
-				.OnDelete(DeleteBehavior.Restrict);
-
-			builder
 				.HasOne(c => c.Category)
 				.WithMany(c => c.Cocktails)
 				.HasForeignKey(c => c.CategoryId)

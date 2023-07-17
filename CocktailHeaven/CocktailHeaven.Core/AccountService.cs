@@ -25,7 +25,7 @@ namespace CocktailHeaven.Core
 			string email,
 			string password)
 		{
-			bool emailExists = await UserExists(email);
+			bool emailExists = await UserExistsAsync(email);
 
 			if (emailExists)
 			{
@@ -62,7 +62,7 @@ namespace CocktailHeaven.Core
 			await this.signInManager.SignOutAsync();
 		}
 
-		public async Task<bool> UserExists(string email)
+		public async Task<bool> UserExistsAsync(string email)
 		{
 			var user = await this.repo.AllReadonly<ApplicationUser>
 				(x => x.Email == email)

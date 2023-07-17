@@ -1,29 +1,36 @@
-﻿using CocktailHeaven.Infrastructure.Models;
+﻿using CocktailHeaven.Core.Models.Cocktail;
+using CocktailHeaven.Infrastructure.Models;
 
 namespace CocktailHeaven.Core.Contracts
 {
 	public interface IUserCollectionService
 	{
-		Task AddToWishList(Guid userId, int cocktailId);
+		Task AddToWishListAsync(Guid userId, int cocktailId);
 
-		Task AddToFavourite(Guid userId, int cocktailId);
+		Task AddToFavouriteAsync(Guid userId, int cocktailId);
 
-		Task AddToTried(Guid userId, int cocktailId);
+		Task AddToTriedAsync(Guid userId, int cocktailId);
 
-		Task<UserCollection> FindOrCreateUserCollection(Guid userId, int cocktailId);
+		Task<UserCollection> FindOrCreateUserCollectionAsync(Guid userId, int cocktailId);
 
-		Task RemoveFromWishList(Guid userId, int cocktailId);
+		Task RemoveFromWishListAsync(Guid userId, int cocktailId);
 
-		Task RemoveFromTried(Guid userId, int cocktailId);
+		Task RemoveFromTriedAsync(Guid userId, int cocktailId);
 
-		Task RemoveFromFavourite(Guid userId, int cocktailId);
+		Task RemoveFromFavouriteAsync(Guid userId, int cocktailId);
 
-		Task<bool> IsCocktailInFavourites(Guid userId, int cocktailId);
+		Task<bool> IsCocktailInFavouritesAsync(Guid userId, int cocktailId);
 
-		Task<bool> IsCocktailInTried(Guid userId, int cocktailId);
+		Task<bool> IsCocktailInTriedAsync(Guid userId, int cocktailId);
 
-		Task<bool> IsCocktailInWishList(Guid userId, int cocktailId);
+		Task<bool> IsCocktailInWishListAsync(Guid userId, int cocktailId);
 
-		Task UpdateUserCollectionProperty(Guid userId, int cocktailId, Action<UserCollection> updateCollection);
-	}
+		Task UpdateUserCollectionPropertyAsync(Guid userId, int cocktailId, Action<UserCollection> updateCollection);
+
+		Task<IEnumerable<CocktailCollectionModel>> GetFavouriteCocktailsAsync(Guid userId);
+
+        Task<IEnumerable<CocktailCollectionModel>> GetTriedCocktailsAsync(Guid userId);
+
+        Task<IEnumerable<CocktailCollectionModel>> GetWishlistCocktailsAsync(Guid userId);
+    }
 }
