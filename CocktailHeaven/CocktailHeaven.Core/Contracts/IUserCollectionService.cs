@@ -11,8 +11,6 @@ namespace CocktailHeaven.Core.Contracts
 
 		Task AddToTriedAsync(Guid userId, int cocktailId);
 
-		Task<UserCollection> FindOrCreateUserCollectionAsync(Guid userId, int cocktailId);
-
 		Task RemoveFromWishListAsync(Guid userId, int cocktailId);
 
 		Task RemoveFromTriedAsync(Guid userId, int cocktailId);
@@ -24,8 +22,6 @@ namespace CocktailHeaven.Core.Contracts
 		Task<bool> IsCocktailInTriedAsync(Guid userId, int cocktailId);
 
 		Task<bool> IsCocktailInWishListAsync(Guid userId, int cocktailId);
-
-		Task UpdateUserCollectionPropertyAsync(Guid userId, int cocktailId, Action<UserCollection> updateCollection);
 
 		Task<IEnumerable<CocktailCollectionModel>> GetFavouriteCocktailsAsync(Guid userId);
 

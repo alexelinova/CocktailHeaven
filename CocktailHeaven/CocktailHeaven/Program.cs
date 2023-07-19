@@ -1,5 +1,6 @@
 using CocktailHeaven.Infrastructure.Data;
 using CocktailHeaven.Infrastructure.Models.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +19,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 	options.Password.RequiredLength = 5;
 	options.Password.RequireUppercase = false;
 })
+	.AddRoles<IdentityRole<Guid>>()
 	.AddEntityFrameworkStores<CocktailHeavenDbContext>();
 
 builder.Services.ConfigureApplicationCookie(options =>
