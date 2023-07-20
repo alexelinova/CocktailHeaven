@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CocktailDetailsModel>
+﻿@model CocktailAllViewModel
 
 @{
 	ViewBag.Title = "All";
@@ -7,7 +7,7 @@
 <h2 class="text-center">Our Cocktails Collection</h2>
 <hr />
 <div class="text-center row">
-	@foreach (var cocktail in Model)
+	@foreach (var cocktail in Model.Cocktails)
 	{
 		<div class="card col-md-4 me-2 mb-3" style="width: 20rem;">
 			<img src="@cocktail.Url" class="card-img-top" alt="cocktail picture" style="width: 18rem;">
@@ -23,4 +23,6 @@
 	}
 </div>
 
+<hr />
 
+<partial name="_PagingPartial" model="@Model" />

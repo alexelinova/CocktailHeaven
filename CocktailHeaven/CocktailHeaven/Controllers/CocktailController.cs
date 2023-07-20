@@ -65,11 +65,19 @@ namespace CocktailHeaven.Controllers
 		}
 
 		[AllowAnonymous]
-		public async Task<IActionResult> All()
+		public async Task<IActionResult> All(int id = 1)
 		{
-			var cocktails = await this.cocktailService.GetCocktailDetailsAsync();
+			const int ItemsPerPage = 8;
 
-			return this.View(cocktails);
+			var model = new CocktailAllViewModel()
+			{
+				CocktailsPerPage = ItemsPerPage,
+				Cocktails = await this.cocktailService.GetCocktailDetailsAsync(id, ItemsPerPage),
+				CocktailsCount = await this.cocktailService.CocktailCountAsync(),
+				PageNumber = id
+			};
+		
+			return this.View(model);
 		}
 
 		public async Task<IActionResult> ShowMore(int id)

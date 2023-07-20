@@ -8,8 +8,10 @@ namespace CocktailHeaven.Core.Contracts
 
 		Task<CocktailFullModel> GetRandomCocktailAsync();
 
-		Task<IEnumerable<CocktailDetailsModel>> GetCocktailDetailsAsync();
+		Task<IEnumerable<CocktailDetailsModel>> GetCocktailDetailsAsync(int page, int itemsPerPage);
 
 		Task<CocktailFullModel> GetCocktailByIdAsync(int id);
+
+		Task<int> CocktailCountAsync();
 	}
 }

@@ -16,6 +16,11 @@ namespace CocktailHeaven.Core
 			this.repo = repo;
 		}
 
+		public async Task<int> CocktailCountAsync()
+		{
+			return await this.repo.AllReadonly<Cocktail>().CountAsync();
+		}
+
 		public async Task CreateCocktailAsync(CocktailFormModel model, Guid userId)
 		{
 			var cocktail = new Cocktail()
@@ -81,10 +86,13 @@ namespace CocktailHeaven.Core
 			return cocktail;
 		}
 
-		public async Task<IEnumerable<CocktailDetailsModel>> GetCocktailDetailsAsync()
+		public async Task<IEnumerable<CocktailDetailsModel>> GetCocktailDetailsAsync(int page, int itemsPerPage = 6)
 		{
 			return await this.repo
 				 .AllReadonly<Cocktail>(c => c.IsDeleted == false)
+				 .OrderBy(c => c.Name)
+				 .Skip((page - 1) * itemsPerPage)
+				 .Take(itemsPerPage)
 				 .Select(c => new CocktailDetailsModel()
 				 {
 					 Id = c.Id,
@@ -92,7 +100,6 @@ namespace CocktailHeaven.Core
 					 Description = c.Description,
 					 Url = c.Image.ExternalURL ?? string.Empty,
 				 })
-				 .OrderBy(c => c.Name)
 				 .ToListAsync();
 		}
 
