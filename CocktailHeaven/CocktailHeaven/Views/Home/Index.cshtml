@@ -1,18 +1,62 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model CocktailHomeModel
+
 @{
     ViewBag.Title = "Home";
+    var cocktails = Model.Cocktails.ToList();
 }
 
 <div class="container">
-    <h3 class="text-center">Are you looking for a summer cocktail inspiration?</h3>
-    <h3 class="text-center">You are at the right place.</h3>
-    <p class="text-center">Browse through our suggestions and discover refreshing recipes.</p>
-    <div class="text-center">
-        <a class="btn btn-primary" asp-controller="Cocktail" asp-action="RandomCocktail">Get a Random Cocktail</a>
-    </div>
-    <div class="text-center mt-3">
-        <a asp-controller="Cocktail" asp-action="All" class="btn btn-secondary">View All Cocktails</a>
+    <div class="row">
+        <div class="col-md-6 d-flex align-items-center justify-content-center">
+            <div class="card bg-primary text-white rounded">
+                <div class="card-body">
+                    <h1 class="card-title text-center">Welcome to our refreshing cocktail world!</h1>
+                    <p class="card-text h5">
+                        Step into a world of delightful cocktails that will excite your senses!
+                    </p>
+                    <p class="card-text h5">
+                        We take pride in our diverse selection of expertly crafted drinks, each designed to delight every taste.
+                    </p>
+                    <p class="card-text h5">
+                        Whether you're a seasoned cocktail enthusiast or just starting your journey into mixology, we've got something special for you!
+                    </p>
+                    <p class="card-text h5">
+                        Our collection includes a wide range of unique cocktail creations, carefully curated to bring joy to your senses.
+                    </p>
+                    <p class="card-text h5">
+                        Take your time to explore our extensive array of @Model.CocktailsCount drinks, each waiting to be discovered by you!
+                    </p>
+                    <div class="d-flex justify-content-center mt-3">
+                        <a class="btn btn-success me-3" asp-controller="Cocktail" asp-action="RandomCocktail">Get a Random Cocktail</a>
+                        <a class="btn btn-success" asp-controller="Cocktail" asp-action="All">View All Cocktails</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mt-4">
+            <h3 class="mb-3 text-center">Top 3 highest rated cocktails</h3>
+            <div id="demo" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    @for (int i = 0; i < cocktails.Count; i++)
+                    {
+                        var cocktail = cocktails[i];
+                        <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
+                            <img src="@cocktails[i].ImageUrl" alt="@cocktails[i].Name" class="d-block w-100">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>
+                                    <a class="btn btn-success" asp-controller="Cocktail" asp-action="ShowMore" asp-route-id="@cocktail.Id"> @cocktail.Name</a>
+                                </h5>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+        </div>
     </div>
 </div>

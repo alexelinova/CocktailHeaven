@@ -67,7 +67,7 @@ namespace CocktailHeaven.Controllers
 		[AllowAnonymous]
 		public async Task<IActionResult> All(int id = 1)
 		{
-			const int ItemsPerPage = 8;
+			const int ItemsPerPage = 4;
 
 			var model = new CocktailAllViewModel()
 			{

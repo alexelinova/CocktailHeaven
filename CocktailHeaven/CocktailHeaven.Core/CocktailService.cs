@@ -133,5 +133,20 @@ namespace CocktailHeaven.Core
 				.ToList()
 			};
 		}
-	}
+
+        public async Task<IEnumerable<CocktailCollectionModel>> GetTopRatedCocktailsAsync()
+        {
+			return await this.repo.AllReadonly<Cocktail>()
+				.Where(c => c.IsDeleted == false)
+				.OrderByDescending(c => c.Ratings.Any() ? c.Ratings.Average(r => r.Value) : 0)
+				.Select(c => new CocktailCollectionModel()
+				{
+					Id = c.Id,
+					Name = c.Name,
+					ImageUrl = c.Image.ExternalURL ?? string.Empty,
+				})
+				.Take(3)
+				.ToListAsync();
+        }
+    }
 }

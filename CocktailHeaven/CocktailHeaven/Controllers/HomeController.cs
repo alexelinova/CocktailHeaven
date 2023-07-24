@@ -1,4 +1,6 @@
-﻿using CocktailHeaven.Models;
+﻿using CocktailHeaven.Core.Contracts;
+using CocktailHeaven.Core.Models.Cocktail;
+using CocktailHeaven.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -7,14 +9,22 @@ namespace CocktailHeaven.Controllers
 {
 	public class HomeController : BaseController
 	{
-		public HomeController()
+		private readonly ICocktailService cocktailService;
+		public HomeController(ICocktailService cocktailService)
 		{
+			this.cocktailService = cocktailService;
 		}
 
 		[AllowAnonymous]
-		public IActionResult Index()
+		public async Task<IActionResult> Index()
 		{
-			return View();
+			var model = new CocktailHomeModel()
+			{
+				Cocktails = await this.cocktailService.GetTopRatedCocktailsAsync(),
+				CocktailsCount = await this.cocktailService.CocktailCountAsync()
+			};
+
+			return View(model);
 		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
