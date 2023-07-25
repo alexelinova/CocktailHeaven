@@ -99,6 +99,7 @@ namespace CocktailHeaven.Core
 					 Name = c.Name,
 					 Description = c.Description,
 					 Url = c.Image.ExternalURL ?? string.Empty,
+					 AverageRatingValue = c.Ratings.Any() ? c.Ratings.Average(x => x.Value) : 0
 				 })
 				 .ToListAsync();
 		}

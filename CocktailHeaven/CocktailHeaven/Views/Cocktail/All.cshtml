@@ -2,14 +2,45 @@
 
 @{
 	ViewBag.Title = "All";
+
+	string GetStarClass(int starNumber, double averageRating)
+	{
+		double roundedRating = Math.Floor(averageRating);
+		double decimalPart = averageRating - roundedRating;
+
+		if (starNumber <= roundedRating)
+		{
+			return "active";
+		}
+		else if (starNumber == roundedRating + 1 && decimalPart >= 0.5)
+		{
+			return "half";
+		}
+		else
+		{
+			return "";
+		}
+	}
 }
 
-<h2 class="text-center">Our Cocktails Collection</h2>
+<link rel="stylesheet" href="~/css/rating.css" />
+
+<h2 class="text-center" id="header">Our Cocktails Collection</h2>
 <hr />
 <div class="text-center row">
 	@foreach (var cocktail in Model.Cocktails)
 	{
 		<div class="card col-md-4 me-2 mb-3" style="width: 20rem;">
+			<div class="rating-box">
+				<div class="stars">
+					<div class="stars">
+						@for (int i = 1; i <= 5; i++)
+						{
+							<i class="fas fa-star @GetStarClass(i, cocktail.AverageRatingValue)"></i>
+						}
+					</div>
+				</div>
+			</div>
 			<img src="@cocktail.Url" class="card-img-top" alt="cocktail picture" style="width: 18rem;">
 			<div class="card-body">
 				<h5 class="card-title">@cocktail.Name</h5>
@@ -26,3 +57,4 @@
 <hr />
 
 <partial name="_PagingPartial" model="@Model" />
+
