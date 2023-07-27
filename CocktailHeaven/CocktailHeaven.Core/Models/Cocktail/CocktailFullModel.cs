@@ -13,6 +13,8 @@ namespace CocktailHeaven.Core.Models.Cocktail
 
         public string CategoryName { get; set; } = null!;
 
+        public string? Garnish { get; set; }
+
         public string Image { get; set; } = null!;
 
         public IEnumerable<IngredientFormModel> Ingredients { get; set; } = new List<IngredientFormModel>();

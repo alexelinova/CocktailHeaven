@@ -70,6 +70,8 @@ namespace CocktailHeaven.Core
 					Description = c.Description,
 					Instructions = c.Instruction,
 					Image = c.Image.ExternalURL ?? string.Empty,
+					Garnish = c.Garnish,
+					CategoryName = c.Category.Name,
 					Ingredients = c.Ingredients.Select(i => new IngredientFormModel()
 					{
 						IngredientName = i.Ingredient.Name,

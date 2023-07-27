@@ -17,12 +17,14 @@ namespace CocktailHeaven.Controllers
 		}
 
 		[HttpGet]
+		[Authorize(Roles = "CocktailEditor")]
 		public IActionResult AddIngredientCount()
 		{
 			return View();
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "CocktailEditor")]
 		public IActionResult AddIngredientCount(int count)
 		{
 			if (count <= 0)
@@ -33,6 +35,7 @@ namespace CocktailHeaven.Controllers
 			return this.RedirectToAction(nameof(Create), new { ingredientCount = count });
 		}
 
+		[Authorize(Roles = "CocktailEditor")]
 		public async Task<IActionResult> Create(int ingredientCount)
 		{
 			var model = new CocktailFormModel
@@ -64,6 +67,14 @@ namespace CocktailHeaven.Controllers
 			return this.RedirectToAction("Index", "Home");
 		}
 
+		public IActionResult Edit(int id)
+		{
+			//TODO
+			var cocktail = new CocktailFormModel();
+
+			return this.View(cocktail);
+		}
+
 		[AllowAnonymous]
 		public async Task<IActionResult> All(int id = 1)
 		{
@@ -76,7 +87,7 @@ namespace CocktailHeaven.Controllers
 				CocktailsCount = await this.cocktailService.CocktailCountAsync(),
 				PageNumber = id
 			};
-		
+
 			return this.View(model);
 		}
 

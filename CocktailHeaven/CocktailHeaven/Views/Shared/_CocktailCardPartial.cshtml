@@ -3,14 +3,19 @@
 <div class="container">
 	<h2 class="heading-margin text-center">Great choice! @Model.Name</h2>
 	<img src="@Model.Image" class="rounded float-start" alt="Coctail picture">
-	<div class="offset-7 col-3">
-		<div class="card" style="width: 24rem;">
+	<div class="offset-7">
+		<div class="card" style="width: 32rem;">
 			<div class="card-header">
 				<div class="justify-align">
-					<p>@Model.Description</p>
+					<div>
+						<p class="card-text h5 text-decoration-underline mb-2">@Model.CategoryName</p>
+					</div>
+					<div>
+						<p>@Model.Description</p>
+					</div>
 					<div>
 						<h5 class="text-decoration-underline">Instructions</h5>
-						<p>@Model.Instructions</p>
+						<p>@Model.Instructions @(Model.Garnish != null ? "Garnish: " + Model.Garnish : null)</p>
 					</div>
 				</div>
 				Ingredients:
