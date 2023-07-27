@@ -17,14 +17,14 @@ namespace CocktailHeaven.Infrastructure.Data.Configuration
 			{
 				new IdentityRole<Guid>()
 				{
-					Id = Guid.NewGuid(),
+					Id = Guid.Parse("ebabec4b-1413-4d79-8d3a-b55742b6f7b6"),
 					Name = "Admin",
 					NormalizedName = "ADMIN"
 				},
 
 				new IdentityRole<Guid>()
 				{
-					Id = Guid.NewGuid(),
+					Id = Guid.Parse("ed23ddd6-0cab-4a38-943a-61c5d396bfba"),
 					Name = "CocktailEditor",
 					NormalizedName = "COCKTAILEDITOR"
 				}

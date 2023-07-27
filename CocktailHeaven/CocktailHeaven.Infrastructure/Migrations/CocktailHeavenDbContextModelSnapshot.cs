@@ -221,16 +221,16 @@ namespace CocktailHeaven.Infrastructure.Migrations
                         {
                             Id = new Guid("d273e367-ebf6-44b3-afa7-7759a0a579ee"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b6bf3309-d6aa-4402-b48f-5edb5e5fa803",
+                            ConcurrencyStamp = "9f940a8c-592a-482d-a5f4-a89e972a658d",
                             Email = "gmihov@mail.com",
                             EmailConfirmed = false,
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "GMIHOV@MAIL.COM",
                             NormalizedUserName = "GEORGE",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOiBkoSBWyMJCfeBjKG9Gz5E8By9fXp6qyWFJR79LWR/duvtRtwtCEs9xlx4j8BapQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEH8qolJ63RZJjAnXeQ/iCtDVGt9B7AjLngnWUWVyPW+iUllLX2IhTISSEQ4lH9gxQg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4bb38b2e-4989-4482-9e7f-e184f28c5f67",
+                            SecurityStamp = "a041d443-04d6-461c-a123-2623a10115c5",
                             TwoFactorEnabled = false,
                             UserName = "George"
                         },
@@ -238,16 +238,16 @@ namespace CocktailHeaven.Infrastructure.Migrations
                         {
                             Id = new Guid("9622851e-71b4-439b-8d86-9e8cba27ca1e"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "da9a0dcc-d76d-446b-8e5d-274cbaa8ef2a",
+                            ConcurrencyStamp = "06d8315d-3f2e-4b48-9047-71953562b500",
                             Email = "devora@mail.com",
                             EmailConfirmed = false,
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "DEVORA@MAIL.COM",
                             NormalizedUserName = "DEV",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHebQNCYJ0B5QPy4OXb+nvXnuthBiwJ0LDzzAkZCLdHJALKKolrE0SOAFONLwZ4+HQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECl+89+6og4EEGVjZyFQhoxN5Gouts/+EtH7bEBQn30gD8GsQfjB8xmnI7UmVVs4Fw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4af189e5-7b11-43da-9187-5f668641ddea",
+                            SecurityStamp = "1833a2a8-e6ec-477d-bc1a-ab8fd8ed6f25",
                             TwoFactorEnabled = false,
                             UserName = "Dev"
                         },
@@ -255,16 +255,16 @@ namespace CocktailHeaven.Infrastructure.Migrations
                         {
                             Id = new Guid("4e797b0b-c669-4bf1-913c-a90fe951241f"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f46e53ed-fd5e-4470-9f0a-a90b0183ba4b",
+                            ConcurrencyStamp = "fe3f6087-2870-482a-af33-56f55dde76a7",
                             Email = "aleks@mail.com",
                             EmailConfirmed = false,
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ALEKS@MAIL.COM",
                             NormalizedUserName = "ALEKS",
-                            PasswordHash = "AQAAAAEAACcQAAAAEERdfc25symmEbGFKOryj5J7zubvaO80eExvUbqD4E8mVMPnySUuBuaJV9hk8J4yfg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAY71W0zwo57N3pS/VOpzZlxArKCBmyDeAVvrWIkPJeFdpy0ym9Ba2fQg0FY37bdIw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "41df00eb-d87d-435f-b21c-31936a580083",
+                            SecurityStamp = "f36bda04-e8ca-4e0e-a93d-1672103631a2",
                             TwoFactorEnabled = false,
                             UserName = "aleks"
                         });
@@ -417,15 +417,15 @@ namespace CocktailHeaven.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("56b69cff-f3a5-474e-8447-c5992ebbe8e3"),
-                            ConcurrencyStamp = "5ac82c42-dd44-4856-b6c1-dfdc3c89be29",
+                            Id = new Guid("ebabec4b-1413-4d79-8d3a-b55742b6f7b6"),
+                            ConcurrencyStamp = "78c93863-bd2d-4c33-82af-cc5c35f610d1",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("85f25772-3c9b-4cb8-a107-ed7b4c101e60"),
-                            ConcurrencyStamp = "e49c61d0-1950-4e2c-80c0-9d2c4fbc2696",
+                            Id = new Guid("ed23ddd6-0cab-4a38-943a-61c5d396bfba"),
+                            ConcurrencyStamp = "f1eed44f-a763-48ce-ab50-ef222994b358",
                             Name = "CocktailEditor",
                             NormalizedName = "COCKTAILEDITOR"
                         });
