@@ -1,6 +1,5 @@
 ﻿using CocktailHeaven.Core.Contracts;
 using CocktailHeaven.Core.Models.Cocktail;
-using CocktailHeaven.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -97,7 +96,6 @@ namespace CocktailHeaven.Controllers
 			if (!ModelState.IsValid)
 			{
 				model.Categories = await categoryService.GetAllCategoriesAsync();
-
 				return View(model);
 			}
 
@@ -105,6 +103,16 @@ namespace CocktailHeaven.Controllers
 
 			return RedirectToAction(nameof(ShowMore), new { model.Id });
 		}
+
+		[HttpPost]
+		[Authorize(Roles = "CocktailEditor")]
+		public async Task<IActionResult> Delete(int id)
+		{
+			await cocktailService.Delete(id);
+
+			return RedirectToAction(nameof(All));
+		}
+
 
 		[AllowAnonymous]
 		public async Task<IActionResult> All(int id = 1)

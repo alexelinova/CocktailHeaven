@@ -40,7 +40,8 @@ namespace CocktailHeaven.Core
 
 			foreach (var input in model.Ingredients)
 			{
-				var ingredient = repo.All<Ingredient>().FirstOrDefault(x => x.Name == input.IngredientName);
+				var ingredient = repo.All<Ingredient>(i => i.IsDeleted == false)
+					.FirstOrDefault(i => i.Name == input.IngredientName);
 
 				ingredient ??= new Ingredient()
 				{
@@ -57,6 +58,33 @@ namespace CocktailHeaven.Core
 
 			await repo.AddAsync(cocktail);
 			await repo.SaveChangesAsync();
+		}
+
+		public async Task Delete(int cocktailId)
+		{
+			var cocktail = await this.repo.All<Cocktail>(c => c.Id == cocktailId)
+				.Include(c => c.Image)
+				.Include(c => c.Ratings)
+				.FirstOrDefaultAsync();
+
+			if (cocktail != null)
+			{
+				cocktail.IsDeleted = true;
+				cocktail.ModifiedOn = DateTime.UtcNow;
+
+				if (cocktail.Image != null)
+				{
+					cocktail.Image.IsDeleted = true;
+				}
+
+				foreach (var rating in cocktail.Ratings)
+				{
+					rating.IsDeleted = true;
+					rating.ModifiedOn = DateTime.UtcNow;
+				}
+
+				await this.repo.SaveChangesAsync();
+			}
 		}
 
 		public async Task Edit(CocktailEditModel model, int cocktailId)
@@ -86,7 +114,7 @@ namespace CocktailHeaven.Core
 
 			foreach (var input in model.Ingredients)
 			{
-				var ingredient = repo.All<Ingredient>()
+				var ingredient = repo.All<Ingredient>(i => i.IsDeleted == false)
 					.FirstOrDefault(x => x.Name == input.IngredientName);
 
 				if (ingredient == null)
