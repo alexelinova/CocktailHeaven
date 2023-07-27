@@ -17,6 +17,7 @@ public class CocktailHeavenDbContext : IdentityDbContext<ApplicationUser, Identi
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
 		builder.ApplyConfiguration(new ApplicationUserConfiguration());
+		builder.ApplyConfiguration(new RoleConfiguration());
 		builder.ApplyConfiguration(new CategoryConfiguration());
 		builder.ApplyConfiguration(new CocktailConfiguration());
 		builder.ApplyConfiguration(new CocktailIngredientConfiguration());
