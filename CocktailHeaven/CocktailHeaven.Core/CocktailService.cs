@@ -43,9 +43,9 @@ namespace CocktailHeaven.Core
 				var ingredient = repo.All<Ingredient>().FirstOrDefault(x => x.Name == input.IngredientName);
 
 				ingredient ??= new Ingredient()
-					{
-						Name = input.IngredientName,
-					};
+				{
+					Name = input.IngredientName,
+				};
 
 				cocktail.Ingredients.Add(new CocktailIngredient()
 				{
@@ -56,6 +56,68 @@ namespace CocktailHeaven.Core
 			}
 
 			await repo.AddAsync(cocktail);
+			await repo.SaveChangesAsync();
+		}
+
+		public async Task Edit(CocktailEditModel model, int cocktailId)
+		{
+			var cocktail = await repo.All<Cocktail>(c => c.Id == cocktailId)
+				.Include(c => c.Image)
+				.Include(c => c.Ingredients)
+				.ThenInclude(i => i.Ingredient)
+				.FirstOrDefaultAsync();
+
+			cocktail.Name = model.Name;
+			cocktail.Description = model.Description;
+			cocktail.CategoryId = model.CategoryId;
+			cocktail.Instruction = model.Instruction;
+			cocktail.Image.ExternalURL = model.ImageURL;
+			cocktail.Garnish = model.Garnish;
+			cocktail.ModifiedOn = DateTime.UtcNow;
+
+			var ingredientsToRemove = cocktail.Ingredients
+				.Where(ingredient => !model.Ingredients.Any(x => x.IngredientName == ingredient.Ingredient.Name))
+				.ToList();
+
+			foreach (var ingredientToRemove in ingredientsToRemove)
+			{
+				cocktail.Ingredients.Remove(ingredientToRemove);
+			}
+
+			foreach (var input in model.Ingredients)
+			{
+				var ingredient = repo.All<Ingredient>()
+					.FirstOrDefault(x => x.Name == input.IngredientName);
+
+				if (ingredient == null)
+				{
+					ingredient = new Ingredient()
+					{
+						Name = input.IngredientName,
+					};
+				}
+
+				var currentCocktailIngredient = cocktail.Ingredients
+					.FirstOrDefault(ci => ci.Ingredient.Name == input.IngredientName);
+
+				if (currentCocktailIngredient != null)
+				{
+					currentCocktailIngredient.Quantity = input.Quantity;
+					currentCocktailIngredient.Note = input.Note;
+				}
+				else
+				{
+					var newCocktailIngredient = new CocktailIngredient()
+					{
+						Ingredient = ingredient,
+						Quantity = input.Quantity,
+						Note = input.Note,
+					};
+
+					cocktail.Ingredients.Add(newCocktailIngredient);
+				}
+			}
+
 			await repo.SaveChangesAsync();
 		}
 
@@ -86,6 +148,11 @@ namespace CocktailHeaven.Core
 			}
 
 			return cocktail;
+		}
+
+		public async Task<int> GetCocktailCategoryAsync(int cocktailId)
+		{
+			return (await repo.GetByIdAsync<Cocktail>(cocktailId)).CategoryId;
 		}
 
 		public async Task<IEnumerable<CocktailDetailsModel>> GetCocktailDetailsAsync(int page, int itemsPerPage = 6)
@@ -137,8 +204,8 @@ namespace CocktailHeaven.Core
 			};
 		}
 
-        public async Task<IEnumerable<CocktailCollectionModel>> GetTopRatedCocktailsAsync()
-        {
+		public async Task<IEnumerable<CocktailCollectionModel>> GetTopRatedCocktailsAsync()
+		{
 			return await this.repo.AllReadonly<Cocktail>()
 				.Where(c => c.IsDeleted == false)
 				.OrderByDescending(c => c.Ratings.Any() ? c.Ratings.Average(r => r.Value) : 0)
@@ -150,6 +217,6 @@ namespace CocktailHeaven.Core
 				})
 				.Take(3)
 				.ToListAsync();
-        }
-    }
+		}
+	}
 }

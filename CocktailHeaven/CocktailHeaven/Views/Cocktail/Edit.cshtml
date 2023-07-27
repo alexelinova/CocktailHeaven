@@ -1,10 +1,85 @@
-﻿@model CocktailFormModel
+﻿@model CocktailEditModel
 
 @{
 	ViewBag.Title = "Edit Cocktail Details";
 }
 
 
+<div class="container fw-bold">
+	<div class="row">
+		<div class="offset-2 col-8">
+			<h2 class="heading-margin text-center">Add Cocktail</h2>
+			<form method="post">
+				<div class="mb-3">
+					<label asp-for="Name"></label>
+					<input asp-for="Name" class="form-control" />
+					<span asp-validation-for="Name" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label asp-for="Description"></label>
+					<textarea asp-for="Description" class="form-control"></textarea>
+					<span asp-validation-for="Description" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label asp-for="Instruction"></label>
+					<textarea asp-for="Instruction" class="form-control"></textarea>
+					<span asp-validation-for="Instruction" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label asp-for="CategoryId"></label>
+					<select asp-for="CategoryId" class="form-select">
+						@foreach (var category in Model.Categories)
+						{
+							<option value="@category.Id">@category.Name</option>
+						}
+					</select>
+					<span asp-validation-for="CategoryId" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label asp-for="Garnish"></label>
+					<input asp-for="Garnish" placeholder="optional" class="form-control" />
+					<span asp-validation-for="Garnish" class="text-danger"></span>
+				</div>
+				@for (int i = 0; i < Model.Ingredients.Count; i++)
+				{
+					<div class="row">
+						<div class="col-sm-4">
+							<div class="mb-3">
+								<label asp-for="Ingredients[i].IngredientName"></label>
+								<input asp-for="Ingredients[i].IngredientName" class="form-control" />
+								<span asp-validation-for="Ingredients[i].IngredientName" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="mb-3">
+								<label asp-for="Ingredients[i].Quantity"></label>
+								<input asp-for="Ingredients[i].Quantity" class="form-control" />
+								<span asp-validation-for="Ingredients[i].Quantity" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="mb-3">
+								<label asp-for="Ingredients[i].Note"></label>
+								<input asp-for="Ingredients[i].Note" class="form-control" placeholder="optional" />
+								<span asp-validation-for="Ingredients[i].Note" class="text-danger"></span>
+							</div>
+						</div>
+					</div>
+				}
+				<div class="mb-3">
+					<label asp-for="ImageURL"></label>
+					<input asp-for="ImageURL" class="form-control" />
+					<span asp-validation-for="ImageURL" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<input type="submit" class="btn btn-primary" />
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
 @section Scripts {
 	<partial name="_ValidationScriptsPartial" />
 }
+

@@ -1,5 +1,6 @@
 ﻿using CocktailHeaven.Core.Contracts;
 using CocktailHeaven.Core.Models.Cocktail;
+using CocktailHeaven.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -67,12 +68,42 @@ namespace CocktailHeaven.Controllers
 			return this.RedirectToAction("Index", "Home");
 		}
 
-		public IActionResult Edit(int id)
+		[Authorize(Roles = "CocktailEditor")]
+		public async Task<IActionResult> Edit(int id)
 		{
-			//TODO
-			var cocktail = new CocktailFormModel();
+			var cocktail = await cocktailService.GetCocktailByIdAsync(id);
+			var categoyId = await cocktailService.GetCocktailCategoryAsync(id);
 
-			return this.View(cocktail);
+			var model = new CocktailEditModel()
+			{
+				Id = id,
+				Name = cocktail.Name,
+				Description = cocktail.Description,
+				Instruction = cocktail.Instructions,
+				Garnish = cocktail.Garnish,
+				ImageURL = cocktail.Image,
+				Ingredients = cocktail.Ingredients.ToList(),
+				CategoryId = categoyId,
+				Categories = await this.categoryService.GetAllCategoriesAsync(),
+			};
+
+			return this.View(model);
+		}
+
+		[HttpPost]
+		[Authorize(Roles = "CocktailEditor")]
+		public async Task<IActionResult> Edit(CocktailEditModel model)
+		{
+			if (!ModelState.IsValid)
+			{
+				model.Categories = await categoryService.GetAllCategoriesAsync();
+
+				return View(model);
+			}
+
+			await cocktailService.Edit(model, model.Id);
+
+			return RedirectToAction(nameof(ShowMore), new { model.Id });
 		}
 
 		[AllowAnonymous]

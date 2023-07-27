@@ -15,5 +15,9 @@ namespace CocktailHeaven.Core.Contracts
 		Task<int> CocktailCountAsync();
 
 		Task<IEnumerable<CocktailCollectionModel>> GetTopRatedCocktailsAsync();
+
+		Task<int> GetCocktailCategoryAsync(int cocktailId);
+
+		Task Edit(CocktailEditModel model, int cocktailId);
 	}
 }
