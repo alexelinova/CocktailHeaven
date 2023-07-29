@@ -1,9 +1,8 @@
 ﻿const addIngredientBtn = document.getElementById("addIngredientBtn");
 const ingredientContainer = document.getElementById("ingredientsContainer")
-
-let ingredientIndex = ingredientContainer.childElementCount;
-
 addIngredientBtn.addEventListener('click', function () {
+
+	let ingredientIndex = ingredientContainer.childElementCount;
 
 	const nextIndex = ingredientIndex++;
 
