@@ -24,6 +24,9 @@
 						<li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Cocktail" asp-action="All">All</a>
 						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Search" asp-action="Index">Search Cocktails</a>
+						</li>
 						@if (User.IsInRole("CocktailEditor"))
 						{
 							<li class="nav-item">
