@@ -3,6 +3,7 @@ using CocktailHeaven.Core.Models.Cocktail;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using CocktailHeaven.Extensions;
 
 namespace CocktailHeaven.Controllers
 {
@@ -10,10 +11,14 @@ namespace CocktailHeaven.Controllers
 	{
 		private readonly ICategoryService categoryService;
 		private readonly ICocktailService cocktailService;
-		public CocktailController(ICategoryService _categoryService, ICocktailService _cocktailService)
+		private readonly IUserCollectionService userCollectionService;
+		public CocktailController(ICategoryService _categoryService,
+			 ICocktailService _cocktailService,
+			 IUserCollectionService _userCollectionService)
 		{
 			this.categoryService = _categoryService;
 			this.cocktailService = _cocktailService;
+			this.userCollectionService = _userCollectionService;
 		}
 
 		[HttpGet]
@@ -132,9 +137,15 @@ namespace CocktailHeaven.Controllers
 
 		public async Task<IActionResult> ShowMore(int id)
 		{
-			var cocktail = await this.cocktailService.GetCocktailByIdAsync(id);
+			var model = new CocktailShowDetailsModel()
+			{
+				Cocktail = await this.cocktailService.GetCocktailByIdAsync(id),
+				isInFavourites = await this.userCollectionService.IsCocktailInFavouritesAsync(User.Id(), id),
+				isInTried = await this.userCollectionService.IsCocktailInTriedAsync(User.Id(), id),
+				isInWishList = await this.userCollectionService.IsCocktailInWishListAsync(User.Id(), id)
+			};
 
-			return this.View(cocktail);
+			return this.View(model);
 		}
 
 		[AllowAnonymous]
