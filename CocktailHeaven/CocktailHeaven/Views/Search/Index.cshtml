@@ -1,26 +1,73 @@
-﻿@{
+﻿@using CocktailHeaven.Core.Models.Search;
+
+@model SearchViewModel
+
+@{
 	ViewBag.Title = "Search Cocktails";
 }
 
-<div class="container">
-	<div class="row mt-3">
-		<div class="col-md-6">
-			<div class="input-group mb-3">
-				<label class="input-group-text" for="searchCriteria">Search Criteria</label>
-				<select class="form-select" id="searchCriteria">
-					<option value="CocktailName">By Cocktail Name</option>
-					<option value="Ingredient">By Ingredient</option>	
-				</select>
+<form>
+	<div class="container">
+		<div class="row mt-3">
+			<div class="col-md-6">
+				<div class="input-group mb-3">
+					<label asp-for="@Model.SearchCriteria" class="input-group-text">Search By</label>
+					<select asp-for="@Model.SearchCriteria" class="form-select">
+						<option value="1">Cocktail Name</option>
+						<option value="2">Ingredient</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="input-group mb-3">
+					<label asp-for="@Model.SearchQuery" class="input-group-text">Search Criteria</label>
+					<input asp-for="@Model.SearchQuery" placeholder="Enter your search query...">
+					<button type="submit" asp-controller="Search" asp-action="Index" asp-route-searchCriteria="@Model.SearchCriteria" asp-route-searchQuery="@Model.SearchQuery" asp-route-Category="@Model.Category">Search</button>
+				</div>
 			</div>
 		</div>
-		<div class="col-md-6">
-			<div class="input-group mb-3">
-				<input type="text" class="form-control" placeholder="Enter your search query...">
-				<button class="btn btn-primary" type="button">Search</button>
-			</div>
-		</div>
-	</div>
 
-	<div class="row">
-	
-	</div>
+		<div class="row mt-3">
+			<div class="col-md-6">
+				<div class="input-group mb-3">
+					<label asp-for="@Model.Category" class="input-group-text"></label>
+					<select asp-for="@Model.Category" class="form-control">
+						<option value="">All</option>
+						@foreach (var category in Model.Categories)
+						{
+							<option value="@category">@category</option>
+						}
+					</select>
+				</div>
+			</div>
+		</div>
+</form>
+
+@if (!Model.Cocktails.Any())
+{
+	<h4 class="text-center">No Cocktails Found!</h4>
+}
+
+<div class="row">
+	@foreach (var cocktail in Model.Cocktails)
+	{
+		<div class="list-group">
+			<div class="list-group-item d-flex justify-content-between align-items-center">
+				<div class="d-flex align-items-center">
+					<img src="@cocktail.ImageUrl" alt="Cocktail image" style="width: 100px; height: 100px"
+						 class="rounded" />
+					<div class="ms-3">
+						<p class="fw-bold mb-1">@cocktail.Name</p>
+						<p class="text-muted mb-0">
+							<strong>Ingredients: </strong> @string.Join(", ", cocktail.Ingredients.Select(ingredient => $"{ingredient.IngredientName} - {ingredient.Quantity} {ingredient.Note}"))
+						</p>
+						<p class="text-muted mb-0"><strong>Instructions: </strong>@cocktail.Instructions</p>
+					</div>
+				</div>
+				<a asp-controller="Cocktail" asp-action="ShowMore" asp-route-id="@cocktail.Id" class="badge bg-success">Full Details</a>
+			</div>
+		</div>
+	}
+</div>
+
+

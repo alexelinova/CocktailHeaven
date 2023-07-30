@@ -1,4 +1,5 @@
 ﻿using CocktailHeaven.Core.Models.Cocktail;
+using CocktailHeaven.Core.Models.Search;
 
 namespace CocktailHeaven.Core.Contracts
 {
@@ -21,5 +22,7 @@ namespace CocktailHeaven.Core.Contracts
 		Task Edit(CocktailEditModel model, int cocktailId);
 
 		Task Delete(int cocktailId);
+
+		Task<IEnumerable<CocktailSearchModel>> Search(string? queryString, SearchCriteria? searchCriteria, string? categoryName);
 	}
 }

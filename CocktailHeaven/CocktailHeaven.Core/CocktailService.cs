@@ -1,6 +1,7 @@
 ﻿using CocktailHeaven.Core.Contracts;
 using CocktailHeaven.Core.Models.Cocktail;
 using CocktailHeaven.Core.Models.Ingredient;
+using CocktailHeaven.Core.Models.Search;
 using CocktailHeaven.Infrastructure.Data.Common;
 using CocktailHeaven.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
@@ -245,6 +246,53 @@ namespace CocktailHeaven.Core
 				})
 				.Take(3)
 				.ToListAsync();
+		}
+
+		public async Task<IEnumerable<CocktailSearchModel>> Search(string? queryString, SearchCriteria? searchCriteria, string? categoryName)
+		{
+			var cocktails = repo.AllReadonly<Cocktail>()
+								.Where(c => c.IsDeleted == false);
+
+			if (!string.IsNullOrEmpty(queryString))
+			{
+				queryString = $"%{queryString.ToLower()}%";
+
+				if (searchCriteria == SearchCriteria.Ingredient)
+				{
+					cocktails = cocktails.Where(c => c.Ingredients.Any(i => EF.Functions.Like(i.Ingredient.Name.ToLower(), queryString)));
+				}
+				else if (searchCriteria == SearchCriteria.CocktailName)
+				{
+					cocktails = cocktails.Where(c => EF.Functions.Like(c.Name.ToLower(), queryString));
+				}
+			}
+
+			if (!string.IsNullOrEmpty(categoryName))
+			{
+				cocktails = cocktails.Where(c => c.Category.Name == categoryName);
+			}
+
+			cocktails = cocktails.Include(c => c.Category)
+								 .Include(c => c.Image)
+								 .Include(c => c.Ingredients)
+								 .ThenInclude(i => i.Ingredient);
+
+			var result = await cocktails.Select(c => new CocktailSearchModel()
+			{
+				Id = c.Id,
+				Name = c.Name,
+				Instructions = c.Instruction,
+				ImageUrl = c.Image.ExternalURL ?? string.Empty,
+				Ingredients = c.Ingredients.Select(i => new IngredientFormModel()
+				{
+					IngredientName = i.Ingredient.Name,
+					Quantity = i.Quantity,
+					Note = i.Note,
+				}).ToList()
+			})
+				.ToListAsync();
+
+			return result;
 		}
 	}
 }
