@@ -3,25 +3,6 @@
 @{
 	ViewBag.Title = "All";
 	ViewBag.ActionName = "All";
-
-	string GetStarClass(int starNumber, double averageRating)
-	{
-		double roundedRating = Math.Floor(averageRating);
-		double decimalPart = averageRating - roundedRating;
-
-		if (starNumber <= roundedRating)
-		{
-			return "active";
-		}
-		else if (starNumber == roundedRating + 1 && decimalPart >= 0.5)
-		{
-			return "half";
-		}
-		else
-		{
-			return "";
-		}
-	}
 }
 
 <link rel="stylesheet" href="~/css/rating.css" asp-append-version="true" />
@@ -37,7 +18,7 @@
 					<div class="stars">
 						@for (int i = 1; i <= 5; i++)
 						{
-							<i class="fas fa-star @GetStarClass(i, cocktail.AverageRatingValue)"></i>
+							<i class="fas fa-star @RatingHelper.GetStarClass(i, cocktail.AverageRatingValue)"></i>
 						}
 					</div>
 				</div>
