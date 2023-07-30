@@ -1,4 +1,5 @@
 ﻿using CocktailHeaven.Core.Models.Ingredient;
+using CocktailHeaven.Core.Models.NewFolder;
 
 namespace CocktailHeaven.Core.Models.Cocktail
 {
@@ -18,5 +19,7 @@ namespace CocktailHeaven.Core.Models.Cocktail
         public string Image { get; set; } = null!;
 
         public IEnumerable<IngredientFormModel> Ingredients { get; set; } = new List<IngredientFormModel>();
+
+        public IEnumerable<RatingFormModel>? Ratings { get; set; }
     }
 }

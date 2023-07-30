@@ -2,49 +2,106 @@
 
 @{
 	ViewBag.Title = "More Details";
+
+	string GetStarClass(int starNumber, double averageRating)
+	{
+		double roundedRating = Math.Floor(averageRating);
+		double decimalPart = averageRating - roundedRating;
+
+		if (starNumber <= roundedRating)
+		{
+			return "active";
+		}
+		else if (starNumber == roundedRating + 1 && decimalPart >= 0.5)
+		{
+			return "half";
+		}
+		else
+		{
+			return "";
+		}
+	}
 }
 
+<link rel="stylesheet" href="~/css/rating.css" asp-append-version="true" />
 
 <partial name="_CocktailCardPartial" model="Model.Cocktail" />
 
 
-<div class="offset-7 col-6 mt-4 d-grid d-md-block" style="width: 30rem;">
-    @if(Model.isInWishList)
-    {
-        <a asp-controller="UserCollection" asp-action="ShowWishList" asp-route-id="@Model.Cocktail.Id" class="mb-3 btn btn-info">In WishList</a>
-    }
-    else
-    {
-        <a asp-controller="UserCollection" asp-action="AddToWishList" asp-route-id="@Model.Cocktail.Id" class="mb-3 btn btn-primary">Add to Wishlist</a>
-    }
+<div class="offset-7 col-6 mt-4 d-grid d-md-block" style="width: 32rem;">
 
-    @if(Model.isInTried)
-    {
-        <a asp-controller="UserCollection" asp-action="ShowTried" asp-route-id="@Model.Cocktail.Id" class="mb-3 btn btn-info">In Tried</a>
-    }
-    else
-    {
-        <a asp-controller="UserCollection" asp-action="AddToTried" asp-route-id="@Model.Cocktail.Id" class="mb-3 btn btn-primary">Mark as Tried</a>
-    }
+	@if (Model.isInWishList)
+	{
+		<a asp-controller="UserCollection" asp-action="ShowWishList" asp-route-id="@Model.Cocktail.Id" class="mb-3 btn btn-info">In WishList</a>
+	}
+	else
+	{
+		<a asp-controller="UserCollection" asp-action="AddToWishList" asp-route-id="@Model.Cocktail.Id" class="mb-3 btn btn-primary">Add to Wishlist</a>
+	}
 
-    @if(Model.isInFavourites)
-    {
-        <a asp-controller="UserCollection" asp-action="ShowFavourite" asp-route-id="@Model.Cocktail.Id" class="mb-3 btn btn-info">In Favourites</a>
-    }
-    else
-    {
-        <a asp-controller="UserCollection" asp-action="AddToFavourite" asp-route-id="@Model.Cocktail.Id" class="mb-3 btn btn-primary">Add to Favorites</a>
-    }
+	@if (Model.isInTried)
+	{
+		<a asp-controller="UserCollection" asp-action="ShowTried" asp-route-id="@Model.Cocktail.Id" class="mb-3 btn btn-info">In Tried</a>
+	}
+	else
+	{
+		<a asp-controller="UserCollection" asp-action="AddToTried" asp-route-id="@Model.Cocktail.Id" class="mb-3 btn btn-primary">Mark as Tried</a>
+	}
 
-    <div class="d-flex flex-row">
-        @if (User.IsInRole("CocktailEditor"))
-        {
-            <form asp-controller="Cocktail" asp-action="Delete" asp-route-id="@Model.Cocktail.Id" method="post">
-                <button type="submit" class="me-2 mb-3 btn btn-warning">Delete</button>
-            </form>
-            <a asp-controller="Cocktail" asp-action="Edit" asp-route-id="@Model.Cocktail.Id" class="mb-3 btn btn-success">Edit</a>
-        }
-    </div>
+	@if (Model.isInFavourites)
+	{
+		<a asp-controller="UserCollection" asp-action="ShowFavourite" asp-route-id="@Model.Cocktail.Id" class="mb-3 btn btn-info">In Favourites</a>
+	}
+	else
+	{
+		<a asp-controller="UserCollection" asp-action="AddToFavourite" asp-route-id="@Model.Cocktail.Id" class="mb-3 btn btn-primary">Add to Favorites</a>
+	}
+
+
+	<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#myModal">
+		Reviews
+	</button>
+
+
+	<div class="d-flex flex-row">
+		@if (User.IsInRole("CocktailEditor"))
+		{
+			<form asp-controller="Cocktail" asp-action="Delete" asp-route-id="@Model.Cocktail.Id" method="post">
+				<button type="submit" class="me-2 mb-3 btn btn-warning">Delete</button>
+			</form>
+			<a asp-controller="Cocktail" asp-action="Edit" asp-route-id="@Model.Cocktail.Id" class="me-2 mb-3 btn btn-success">Edit</a>
+		}
+
+		<div class="modal" id="myModal">
+			<div class="modal-dialog modal-dialog-scrollable">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Reviews: </h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+					</div>
+					<div class="modal-body">
+						@foreach (var rating in Model.Cocktail.Ratings)
+						{
+							<div class="mb-3">
+								<div class="stars">
+									@for (int i = 1; i <= 5; i++)
+									{
+										<i class="fas fa-star @GetStarClass(i, rating.Value)"></i>
+									}
+								</div>
+								<p class="mb-0">Rated by: @rating.Username</p>
+								<p class="mb-0">Comment: @rating.Comment</p>
+								<p class="mb-0">Date: @(rating.CreatedOn.ToString("MM/dd/yyyy"))</p>
+							</div>
+						}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 

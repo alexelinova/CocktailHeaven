@@ -1,6 +1,7 @@
 ﻿using CocktailHeaven.Core.Contracts;
 using CocktailHeaven.Core.Models.Cocktail;
 using CocktailHeaven.Core.Models.Ingredient;
+using CocktailHeaven.Core.Models.NewFolder;
 using CocktailHeaven.Core.Models.Search;
 using CocktailHeaven.Infrastructure.Data.Common;
 using CocktailHeaven.Infrastructure.Models;
@@ -168,7 +169,19 @@ namespace CocktailHeaven.Core
 						IngredientName = i.Ingredient.Name,
 						Quantity = i.Quantity,
 						Note = i.Note
-					}).ToList()
+					})
+					.ToList(),
+					Ratings = c.Ratings
+					.Where(r => r.IsDeleted == false)
+					.Select(r => new RatingFormModel()
+					{
+						Username = r.AddedByUser.UserName,
+						Comment = r.Comment,
+						CreatedOn = r.CreatedOn,
+						Value = r.Value
+					})
+					.OrderByDescending(r => r.CreatedOn)
+					.ToList(),
 				}).FirstOrDefaultAsync();
 
 			if (cocktail == null)
