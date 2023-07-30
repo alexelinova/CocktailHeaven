@@ -1,10 +1,8 @@
-﻿using CocktailHeaven.Core.Models.Category;
-using CocktailHeaven.Core.Models.Cocktail;
-using System.Security.Policy;
+﻿using CocktailHeaven.Core.Models.Cocktail;
 
 namespace CocktailHeaven.Core.Models.Search
 {
-	public class SearchViewModel
+	public class SearchViewModel : PagingModel
 	{
 		public string? Category { get; set; }
 

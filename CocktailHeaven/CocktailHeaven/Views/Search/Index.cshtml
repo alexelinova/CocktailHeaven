@@ -4,6 +4,7 @@
 
 @{
 	ViewBag.Title = "Search Cocktails";
+	ViewBag.ActionName = "Index";
 }
 
 <form>
@@ -70,4 +71,6 @@
 	}
 </div>
 
-
+<div class="fixed-bottom bg-dark text-white text-center py-3">
+	<partial name="_PagingPartial" model="@Model" />
+</div>

@@ -5,13 +5,13 @@
 <nav>
 	<ul class="pagination justify-content-center">
 		<li class="page-item @(!Model.HasPreviousPage ? "disabled" : string.Empty)">
-			<a class="page-link" asp-action="All" asp-route-id="@Model.PreviousPage">Previous</a>
+			<a class="page-link" asp-action="@ViewBag.ActionName" asp-route-id="@Model.PreviousPage">Previous</a>
 		</li>
 		@for (int i = this.Model.PageNumber - 2; i < Model.PageNumber; i++)
 		{
 			if (i > 0)
 			{
-				<li class="page-item"><a class="page-link" asp-action="All" asp-route-id="@i">@i</a></li>
+				<li class="page-item"><a class="page-link" asp-action="@ViewBag.ActionName" asp-route-id="@i">@i</a></li>
 			}
 		}
 		<li class="page-item active" aria-current="page">
@@ -21,11 +21,11 @@
 		{
 			if (i <= Model.PagesCount)
 			{
-				<li class="page-item"><a class="page-link" asp-action="All" asp-route-id="@i">@i</a></li>
+				<li class="page-item"><a class="page-link" asp-action="@ViewBag.ActionName" asp-route-id="@i">@i</a></li>
 			}
 		}
-		<li class="page-item @(!Model.HasNexPage ? "disabled" : string.Empty)">
-			<a class="page-link" asp-action="All" asp-route-id="@Model.NextPage">Next</a>
+		<li class="page-item @(!Model.HasNextPage ? "disabled" : string.Empty)">
+			<a class="page-link" asp-action="@ViewBag.ActionName" asp-route-id="@Model.NextPage">Next</a>
 		</li>
 	</ul>
 </nav>

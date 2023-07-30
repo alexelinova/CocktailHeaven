@@ -8,7 +8,7 @@
 
 		public int PreviousPage => this.PageNumber - 1;
 
-		public bool HasNexPage => this.PageNumber < this.PagesCount;
+		public bool HasNextPage => this.PageNumber < this.PagesCount;
 
 		public int NextPage => this.PageNumber + 1;
 

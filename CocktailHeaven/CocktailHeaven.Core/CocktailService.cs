@@ -248,7 +248,7 @@ namespace CocktailHeaven.Core
 				.ToListAsync();
 		}
 
-		public async Task<IEnumerable<CocktailSearchModel>> Search(string? queryString, SearchCriteria? searchCriteria, string? categoryName)
+		public async Task<IEnumerable<CocktailSearchModel>> Search(string? queryString, SearchCriteria? searchCriteria, string? categoryName, int currentPage, int itemsPerPage)
 		{
 			var cocktails = repo.AllReadonly<Cocktail>()
 								.Where(c => c.IsDeleted == false);
@@ -277,19 +277,23 @@ namespace CocktailHeaven.Core
 								 .Include(c => c.Ingredients)
 								 .ThenInclude(i => i.Ingredient);
 
-			var result = await cocktails.Select(c => new CocktailSearchModel()
-			{
-				Id = c.Id,
-				Name = c.Name,
-				Instructions = c.Instruction,
-				ImageUrl = c.Image.ExternalURL ?? string.Empty,
-				Ingredients = c.Ingredients.Select(i => new IngredientFormModel()
-				{
-					IngredientName = i.Ingredient.Name,
-					Quantity = i.Quantity,
-					Note = i.Note,
-				}).ToList()
-			})
+			var result = await cocktails
+				 .OrderBy(c => c.Name)
+				 .Skip((currentPage - 1) * itemsPerPage)
+				 .Take(itemsPerPage)
+				 .Select(c => new CocktailSearchModel()
+				 {
+					 Id = c.Id,
+					 Name = c.Name,
+					 Instructions = c.Instruction,
+					 ImageUrl = c.Image.ExternalURL ?? string.Empty,
+					 Ingredients = c.Ingredients.Select(i => new IngredientFormModel()
+					 {
+						 IngredientName = i.Ingredient.Name,
+						 Quantity = i.Quantity,
+						 Note = i.Note,
+					 }).ToList()
+				 })
 				.ToListAsync();
 
 			return result;
