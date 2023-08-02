@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Admin Home";
+}
+
+<div class="container">
+    <h1 class="text-center mt-4">Welcome to the Admin Area</h1>
+
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <h2 class="text-center">Admin Dashboard</h2>
+            <hr />
+
+            <ul class="list-group">
+                <li class="list-group-item mb-2">
+                    <h4 class="text-decoration-underline">Ratings Management:</h4>
+                    <a asp-area="Admin" asp-controller="Rating" asp-action="ViewRatings" class="btn btn-success d-block w-100">Review and Delete Inappropriate Ratings</a>
+                </li>
+                <li class="list-group-item mb-2">
+                    <h4 class="text-decoration-underline">User Management:</h4>
+                    <a asp-area="Admin" asp-controller="User" asp-action="ViewUsers" class="btn btn-success d-block w-100">Review and Delete Users</a>
+                </li>
+                <li class="list-group-item mb-2">
+                    <h4 class="text-decoration-underline">Role Assignment:</h4>
+                    <a asp-area="Admin" asp-controller="Role" asp-action="AssignRoles" class="btn btn-success d-block w-100">Assign Roles to Different Users</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

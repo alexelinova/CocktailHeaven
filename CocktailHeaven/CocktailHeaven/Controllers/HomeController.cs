@@ -18,6 +18,10 @@ namespace CocktailHeaven.Controllers
 		[AllowAnonymous]
 		public async Task<IActionResult> Index()
 		{
+			if(this.User.IsInRole("Admin"))
+			{
+				return RedirectToAction("Index", "Home", new { area = "Admin" });
+			}
 			var model = new CocktailHomeModel()
 			{
 				Cocktails = await this.cocktailService.GetTopRatedCocktailsAsync(),
