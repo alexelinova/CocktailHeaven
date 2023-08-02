@@ -13,6 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
 			services.AddScoped<ICocktailService, CocktailService>();
 			services.AddScoped<IAccountService, AccountService>();
 			services.AddScoped<IUserCollectionService, UserCollectionService>();
+			services.AddScoped<IRatingService, RatingService>();
 
 			return services;
 		}
