@@ -1,8 +1,96 @@
-﻿@model IEnumerable<CocktailCollectionModel>
+﻿@model IEnumerable<CocktailTriedRatingModel>
 
 @{
 	ViewBag.Title = "Tried Cocktails";
-	ViewBag.ActionName = "RemoveFromTried";
 }
 
-<partial name="_CocktailCollectionPartial" model="@Model" />
+<link rel="stylesheet" href="~/css/rating.css" asp-append-version="true" />
+
+<div class="row mt-2">
+	<h2 class="text-center">@ViewBag.Title</h2>
+
+	@if (!Model.Any())
+	{
+		<h4 class="text-center">You do not have any cocktails added to this collection!</h4>
+	}
+
+	@foreach (var cocktail in Model)
+	{
+		<div class="card me-2 mx-2" style="width: 18rem;">
+			<div class="text-center">
+				<div class="mt-2">
+					<div class="stars">
+						@for (int i = 1; i <= 5; i++)
+						{
+							<i class="fas fa-star @(cocktail.Rating == null ? "" : RatingHelper.GetStarClass(i, (double)cocktail.Rating.Value))"></i>
+						}
+					</div>
+				</div>
+				<button type="button" class="btn btn-primary mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#ratingModal-@cocktail.Id">
+					@(cocktail.Rating == null ? "Rate Cocktail" : "Edit Rating")
+				</button>
+			</div>
+			<img src="@cocktail.ImageUrl" class="card-img-top" alt="Cocktail Image">
+			<div class="card-body">
+				<h5 class="card-title text-center">@cocktail.Name</h5>
+				<div class="text-center">
+					<a asp-controller="Cocktail" asp-action="ShowMore" asp-route-id="@cocktail.Id" class="btn btn-primary">Details</a>
+					<a asp-controller="UserCollection" asp-action="RemoveFromTriedAsync" asp-route-id="@cocktail.Id" class="btn btn-primary">Remove</a>
+				</div>
+			</div>
+		</div>
+		
+		<div class="modal fade" id="ratingModal-@cocktail.Id" tabindex="-1" aria-labelledby="ratingModalLabel-@cocktail.Id" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="ratingModalLabel-@cocktail.Id">Rate & Comment</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						@if (cocktail.Rating != null)
+						{ <p>Cocktail is already rated</p>
+								<div class="mb-3">
+									<div class="stars">
+										@for (int i = 1; i <= 5; i++)
+										{
+											<i class="fas fa-star @RatingHelper.GetStarClass(i, (double)cocktail.Rating.Value)"></i>
+										}
+									</div
+									<p class="mb-0">Rated by: @cocktail.Rating.Username</p>
+									<p class="mb-0">Comment: @cocktail.Rating.Comment</p>
+									<p class="mb-0">Date: @cocktail.Rating.CreatedOn.ToShortDateString()</p>
+								</div>		
+						}
+						else
+						{
+							<p>No previous rating</p>
+						}
+						<form asp-controller="Rating" asp-action="Rate" method="post">
+							<input type="hidden" name="cocktailId" value="@cocktail.Id" />
+							<div class="mb-3">
+								<label for="ratingInput-@cocktail.Id" class="form-label">Edit/Add Rating</label>
+								<select class="form-select" id="ratingInput-@cocktail.Id" name="value">
+									<option value="1">1 star</option>
+									<option value="2">2 stars</option>
+									<option value="3">3 stars</option>
+									<option value="4">4 stars</option>
+									<option value="5">5 stars</option>
+								</select>
+							</div>
+							<div class="mb-3">
+								<label for="commentInput-@cocktail.Id" class="form-label">Comment</label>
+								<textarea class="form-control" id="commentInput-@cocktail.Id" name="comment" rows="4"></textarea>
+							</div>
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+</div>
+

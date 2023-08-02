@@ -25,7 +25,7 @@ namespace CocktailHeaven.Core.Contracts
 
 		Task<IEnumerable<CocktailCollectionModel>> GetFavouriteCocktailsAsync(Guid userId);
 
-        Task<IEnumerable<CocktailCollectionModel>> GetTriedCocktailsAsync(Guid userId);
+        Task<IEnumerable<CocktailTriedRatingModel>> GetTriedCocktailsAsync(Guid userId);
 
         Task<IEnumerable<CocktailCollectionModel>> GetWishlistCocktailsAsync(Guid userId);
     }

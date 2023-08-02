@@ -1,4 +1,5 @@
 ﻿using CocktailHeaven.Core.Contracts;
+using CocktailHeaven.Core.Models.Cocktail;
 using CocktailHeaven.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -26,7 +27,7 @@ namespace CocktailHeaven.Controllers
 		public async Task<IActionResult> ShowTried()
 		{
 			var userId = User.Id();
-
+		
 			var triedCocktails = await this.userCollectionService.GetTriedCocktailsAsync(userId);
 
 			return this.View(triedCocktails);

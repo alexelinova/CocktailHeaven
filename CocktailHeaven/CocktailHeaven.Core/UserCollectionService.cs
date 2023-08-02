@@ -1,5 +1,6 @@
 ﻿using CocktailHeaven.Core.Contracts;
 using CocktailHeaven.Core.Models.Cocktail;
+using CocktailHeaven.Core.Models.NewFolder;
 using CocktailHeaven.Infrastructure.Data.Common;
 using CocktailHeaven.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
@@ -66,14 +67,23 @@ namespace CocktailHeaven.Core
 				 .ToListAsync();
 		}
 
-		public async Task<IEnumerable<CocktailCollectionModel>> GetTriedCocktailsAsync(Guid userId)
+		public async Task<IEnumerable<CocktailTriedRatingModel>> GetTriedCocktailsAsync(Guid userId)
 		{
 			return await this.repo.AllReadonly<UserCollection>(uc => uc.AddedByUserId == userId && uc.HasTried == true)
-				.Select(uc => new CocktailCollectionModel()
+				.Select(uc => new CocktailTriedRatingModel()
 				{
 					Id = uc.CocktailId,
 					Name = uc.Cocktail.Name,
-					ImageUrl = uc.Cocktail.Image.ExternalURL ?? string.Empty
+					ImageUrl = uc.Cocktail.Image.ExternalURL ?? string.Empty,
+					Rating = uc.Cocktail.Ratings.Where(r => r.AddedByUserId == userId)
+					.Select(r => new RatingFormModel()
+					{
+						Value = r.Value,
+						Comment = r.Comment,
+						CreatedOn = r.CreatedOn,
+						Username = r.AddedByUser.UserName
+					})
+					.FirstOrDefault()
 				})
 				.OrderBy(uc => uc.Name)
 				.ToListAsync();
