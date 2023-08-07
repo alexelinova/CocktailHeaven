@@ -1,4 +1,5 @@
 ﻿using CocktailHeaven.Core.Contracts;
+using CocktailHeaven.Core.Models.Rating;
 using CocktailHeaven.Infrastructure.Data.Common;
 using CocktailHeaven.Infrastructure.Models;
 using CocktailHeaven.Infrastructure.Models.Identity;
@@ -15,15 +16,42 @@ namespace CocktailHeaven.Core
 			this.repo = repo;
 		}
 
-		public async Task RateAsync(int cocktailId, Guid userId, int ratingValue, string? comment)
+        public async Task DeleteRating(int ratingId)
+        {
+			var rating = await this.repo.GetByIdAsync<Rating>(ratingId);
+
+			if (rating != null)
+			{
+                rating.IsDeleted = true;
+                await repo.SaveChangesAsync();
+            }
+        }
+
+        public async Task<IEnumerable<RatingAllViewModel>> GetAllRatingsAsync()
+        {
+            return await this.repo.AllReadonly<Rating>()
+				.Where(r => r.IsDeleted == false)
+				.Select(r => new RatingAllViewModel()
+				{
+					Id = r.Id,
+					Comment = r.Comment,
+					CreatedOn = r.CreatedOn,
+					Value = r.Value,
+					UserEmail = r.AddedByUser.Email,
+				})
+				.OrderByDescending(r => r.CreatedOn)
+				.ToListAsync();
+        }
+
+        public async Task RateAsync(int cocktailId, Guid userId, int ratingValue, string? comment)
 		{
-			var user = this.repo
+			var user = await this.repo
 				.All<ApplicationUser>(a => a.Id == userId)
 				.Include(a => a.Ratings)
-				.FirstOrDefault();
+				.FirstOrDefaultAsync();
 
 			var rating = user.Ratings
-				.Where(r => r.CocktailId == cocktailId)
+				.Where(r => r.CocktailId == cocktailId && r.IsDeleted == false)
 				.FirstOrDefault();
 
 			if (rating != null)
@@ -44,5 +72,14 @@ namespace CocktailHeaven.Core
 			}
 				await repo.SaveChangesAsync();
 		}
-	}
+
+        public async Task<bool> RatingExistsAsync(int ratingId)
+        {
+			var rating = await this.repo
+				.AllReadonly<Rating>(r => r.IsDeleted == false)
+				.FirstOrDefaultAsync();
+
+			return rating != null;
+        }
+    }
 }

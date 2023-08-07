@@ -210,8 +210,9 @@ namespace CocktailHeaven.Core
 					 Name = c.Name,
 					 Description = c.Description,
 					 Url = c.Image.ExternalURL ?? string.Empty,
-					 AverageRatingValue = c.Ratings.Any() ? c.Ratings.Average(x => x.Value) : 0
-				 })
+                     AverageRatingValue = c.Ratings
+					 .Where(r => r.IsDeleted == false).Any() ? c.Ratings.Where(r => r.IsDeleted == false).Average(r => r.Value) : 0
+                 })
 				 .ToListAsync();
 		}
 

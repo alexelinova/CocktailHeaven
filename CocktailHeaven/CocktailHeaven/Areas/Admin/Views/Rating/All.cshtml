@@ -1,0 +1,41 @@
+﻿@using CocktailHeaven.Core.Models.Rating;
+
+@model IEnumerable<RatingAllViewModel>
+
+@{
+    ViewBag.Title = "All Ratings and Comments";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center">All Ratings and Comments</h1>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center mt-3">
+            <h4>No Ratings Found!</h4>
+        </div>
+    }
+    else
+    {
+        <div class="row mt-3">
+            @foreach (var rating in Model)
+            {
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span class="fw-bold">Username: @rating.UserEmail</span>
+                            <form asp-area="Admin" asp-controller="Rating" asp-action="DeleteRating" asp-route-id="@rating.Id" method="post" class="d-inline">
+                                <button type="submit" class=" btn btn-warning btn-sm">Delete</button>
+                            </form>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text"><span class="fw-bold">Rating:</span> @rating.Value</p>
+                            <p class="card-text"><span class="fw-bold">Comment:</span> @(rating.Comment == null ? "No Existing Comment" : rating.Comment)</p>
+                            <p class="card-text text-muted">Created on: @rating.CreatedOn</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

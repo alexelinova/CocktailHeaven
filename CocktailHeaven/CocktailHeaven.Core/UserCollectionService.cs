@@ -75,7 +75,7 @@ namespace CocktailHeaven.Core
 					Id = uc.CocktailId,
 					Name = uc.Cocktail.Name,
 					ImageUrl = uc.Cocktail.Image.ExternalURL ?? string.Empty,
-					Rating = uc.Cocktail.Ratings.Where(r => r.AddedByUserId == userId)
+					Rating = uc.Cocktail.Ratings.Where(r => r.AddedByUserId == userId && r.IsDeleted == false)
 					.Select(r => new RatingFormModel()
 					{
 						Value = r.Value,
