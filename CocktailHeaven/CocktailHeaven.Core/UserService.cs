@@ -3,7 +3,9 @@ using CocktailHeaven.Core.Models.ApplicationUser;
 using CocktailHeaven.Infrastructure.Data.Common;
 using CocktailHeaven.Infrastructure.Models;
 using CocktailHeaven.Infrastructure.Models.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace CocktailHeaven.Core
 {
@@ -11,9 +13,12 @@ namespace CocktailHeaven.Core
     {
         private readonly IRepository repo;
 
-        public UserService(IRepository repo)
+        private readonly UserManager<ApplicationUser> manager;
+
+        public UserService(IRepository repo, UserManager<ApplicationUser> manager)
         {
             this.repo = repo;
+            this.manager = manager;
         }
 
         public async Task DeleteUserAsync(Guid userId)

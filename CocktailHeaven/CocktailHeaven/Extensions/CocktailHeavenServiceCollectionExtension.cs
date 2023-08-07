@@ -15,6 +15,7 @@ namespace Microsoft.Extensions.DependencyInjection
 			services.AddScoped<IUserCollectionService, UserCollectionService>();
 			services.AddScoped<IRatingService, RatingService>();
 			services.AddScoped<IUserService, UserService>();
+			services.AddScoped<IRoleService, RoleService>();
 
 			return services;
 		}

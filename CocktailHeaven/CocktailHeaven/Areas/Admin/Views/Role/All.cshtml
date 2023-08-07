@@ -1,0 +1,67 @@
+﻿@using CocktailHeaven.Core.Models.Role;
+
+@model AssignRolesViewModel
+
+@{
+	ViewData["Title"] = "Assign Roles";
+}
+
+
+<div class="container mt-4">
+	<p class="h2">Assign Roles to Users</p>
+	<div class="row">
+		<div class="col-md-6">
+			<form asp-action="AssignRole" method="post">
+				<div class="form-group">
+					<label for="userSelect">Select User:</label>
+					<select id="userSelect" class="form-control" name="id">
+						@foreach (var user in Model.Users)
+						{
+							<option value="@user.Id">@user.Email (@user.Username)</option>
+						}
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="roleSelect">Select Role:</label>
+					<select id="roleSelect" class="form-control" name="roleName">
+						@foreach (var role in Model.Roles)
+						{
+							<option>@role</option>
+						}
+					</select>
+				</div>
+				<button type="submit" class="btn btn-primary mt-3">Assign Role</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="container mt-4">
+	<p class="h2">Delete Roles</p>
+	<div class="row">
+		<div class="col-md-6">
+			<form asp-action="DeleteRole" method="post">
+				<div class="form-group">
+					<label for="userSelect">Select User:</label>
+					<select id="userSelect" class="form-control" name="id">
+						@foreach (var user in Model.Users)
+						{
+							<option value="@user.Id">@user.Email (@user.Username)</option>
+						}
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="roleSelect">Select Role:</label>
+					<select id="roleSelect" class="form-control" name="roleName">
+						@foreach (var role in Model.Roles)
+						{
+							<option>@role</option>
+						}
+					</select>
+				</div>
+				<button type="submit" class="btn btn-primary mt-3">Delete Role</button>
+			</form>
+		</div>
+	</div>
+</div>
+
