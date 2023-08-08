@@ -45,7 +45,7 @@
 
 
 	<div class="d-flex flex-row">
-		@if (User.IsInRole("CocktailEditor"))
+		@if (User.IsInRole("Cocktail Editor"))
 		{
 			<form asp-controller="Cocktail" asp-action="Delete" asp-route-id="@Model.Cocktail.Id" method="post">
 				<button type="submit" class="me-2 mb-3 btn btn-warning">Delete</button>

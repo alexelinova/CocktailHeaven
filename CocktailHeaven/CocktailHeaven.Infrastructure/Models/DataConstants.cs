@@ -4,7 +4,7 @@
     {
         public class CocktailConstants
         {
-			public const int MinNameLength = 5;
+			public const int MinNameLength = 3;
 			public const int MaxNameLength = 50;
 
             public const int MinInstructionLength = 50;

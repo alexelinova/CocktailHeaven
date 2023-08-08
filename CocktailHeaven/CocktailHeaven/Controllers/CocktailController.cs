@@ -21,32 +21,13 @@ namespace CocktailHeaven.Controllers
 			this.userCollectionService = _userCollectionService;
 		}
 
-		[HttpGet]
-		[Authorize(Roles = "CocktailEditor")]
-		public IActionResult AddIngredientCount()
-		{
-			return View();
-		}
-
-		[HttpPost]
-		[Authorize(Roles = "CocktailEditor")]
-		public IActionResult AddIngredientCount(int count)
-		{
-			if (count <= 0)
-			{
-				return this.View();
-			}
-
-			return this.RedirectToAction(nameof(Create), new { ingredientCount = count });
-		}
-
-		[Authorize(Roles = "CocktailEditor")]
-		public async Task<IActionResult> Create(int ingredientCount)
+		
+		[Authorize(Roles = "Cocktail Editor")]
+		public async Task<IActionResult> Create()
 		{
 			var model = new CocktailFormModel
 			{
-				Categories = await this.categoryService.GetAllCategoriesAsync(),
-				CountOfIngredients = ingredientCount
+				Categories = await this.categoryService.GetAllCategoriesAsync()
 			};
 
 			return this.View(model);
@@ -72,7 +53,7 @@ namespace CocktailHeaven.Controllers
 			return this.RedirectToAction("Index", "Home");
 		}
 
-		[Authorize(Roles = "CocktailEditor")]
+		[Authorize(Roles = "Cocktail Editor")]
 		public async Task<IActionResult> Edit(int id)
 		{
 			var cocktail = await cocktailService.GetCocktailByIdAsync(id);
@@ -95,7 +76,7 @@ namespace CocktailHeaven.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = "CocktailEditor")]
+		[Authorize(Roles = "Cocktail Editor")]
 		public async Task<IActionResult> Edit(CocktailEditModel model)
 		{
 			if (!ModelState.IsValid)
@@ -110,7 +91,7 @@ namespace CocktailHeaven.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = "CocktailEditor")]
+		[Authorize(Roles = "Cocktail Editor")]
 		public async Task<IActionResult> Delete(int id)
 		{
 			await cocktailService.Delete(id);

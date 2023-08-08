@@ -28,9 +28,6 @@ namespace CocktailHeaven.Core.Models.Cocktail
 		[Display(Name = "Category")]
 		public int CategoryId { get; set; }
 
-		[Range(0, 20)]
-        public int CountOfIngredients { get; set; }
-
 		[Url]
         public string? ImageURL { get; set; }
 

@@ -4,7 +4,7 @@ addIngredientBtn.addEventListener('click', function () {
 
 	let ingredientIndex = ingredientContainer.childElementCount;
 
-	const nextIndex = ingredientIndex++;
+	const nextIndex = ingredientIndex;
 
 	const div = document.createElement("div");
 	div.classList.add("row");

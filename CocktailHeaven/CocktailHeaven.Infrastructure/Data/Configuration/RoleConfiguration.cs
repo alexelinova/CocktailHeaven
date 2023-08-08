@@ -25,8 +25,8 @@ namespace CocktailHeaven.Infrastructure.Data.Configuration
 				new IdentityRole<Guid>()
 				{
 					Id = Guid.Parse("ed23ddd6-0cab-4a38-943a-61c5d396bfba"),
-					Name = "CocktailEditor",
-					NormalizedName = "COCKTAILEDITOR"
+					Name = "Cocktail Editor",
+					NormalizedName = "COCKTAIL EDITOR"
 				}
 			};
 
