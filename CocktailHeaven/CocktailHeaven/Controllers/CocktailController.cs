@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using CocktailHeaven.Extensions;
+using CocktailHeaven.Core.Models.Ingredient;
 
 namespace CocktailHeaven.Controllers
 {
@@ -27,7 +28,12 @@ namespace CocktailHeaven.Controllers
 		{
 			var model = new CocktailFormModel
 			{
-				Categories = await this.categoryService.GetAllCategoriesAsync()
+				Categories = await this.categoryService.GetAllCategoriesAsync(),
+				Ingredients = new List<IngredientFormModel>
+				{
+					new IngredientFormModel(),
+					new IngredientFormModel()
+				}
 			};
 
 			return this.View(model);
