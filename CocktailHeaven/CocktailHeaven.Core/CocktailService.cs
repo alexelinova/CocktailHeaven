@@ -210,9 +210,9 @@ namespace CocktailHeaven.Core
 					 Name = c.Name,
 					 Description = c.Description,
 					 Url = c.Image.ExternalURL ?? string.Empty,
-                     AverageRatingValue = c.Ratings
+					 AverageRatingValue = c.Ratings
 					 .Where(r => r.IsDeleted == false).Any() ? c.Ratings.Where(r => r.IsDeleted == false).Average(r => r.Value) : 0
-                 })
+				 })
 				 .ToListAsync();
 		}
 
@@ -262,8 +262,10 @@ namespace CocktailHeaven.Core
 				.ToListAsync();
 		}
 
-		public async Task<IEnumerable<CocktailSearchModel>> Search(string? queryString, SearchCriteria? searchCriteria, string? categoryName, int currentPage, int itemsPerPage)
+		public async Task<SearchViewModel> Search(string? queryString, SearchCriteria? searchCriteria, string? categoryName, int currentPage, int itemsPerPage)
 		{
+			var result = new SearchViewModel();
+
 			var cocktails = repo.AllReadonly<Cocktail>()
 								.Where(c => c.IsDeleted == false);
 
@@ -291,24 +293,26 @@ namespace CocktailHeaven.Core
 								 .Include(c => c.Ingredients)
 								 .ThenInclude(i => i.Ingredient);
 
-			var result = await cocktails
-				 .OrderBy(c => c.Name)
-				 .Skip((currentPage - 1) * itemsPerPage)
-				 .Take(itemsPerPage)
-				 .Select(c => new CocktailSearchModel()
-				 {
-					 Id = c.Id,
-					 Name = c.Name,
-					 Instructions = c.Instruction,
-					 ImageUrl = c.Image.ExternalURL ?? string.Empty,
-					 Ingredients = c.Ingredients.Select(i => new IngredientFormModel()
-					 {
-						 IngredientName = i.Ingredient.Name,
-						 Quantity = i.Quantity,
-						 Note = i.Note,
-					 }).ToList()
-				 })
-				.ToListAsync();
+			result.Cocktails = await cocktails
+			.OrderBy(c => c.Name)
+			.Skip((currentPage - 1) * itemsPerPage)
+			.Take(itemsPerPage)
+			.Select(c => new CocktailSearchModel()
+			{
+				Id = c.Id,
+				Name = c.Name,
+				Instructions = c.Instruction,
+				ImageUrl = c.Image.ExternalURL ?? string.Empty,
+				Ingredients = c.Ingredients.Select(i => new IngredientFormModel()
+				{
+					IngredientName = i.Ingredient.Name,
+					Quantity = i.Quantity,
+					Note = i.Note,
+				}).ToList()
+			})
+		   .ToListAsync();
+
+			result.CocktailsCount = cocktails.Count();
 
 			return result;
 		}

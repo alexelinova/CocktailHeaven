@@ -23,6 +23,6 @@ namespace CocktailHeaven.Core.Contracts
 
 		Task Delete(int cocktailId);
 
-		Task<IEnumerable<CocktailSearchModel>> Search(string? queryString, SearchCriteria? searchCriteria, string? categoryName, int currentPage, int itemsPerPage);
+		Task<SearchViewModel> Search(string? queryString, SearchCriteria? searchCriteria, string? categoryName, int currentPage, int itemsPerPage);
 	}
 }

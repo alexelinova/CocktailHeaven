@@ -14,18 +14,18 @@ namespace CocktailHeaven.Controllers
 			this.cocktailService = _cocktailService;
 			this.categoryService = _categoryService;
 		}
-		public async Task<IActionResult> Index([FromQuery] SearchViewModel model, int id = 1)
+		public async Task<IActionResult> Index([FromQuery] SearchViewModel model)
 		{
 			const int itemsPerPage = 5;
 
-			var viewModel = new SearchViewModel()
-			{
-				Cocktails = await this.cocktailService.Search(model.SearchQuery, model.SearchCriteria, model.Category, id, itemsPerPage),
-				Categories = (await this.categoryService.GetAllCategoriesAsync()).Select(c => c.Name).ToList(),
-				CocktailsCount = await this.cocktailService.CocktailCountAsync(),
-				CocktailsPerPage = itemsPerPage,
-				PageNumber = id
-			};
+			var viewModel = await this.cocktailService.Search(model.SearchQuery, model.SearchCriteria, model.Category, model.PageNumber, itemsPerPage);
+
+			viewModel.Categories = (await this.categoryService.GetAllCategoriesAsync()).Select(c => c.Name).ToList();
+			viewModel.SearchCriteria = model.SearchCriteria;
+			viewModel.SearchQuery = model.SearchQuery;
+			viewModel.Category = model.Category;
+			viewModel.CocktailsPerPage = itemsPerPage;
+			viewModel.PageNumber = model.PageNumber;
 
 			return View(viewModel);
 		}

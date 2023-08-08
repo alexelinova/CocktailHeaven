@@ -4,7 +4,6 @@
 
 @{
 	ViewBag.Title = "Search Cocktails";
-	ViewBag.ActionName = "Index";
 }
 
 <form>
@@ -71,6 +70,60 @@
 	}
 </div>
 
-<div class="fixed-bottom bg-dark text-white text-center py-3">
-	<partial name="_PagingPartial" model="@Model" />
+<div>
+	<nav>
+		<ul class="pagination justify-content-center">
+			<li class="page-item @(!Model.HasPreviousPage ? "disabled" : string.Empty)">
+				<a class="page-link"
+				   asp-action="Index"
+				   asp-route-searchCriteria="@Model.SearchCriteria"
+				   asp-route-searchQuery="@Model.SearchQuery"
+				   asp-route-category="@Model.Category"
+				   asp-route-pageNumber="@Model.PreviousPage">Previous</a>
+			</li>
+			@for (int i = this.Model.PageNumber - 2; i < Model.PageNumber; i++)
+			{
+				if (i > 0)
+				{
+					<li class="page-item">
+						<a class="page-link"
+						   asp-controller="Search"
+						   asp-action="Index"
+						   asp-route-searchCriteria="@Model.SearchCriteria"
+						   asp-route-searchQuery="@Model.SearchQuery"
+						   asp-route-category="@Model.Category"
+						   asp-route-pageNumber="@i">@i</a>
+					</li>
+				}
+			}
+			<li class="page-item active" aria-current="page">
+				<span class="page-link">@Model.PageNumber</span>
+			</li>
+			@for (int i = this.Model.PageNumber + 1; i <= Model.PageNumber + 2; i++)
+			{
+				if (i <= Model.PagesCount)
+				{
+					<li class="page-item">
+						<a class="page-link"
+						   asp-controller="Search"
+						   asp-action="Index"
+						   asp-route-searchCriteria="@Model.SearchCriteria"
+						   asp-route-searchQuery="@Model.SearchQuery"
+						   asp-route-category="@Model.Category"
+						   asp-route-pageNumber="@i">@i</a>
+					</li>
+				}
+			}
+			<li class="page-item @(!Model.HasNextPage ? "disabled" : string.Empty)">
+				<a class="page-link"
+				   asp-controller="Search"
+				   asp-action="Index"
+				   asp-route-pageNumber="@Model.NextPage"
+				   asp-route-searchCriteria="@Model.SearchCriteria"
+				   asp-route-searchQuery="@Model.SearchQuery"
+				   asp-route-category="@Model.Category">Next</a>
+			</li>
+		</ul>
+	</nav>
 </div>
+
