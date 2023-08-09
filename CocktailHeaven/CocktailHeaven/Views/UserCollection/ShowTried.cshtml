@@ -1,4 +1,5 @@
-﻿@model IEnumerable<CocktailTriedRatingModel>
+﻿@using CocktailHeaven.Core.Models.Rating;
+@model IEnumerable<CocktailTriedRatingModel>
 
 @{
 	ViewBag.Title = "Tried Cocktails";
@@ -66,24 +67,10 @@
 						{
 							<p>No previous rating</p>
 						}
-						<form asp-controller="Rating" asp-action="Rate" method="post">
-							<input type="hidden" name="cocktailId" value="@cocktail.Id" />
-							<div class="mb-3">
-								<label for="ratingInput-@cocktail.Id" class="form-label">Edit/Add Rating</label>
-								<select class="form-select" id="ratingInput-@cocktail.Id" name="value">
-									<option value="1">1 star</option>
-									<option value="2">2 stars</option>
-									<option value="3">3 stars</option>
-									<option value="4">4 stars</option>
-									<option value="5">5 stars</option>
-								</select>
-							</div>
-							<div class="mb-3">
-								<label for="commentInput-@cocktail.Id" class="form-label">Comment</label>
-								<textarea class="form-control" id="commentInput-@cocktail.Id" name="comment" rows="4"></textarea>
-							</div>
-							<button type="submit" class="btn btn-primary">Submit</button>
-						</form>
+						@await Html.PartialAsync("_RateFormPartial", new RateCocktailModel
+						{
+							CocktailId = cocktail.Id,
+						})
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

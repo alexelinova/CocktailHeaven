@@ -39,7 +39,10 @@
 
         public class RatingConstants
         {
-            public const int MaxRatingValue = 5;
+			public const int MinRatingValue = 1;
+			public const int MaxRatingValue = 5;
+
+            public const int MaxCommentLength = 200;
         }
 
 		public class ImageConstants
@@ -64,6 +67,8 @@
 			public const string ErrorMessage = "ErrorMessage";
 			public const string WarningMessage = "WarningMessage";
 			public const string SuccessMessage = "SuccessMessage";
+
+            public const string ErrorMessageCocktail = "The cocktail does not exist";
 		}
 	}
 }

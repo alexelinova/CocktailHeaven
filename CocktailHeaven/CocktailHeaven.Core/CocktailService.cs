@@ -151,6 +151,12 @@ namespace CocktailHeaven.Core
 			await repo.SaveChangesAsync();
 		}
 
+		public async Task<bool> ExistsByIdAsync(int cocktailId)
+		{
+			return await this.repo.AllReadonly<Cocktail>()
+				.AnyAsync(c => c.IsDeleted == false && c.Id == cocktailId);
+		}
+
 		public async Task<CocktailFullModel> GetCocktailByIdAsync(int id)
 		{
 			var cocktail = await this.repo.All<Cocktail>()

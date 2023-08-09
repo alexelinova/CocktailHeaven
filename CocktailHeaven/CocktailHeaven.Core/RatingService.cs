@@ -1,4 +1,5 @@
 ﻿using CocktailHeaven.Core.Contracts;
+using CocktailHeaven.Core.Exceptions;
 using CocktailHeaven.Core.Models.Rating;
 using CocktailHeaven.Infrastructure.Data.Common;
 using CocktailHeaven.Infrastructure.Models;
@@ -57,7 +58,7 @@ namespace CocktailHeaven.Core
 			if (rating != null)
 			{
 				rating.Value = ratingValue;
-				rating.ModifiedOn = DateTime.UtcNow;
+				rating.CreatedOn = DateTime.UtcNow;
 				rating.Comment = comment;
 			}
 			else

@@ -20,6 +20,7 @@ namespace CocktailHeaven.Infrastructure.Models
 
         public virtual Cocktail Cocktail { get; set; } = null!;
 
+        [MaxLength(MaxCommentLength)]
         public string? Comment { get; set; }
 
         public DateTime CreatedOn { get; set; }

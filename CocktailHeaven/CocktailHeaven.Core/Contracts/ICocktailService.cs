@@ -7,6 +7,8 @@ namespace CocktailHeaven.Core.Contracts
 	{
 		Task CreateCocktailAsync(CocktailFormModel model, Guid userId);
 
+		Task<bool> ExistsByIdAsync(int cocktailId);
+
 		Task<CocktailFullModel> GetRandomCocktailAsync();
 
 		Task<IEnumerable<CocktailDetailsModel>> GetCocktailDetailsAsync(int page, int itemsPerPage);
