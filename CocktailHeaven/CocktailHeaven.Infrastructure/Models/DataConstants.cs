@@ -58,5 +58,12 @@
 			public const int MinPasswordLength = 6;
 			public const int MaxPasswordLength = 20;
 		}
+
+		public static class MessageConstant
+		{
+			public const string ErrorMessage = "ErrorMessage";
+			public const string WarningMessage = "WarningMessage";
+			public const string SuccessMessage = "SuccessMessage";
+		}
 	}
 }
