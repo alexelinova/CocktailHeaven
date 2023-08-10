@@ -20,20 +20,17 @@ namespace CocktailHeaven.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Rate(RateCocktailModel model)
 		{
-			if (await cocktailService.ExistsByIdAsync(model.CocktailId) == false)
+			if (await this.cocktailService.ExistsByIdAsync(model.CocktailId) == false
+				|| !this.ModelState.IsValid)
 			{
-				ModelState.AddModelError(nameof(model.CocktailId), ErrorMessageCocktail);
-			}
-
-			if (!this.ModelState.IsValid)
-			{
-				return RedirectToAction("ShowTried", "UserCollection");
+				this.TempData[ErrorMessage] = "Invalid rating data provided";
+				return this.RedirectToAction("ShowTried", "UserCollection");
 			}
 
 			var userId = User.Id();
-			await ratingService.RateAsync(model.CocktailId, userId, model.Value, model.Comment);
+			await this.ratingService.RateAsync(model.CocktailId, userId, model.Value, model.Comment);
 
-			return RedirectToAction("ShowTried", "UserCollection");
+			return this.RedirectToAction("ShowTried", "UserCollection");
 		}
 	}
 }

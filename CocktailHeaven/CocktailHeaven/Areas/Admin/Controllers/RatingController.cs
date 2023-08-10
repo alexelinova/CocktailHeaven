@@ -1,6 +1,5 @@
 ﻿using CocktailHeaven.Core.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 using static CocktailHeaven.Infrastructure.Models.DataConstants.MessageConstant;
 
 namespace CocktailHeaven.Areas.Admin.Controllers
@@ -16,33 +15,23 @@ namespace CocktailHeaven.Areas.Admin.Controllers
 
         public async Task<IActionResult> All()
         {
+            var model = await this.ratingService.GetAllRatingsAsync();
 
-            try
-            {
-				var model = await this.ratingService.GetAllRatingsAsync();
-				return View(model);
-			}
-            catch (ArgumentException ex)
-            {
-
-                TempData[ErrorMessage] = ex.Message;
-            }
-
-			return RedirectToAction("Index", "Home");
-
-		}
+            return this.View(model);
+        }
 
         [HttpPost]
         public async Task<IActionResult> DeleteRating(int id)
         {
             if (await this.ratingService.RatingExistsAsync(id) == false)
             {
-                return NotFound();
+                this.TempData[ErrorMessage] = ErrorMessageRating;
+                this.RedirectToAction("Index", "Home");
             }
 
             await this.ratingService.DeleteRating(id);
 
-            return RedirectToAction("All");
+            return this.RedirectToAction("All");
         }
     }
 }

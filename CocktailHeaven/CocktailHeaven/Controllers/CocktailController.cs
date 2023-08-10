@@ -2,9 +2,9 @@
 using CocktailHeaven.Core.Models.Cocktail;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using CocktailHeaven.Extensions;
 using CocktailHeaven.Core.Models.Ingredient;
+using static CocktailHeaven.Infrastructure.Models.DataConstants.MessageConstant;
 
 namespace CocktailHeaven.Controllers
 {
@@ -48,13 +48,8 @@ namespace CocktailHeaven.Controllers
 				return this.View(model);
 			}
 
-			var userId = User.Claims
-				.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-
-			if (userId != null && Guid.TryParse(userId.Value, out Guid id))
-			{
-				await this.cocktailService.CreateCocktailAsync(model, id);
-			}
+			var userId = this.User.Id();
+			await this.cocktailService.CreateCocktailAsync(model, userId);
 
 			return this.RedirectToAction("Index", "Home");
 		}
@@ -62,8 +57,14 @@ namespace CocktailHeaven.Controllers
 		[Authorize(Roles = "Cocktail Editor")]
 		public async Task<IActionResult> Edit(int id)
 		{
-			var cocktail = await cocktailService.GetCocktailByIdAsync(id);
-			var categoyId = await cocktailService.GetCocktailCategoryAsync(id);
+			if (await this.cocktailService.ExistsByIdAsync(id) == false)
+			{
+				this.TempData[ErrorMessage] = ErrorMessageCocktail;
+				return this.RedirectToAction(nameof(All));
+			}
+
+			var cocktail = await this.cocktailService.GetCocktailByIdAsync(id);
+			var categoyId = await this.cocktailService.GetCocktailCategoryAsync(id);
 
 			var model = new CocktailEditModel()
 			{
@@ -87,22 +88,34 @@ namespace CocktailHeaven.Controllers
 		{
 			if (!ModelState.IsValid)
 			{
-				model.Categories = await categoryService.GetAllCategoriesAsync();
-				return View(model);
+				model.Categories = await this.categoryService.GetAllCategoriesAsync();
+				return this.View(model);
 			}
 
-			await cocktailService.Edit(model, model.Id);
+			if(await this.cocktailService.ExistsByIdAsync(model.Id) ==  false)
+			{
+				this.ModelState.AddModelError("", ErrorMessageCocktail);
+				return this.View(model);
+			}
 
-			return RedirectToAction(nameof(ShowMore), new { model.Id });
+			await this.cocktailService.Edit(model, model.Id);
+
+			return this.RedirectToAction(nameof(ShowMore), new { model.Id });
 		}
 
 		[HttpPost]
 		[Authorize(Roles = "Cocktail Editor")]
 		public async Task<IActionResult> Delete(int id)
 		{
-			await cocktailService.Delete(id);
+			if (await this.cocktailService.ExistsByIdAsync(id) == false)
+			{
+				this.TempData[ErrorMessage] = ErrorMessageCocktail;
+				return this.RedirectToAction(nameof(All));
+			}
 
-			return RedirectToAction(nameof(All));
+			await this.cocktailService.Delete(id);
+
+			return this.RedirectToAction(nameof(All));
 		}
 
 
@@ -124,6 +137,11 @@ namespace CocktailHeaven.Controllers
 
 		public async Task<IActionResult> ShowMore(int id)
 		{
+			if (await this.cocktailService.ExistsByIdAsync(id) == false)
+			{
+				return this.RedirectToAction(nameof(All));
+			}
+
 			var model = new CocktailShowDetailsModel()
 			{
 				Cocktail = await this.cocktailService.GetCocktailByIdAsync(id),

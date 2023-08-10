@@ -64,29 +64,28 @@ namespace CocktailHeaven.Core
 
 		public async Task Delete(int cocktailId)
 		{
-			var cocktail = await this.repo.All<Cocktail>(c => c.Id == cocktailId)
+			var cocktail = await this.repo
+				.All<Cocktail>(c => c.Id == cocktailId && c.IsDeleted == false)
 				.Include(c => c.Image)
 				.Include(c => c.Ratings)
 				.FirstOrDefaultAsync();
 
-			if (cocktail != null)
+			//cocktail cannot be null - verified in the controller;
+			cocktail!.IsDeleted = true;
+			cocktail.ModifiedOn = DateTime.UtcNow;
+
+			if (cocktail.Image != null)
 			{
-				cocktail.IsDeleted = true;
-				cocktail.ModifiedOn = DateTime.UtcNow;
-
-				if (cocktail.Image != null)
-				{
-					cocktail.Image.IsDeleted = true;
-				}
-
-				foreach (var rating in cocktail.Ratings)
-				{
-					rating.IsDeleted = true;
-					rating.ModifiedOn = DateTime.UtcNow;
-				}
-
-				await this.repo.SaveChangesAsync();
+				cocktail.Image.IsDeleted = true;
 			}
+
+			foreach (var rating in cocktail.Ratings)
+			{
+				rating.IsDeleted = true;
+				rating.ModifiedOn = DateTime.UtcNow;
+			}
+
+			await this.repo.SaveChangesAsync();
 		}
 
 		public async Task Edit(CocktailEditModel model, int cocktailId)
@@ -97,7 +96,8 @@ namespace CocktailHeaven.Core
 				.ThenInclude(i => i.Ingredient)
 				.FirstOrDefaultAsync();
 
-			cocktail.Name = model.Name;
+			//cocktail cannot be null - verified in the controller;
+			cocktail!.Name = model.Name;
 			cocktail.Description = model.Description;
 			cocktail.CategoryId = model.CategoryId;
 			cocktail.Instruction = model.Instruction;
@@ -190,12 +190,8 @@ namespace CocktailHeaven.Core
 					.ToList(),
 				}).FirstOrDefaultAsync();
 
-			if (cocktail == null)
-			{
-				throw new ArgumentException("Cocktail not found!");
-			}
-
-			return cocktail;
+			//Cocktail cannot be null - verified in the controller;
+			return cocktail!;
 		}
 
 		public async Task<int> GetCocktailCategoryAsync(int cocktailId)
@@ -235,6 +231,11 @@ namespace CocktailHeaven.Core
 				.OrderBy(c => Guid.NewGuid())
 				.Skip(skipper)
 				.FirstOrDefaultAsync();
+
+			if (randomCocktail == null)
+			{
+				throw new ArgumentException();
+			}
 
 			return new CocktailFullModel()
 			{
@@ -314,7 +315,8 @@ namespace CocktailHeaven.Core
 					IngredientName = i.Ingredient.Name,
 					Quantity = i.Quantity,
 					Note = i.Note,
-				}).ToList()
+				})
+				.ToList()
 			})
 		   .ToListAsync();
 

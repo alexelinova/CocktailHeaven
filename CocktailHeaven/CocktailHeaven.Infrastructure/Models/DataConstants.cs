@@ -68,7 +68,10 @@
 			public const string WarningMessage = "WarningMessage";
 			public const string SuccessMessage = "SuccessMessage";
 
-            public const string ErrorMessageCocktail = "The cocktail does not exist";
+            public const string ErrorMessageCocktail = "Cocktail does not exist";
+            public const string ErrorMessageRandomCocktail = "Could not find a cocktail";
+            public const string ErrorMessageRating = "Rating does not exist";
+			public const string ErrorMessageUser = "User does not exist";
 		}
 	}
 }
