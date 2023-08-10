@@ -6,6 +6,7 @@ using CocktailHeaven.Core.Models.Search;
 using CocktailHeaven.Infrastructure.Data.Common;
 using CocktailHeaven.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using static CocktailHeaven.Infrastructure.Models.DataConstants.MessageConstant;
 
 namespace CocktailHeaven.Core
 {
@@ -42,7 +43,7 @@ namespace CocktailHeaven.Core
 
 			foreach (var input in model.Ingredients)
 			{
-				var ingredient = repo.All<Ingredient>(i => i.IsDeleted == false)
+				var ingredient = this.repo.All<Ingredient>(i => i.IsDeleted == false)
 					.FirstOrDefault(i => i.Name == input.IngredientName);
 
 				ingredient ??= new Ingredient()
@@ -58,8 +59,8 @@ namespace CocktailHeaven.Core
 				});
 			}
 
-			await repo.AddAsync(cocktail);
-			await repo.SaveChangesAsync();
+			await this.repo.AddAsync(cocktail);
+			await this.repo.SaveChangesAsync();
 		}
 
 		public async Task Delete(int cocktailId)
@@ -90,14 +91,19 @@ namespace CocktailHeaven.Core
 
 		public async Task Edit(CocktailEditModel model, int cocktailId)
 		{
-			var cocktail = await repo.All<Cocktail>(c => c.Id == cocktailId)
+			var cocktail = await this.repo.All<Cocktail>(c => c.Id == cocktailId)
 				.Include(c => c.Image)
 				.Include(c => c.Ingredients)
 				.ThenInclude(i => i.Ingredient)
 				.FirstOrDefaultAsync();
 
-			//cocktail cannot be null - verified in the controller;
-			cocktail!.Name = model.Name;
+			//cocktail won't be null - verified in the controller;
+			if (cocktail == null)
+			{
+				throw new ArgumentException(ErrorMessageCocktail);
+			}
+
+			cocktail.Name = model.Name;
 			cocktail.Description = model.Description;
 			cocktail.CategoryId = model.CategoryId;
 			cocktail.Instruction = model.Instruction;
@@ -148,7 +154,7 @@ namespace CocktailHeaven.Core
 				}
 			}
 
-			await repo.SaveChangesAsync();
+			await this.repo.SaveChangesAsync();
 		}
 
 		public async Task<bool> ExistsByIdAsync(int cocktailId)
@@ -190,8 +196,13 @@ namespace CocktailHeaven.Core
 					.ToList(),
 				}).FirstOrDefaultAsync();
 
-			//Cocktail cannot be null - verified in the controller;
-			return cocktail!;
+			//Cocktail won't be null - verified in the controller;
+			if (cocktail == null)
+			{
+				throw new ArgumentException(ErrorMessageCocktail);
+			}
+
+			return cocktail;
 		}
 
 		public async Task<int> GetCocktailCategoryAsync(int cocktailId)
@@ -234,7 +245,7 @@ namespace CocktailHeaven.Core
 
 			if (randomCocktail == null)
 			{
-				throw new ArgumentException();
+				throw new ArgumentException(ErrorMessageRandomCocktail);
 			}
 
 			return new CocktailFullModel()
@@ -273,7 +284,7 @@ namespace CocktailHeaven.Core
 		{
 			var result = new SearchViewModel();
 
-			var cocktails = repo.AllReadonly<Cocktail>()
+			var cocktails = this.repo.AllReadonly<Cocktail>()
 								.Where(c => c.IsDeleted == false);
 
 			if (!string.IsNullOrEmpty(queryString))

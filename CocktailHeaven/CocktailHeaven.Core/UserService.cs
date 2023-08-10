@@ -6,6 +6,7 @@ using CocktailHeaven.Infrastructure.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using static CocktailHeaven.Infrastructure.Models.DataConstants.MessageConstant;
 
 namespace CocktailHeaven.Core
 {
@@ -29,12 +30,8 @@ namespace CocktailHeaven.Core
              .Include(au => au.Ratings)
              .FirstOrDefaultAsync();
 
-            if (user == null)
-            {
-                return;
-            }
 
-            foreach (var userCollection in user.UserCollection)
+            foreach (var userCollection in user!.UserCollection)
             {
                 this.repo.Delete<UserCollection>(userCollection);
             }
@@ -82,5 +79,19 @@ namespace CocktailHeaven.Core
 
             return user != null;
         }
-    }
+
+		public async Task<bool> UserIsInRoleAsync(Guid userId, string roleName)
+		{
+			var user = await this.repo
+			 .AllReadonly<ApplicationUser>(au => au.IsDeleted == false && au.Id == userId)
+			 .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                throw new ArgumentException(ErrorMessageUser);
+            }
+
+            return await this.manager.IsInRoleAsync(user, roleName);
+		}
+	}
 }

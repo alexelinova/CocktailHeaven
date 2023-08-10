@@ -27,7 +27,7 @@ namespace CocktailHeaven.Controllers
 			viewModel.CocktailsPerPage = itemsPerPage;
 			viewModel.PageNumber = model.PageNumber;
 
-			return View(viewModel);
+			return this.View(viewModel);
 		}
 	}
 }

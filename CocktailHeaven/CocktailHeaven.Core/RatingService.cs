@@ -22,7 +22,7 @@ namespace CocktailHeaven.Core
 			var rating = await this.repo.GetByIdAsync<Rating>(ratingId);
 			rating.IsDeleted = true;
 
-			await repo.SaveChangesAsync();
+			await this.repo.SaveChangesAsync();
 		}
 
 		public async Task<IEnumerable<RatingAllViewModel>> GetAllRatingsAsync()
@@ -74,7 +74,7 @@ namespace CocktailHeaven.Core
 					CreatedOn = DateTime.UtcNow
 				});
 			}
-			await repo.SaveChangesAsync();
+			await this.repo.SaveChangesAsync();
 		}
 
 		public async Task<bool> RatingExistsAsync(int ratingId)

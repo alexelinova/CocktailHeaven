@@ -20,7 +20,7 @@ namespace CocktailHeaven.Controllers
 		{
 			if(this.User.IsInRole("Admin"))
 			{
-				return RedirectToAction("Index", "Home", new { area = "Admin" });
+				return this.RedirectToAction("Index", "Home", new { area = "Admin" });
 			}
 			var model = new CocktailHomeModel()
 			{
@@ -28,13 +28,13 @@ namespace CocktailHeaven.Controllers
 				CocktailsCount = await this.cocktailService.CocktailCountAsync()
 			};
 
-			return View(model);
+			return this.View(model);
 		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
 		{
-			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+			return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 		}
 	}
 }

@@ -31,7 +31,7 @@ namespace CocktailHeaven.Areas.Admin.Controllers
 
             await this.ratingService.DeleteRating(id);
 
-            return this.RedirectToAction("All");
+            return this.RedirectToAction(nameof(All));
         }
     }
 }

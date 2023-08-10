@@ -6,60 +6,45 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CocktailHeaven.Core
 {
-    public class RoleService : IRoleService
-    {
-        private readonly UserManager<ApplicationUser> userManager;
+	public class RoleService : IRoleService
+	{
+		private readonly UserManager<ApplicationUser> userManager;
 
-        private readonly RoleManager<IdentityRole<Guid>> roleManager;
+		private readonly RoleManager<IdentityRole<Guid>> roleManager;
 
-        private readonly IRepository repo;
+		private readonly IRepository repo;
 
-        public RoleService(UserManager<ApplicationUser> userManager, IRepository repo, RoleManager<IdentityRole<Guid>> roleManager)
-        {
-            this.userManager = userManager;
-            this.repo = repo;
-            this.roleManager = roleManager;
-        }
+		public RoleService(UserManager<ApplicationUser> userManager, IRepository repo, RoleManager<IdentityRole<Guid>> roleManager)
+		{
+			this.userManager = userManager;
+			this.repo = repo;
+			this.roleManager = roleManager;
+		}
 
-        public async Task AssignRoleAsync(Guid userId, string roleName)
-        {
-            var user = await this.repo.GetByIdAsync<ApplicationUser>(userId);
+		public async Task AssignRoleAsync(Guid userId, string roleName)
+		{
+			var user = await this.repo.GetByIdAsync<ApplicationUser>(userId);
 
-            if (user == null || user.IsDeleted == true)
-            {
-                throw new NotImplementedException(); //TODO
-            }
+			await this.userManager.AddToRoleAsync(user, roleName);
+		}
 
-            if (!await roleManager.RoleExistsAsync(roleName))
-            {
-                throw new NotImplementedException(); //TODO
-            }
+		public async Task<IEnumerable<string>> GetRolesAsync()
+		{
+			var roles = await this.roleManager.Roles.Select(role => role.Name).ToListAsync();
 
-           await this.userManager.AddToRoleAsync(user, roleName);
-        }
+			return roles;
+		}
 
-        public async Task<IEnumerable<string>> GetRolesAsync()
-        {
-            var roles = await roleManager.Roles.Select(role => role.Name).ToListAsync();
+		public async Task RemoveUserFromRoleAsync(Guid userId, string roleName)
+		{
+			var user = await this.repo.GetByIdAsync<ApplicationUser>(userId);
 
-            return roles;
-        }
+			await this.userManager.RemoveFromRoleAsync(user, roleName);
+		}
 
-        public async Task RemoveUserFromRoleAsync(Guid userId, string roleName)
-        {
-            var user = await this.repo.GetByIdAsync<ApplicationUser>(userId);
-
-            if (user == null || user.IsDeleted == true)
-            {
-                throw new NotImplementedException(); //TODO
-            }
-
-            if (!await roleManager.RoleExistsAsync(roleName))
-            {
-                throw new NotImplementedException(); //TODO
-            }
-
-            await userManager.RemoveFromRoleAsync(user, roleName);
-        }
-    }
+		public async Task<bool> RoleExists(string roleName)
+		{
+			return await this.roleManager.RoleExistsAsync(roleName);
+		}
+	}
 }

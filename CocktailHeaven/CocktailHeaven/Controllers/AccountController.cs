@@ -71,7 +71,7 @@ namespace CocktailHeaven.Controllers
 
             if (result.Succeeded)
             {
-                return this.RedirectToAction("Login");
+                return this.RedirectToAction(nameof(Login));
             }
 
             foreach (var item in result.Errors)

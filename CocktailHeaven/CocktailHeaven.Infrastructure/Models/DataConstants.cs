@@ -72,6 +72,10 @@
             public const string ErrorMessageRandomCocktail = "Could not find a cocktail";
             public const string ErrorMessageRating = "Rating does not exist";
 			public const string ErrorMessageUser = "User does not exist";
+            public const string ErrorMessageRole = "Role does not exist";
+            public const string ErrorMessageUserInRole = "The user is already in this role";
+			public const string ErrorMessageUserNotInRole = "The user is not in this role";
+            public const string ErrorMessageUserCollection = "You don't have this cocktail in your collections";
 		}
 	}
 }

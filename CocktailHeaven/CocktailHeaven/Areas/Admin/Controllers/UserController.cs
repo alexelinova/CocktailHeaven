@@ -1,5 +1,6 @@
 ﻿using CocktailHeaven.Core.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using static CocktailHeaven.Infrastructure.Models.DataConstants.MessageConstant;
 
 namespace CocktailHeaven.Areas.Admin.Controllers
 {
@@ -14,21 +15,21 @@ namespace CocktailHeaven.Areas.Admin.Controllers
 
         public async Task<IActionResult> All()
         {
-            var allUsers = await userSerice.GetAllUsersAsync();
+            var allUsers = await this.userSerice.GetAllUsersAsync();
 
-            return View(allUsers);
+            return this.View(allUsers);
         }
 
         public async Task<IActionResult> DeleteUser(Guid id)
         {
             if (await this.userSerice.UserExistsAsync(id) == false)
             {
-                return NotFound();
+                this.TempData[ErrorMessage] = ErrorMessageUser;
             }
 
             await this.userSerice.DeleteUserAsync(id);
 
-            return RedirectToAction("All");
+            return this.RedirectToAction(nameof(All));
         }
     }
 }

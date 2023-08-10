@@ -7,5 +7,7 @@
         Task RemoveUserFromRoleAsync(Guid userId, string roleName);
 
         Task<IEnumerable<string>> GetRolesAsync();
+
+        Task<bool> RoleExists(string roleName);
     }
 }

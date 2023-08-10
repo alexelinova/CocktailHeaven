@@ -4,6 +4,7 @@ using CocktailHeaven.Core.Models.NewFolder;
 using CocktailHeaven.Infrastructure.Data.Common;
 using CocktailHeaven.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using static CocktailHeaven.Infrastructure.Models.DataConstants.MessageConstant;
 
 namespace CocktailHeaven.Core
 {
@@ -124,9 +125,10 @@ namespace CocktailHeaven.Core
 		{
 			var userCollection = await GetUserCollectionAsync(userId, cocktailId);
 
+			//UserCollection won't be null; verified in the controller;
 			if (userCollection == null)
 			{
-				return;
+				throw new ArgumentException(ErrorMessageUserCollection);
 			}
 
 			userCollection.IsFavourite = null;
@@ -143,17 +145,17 @@ namespace CocktailHeaven.Core
 		{
 			var userCollection = await GetUserCollectionAsync(userId, cocktailId);
 
+			//UserCollection won't be null; verified in the controller;
 			if (userCollection == null)
 			{
-				return;
+				throw new ArgumentException(ErrorMessageUserCollection);
 			}
-
-			userCollection.HasTried = null;
 
 			if (IsEmptyCollectionAsync(userCollection))
 			{
 				await this.repo.DeleteAsync<UserCollection>(userCollection);
 			}
+
 			await this.repo.SaveChangesAsync();
 		}
 
@@ -161,12 +163,11 @@ namespace CocktailHeaven.Core
 		{
 			var userCollection = await GetUserCollectionAsync(userId, cocktailId);
 
+			//UserCollection won't be null; verified in the controller;
 			if (userCollection == null)
 			{
-				return;
+				throw new ArgumentException(ErrorMessageUserCollection);
 			}
-
-			userCollection.WishList = null;
 
 			if (IsEmptyCollectionAsync(userCollection))
 			{
