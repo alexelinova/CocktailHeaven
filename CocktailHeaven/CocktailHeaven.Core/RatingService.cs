@@ -1,10 +1,10 @@
 ﻿using CocktailHeaven.Core.Contracts;
-using CocktailHeaven.Core.Exceptions;
 using CocktailHeaven.Core.Models.Rating;
 using CocktailHeaven.Infrastructure.Data.Common;
 using CocktailHeaven.Infrastructure.Models;
 using CocktailHeaven.Infrastructure.Models.Identity;
 using Microsoft.EntityFrameworkCore;
+using static CocktailHeaven.Infrastructure.Models.DataConstants.MessageConstant;
 
 namespace CocktailHeaven.Core
 {
@@ -17,20 +17,17 @@ namespace CocktailHeaven.Core
 			this.repo = repo;
 		}
 
-        public async Task DeleteRating(int ratingId)
-        {
+		public async Task DeleteRating(int ratingId)
+		{
 			var rating = await this.repo.GetByIdAsync<Rating>(ratingId);
+			rating.IsDeleted = true;
 
-			if (rating != null)
-			{
-                rating.IsDeleted = true;
-                await repo.SaveChangesAsync();
-            }
-        }
+			await repo.SaveChangesAsync();
+		}
 
-        public async Task<IEnumerable<RatingAllViewModel>> GetAllRatingsAsync()
-        {
-            return await this.repo.AllReadonly<Rating>()
+		public async Task<IEnumerable<RatingAllViewModel>> GetAllRatingsAsync()
+		{
+			return await this.repo.AllReadonly<Rating>()
 				.Where(r => r.IsDeleted == false)
 				.Select(r => new RatingAllViewModel()
 				{
@@ -42,14 +39,20 @@ namespace CocktailHeaven.Core
 				})
 				.OrderByDescending(r => r.CreatedOn)
 				.ToListAsync();
-        }
+		}
 
-        public async Task RateAsync(int cocktailId, Guid userId, int ratingValue, string? comment)
+		public async Task RateAsync(int cocktailId, Guid userId, int ratingValue, string? comment)
 		{
 			var user = await this.repo
 				.All<ApplicationUser>(a => a.Id == userId)
 				.Include(a => a.Ratings)
 				.FirstOrDefaultAsync();
+
+			if (user == null)
+			{
+				throw new ArgumentException(ErrorMessageUser);
+
+			}
 
 			var rating = user.Ratings
 				.Where(r => r.CocktailId == cocktailId && r.IsDeleted == false)
@@ -71,16 +74,16 @@ namespace CocktailHeaven.Core
 					CreatedOn = DateTime.UtcNow
 				});
 			}
-				await repo.SaveChangesAsync();
+			await repo.SaveChangesAsync();
 		}
 
-        public async Task<bool> RatingExistsAsync(int ratingId)
-        {
+		public async Task<bool> RatingExistsAsync(int ratingId)
+		{
 			var rating = await this.repo
 				.AllReadonly<Rating>(r => r.IsDeleted == false)
 				.FirstOrDefaultAsync();
 
 			return rating != null;
-        }
-    }
+		}
+	}
 }
