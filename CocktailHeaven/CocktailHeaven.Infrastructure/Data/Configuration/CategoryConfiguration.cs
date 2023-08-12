@@ -12,33 +12,33 @@ namespace CocktailHeaven.Infrastructure.Data.Configuration
 				.Property(p => p.IsDeleted)
 				.HasDefaultValue(false);
 
-			builder.HasData(CreateCategories());
+			//builder.HasData(CreateCategories());
 		}
 
-		private List<Category> CreateCategories()
-		{
-			var categories = new List<Category>()
-			{
-				new Category
-				{
-					Id = 1,
-					Name= "Contemporary Classics",
-				},
+		//private List<Category> CreateCategories()
+		//{
+		//	var categories = new List<Category>()
+		//	{
+		//		new Category
+		//		{
+		//			Id = 1,
+		//			Name= "Contemporary Classics",
+		//		},
 
-				new Category
-				{
-					Id = 2,
-					Name = "New Era Drinks",
-				},
+		//		new Category
+		//		{
+		//			Id = 2,
+		//			Name = "New Era Drinks",
+		//		},
 
-				new Category
-				{
-					Id = 3,
-					Name = "The Unforgettables",
-				}
-			};
+		//		new Category
+		//		{
+		//			Id = 3,
+		//			Name = "The Unforgettables",
+		//		}
+		//	};
 
-			return categories;
-		}
+		//	return categories;
+		//}
 	}
 }

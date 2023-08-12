@@ -71,8 +71,13 @@ namespace CocktailHeaven.Core
 				.Include(c => c.Ratings)
 				.FirstOrDefaultAsync();
 
-			//cocktail cannot be null - verified in the controller;
-			cocktail!.IsDeleted = true;
+			//cocktail won't be null - verified in the controller;
+			if (cocktail == null)
+			{
+				throw new ArgumentException(ErrorMessageCocktail);
+			}
+
+			cocktail.IsDeleted = true;
 			cocktail.ModifiedOn = DateTime.UtcNow;
 
 			if (cocktail.Image != null)
