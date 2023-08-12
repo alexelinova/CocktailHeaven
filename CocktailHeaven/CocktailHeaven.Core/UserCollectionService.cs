@@ -151,6 +151,8 @@ namespace CocktailHeaven.Core
 				throw new ArgumentException(ErrorMessageUserCollection);
 			}
 
+			userCollection.HasTried = null;
+
 			if (IsEmptyCollectionAsync(userCollection))
 			{
 				await this.repo.DeleteAsync<UserCollection>(userCollection);
@@ -168,6 +170,8 @@ namespace CocktailHeaven.Core
 			{
 				throw new ArgumentException(ErrorMessageUserCollection);
 			}
+
+			userCollection.WishList = null;
 
 			if (IsEmptyCollectionAsync(userCollection))
 			{
