@@ -34,8 +34,8 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		public async Task CountAsync_ShouldReturnCorrectResult()
 		{
-			this.repo = new CocktailHeavenRepository(dbContext);
-			this.cocktailService = new CocktailService(repo);
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.cocktailService = new CocktailService(this.repo);
 
 			var count = await this.cocktailService.CocktailCountAsync();
 			var expectedResult = 2;
@@ -46,8 +46,8 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		public async Task CreateCocktailAsync_ShouldCreateCocktail()
 		{
-			this.repo = new CocktailHeavenRepository(dbContext);
-			this.cocktailService = new CocktailService(repo);
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.cocktailService = new CocktailService(this.repo);
 
 			var cocktail = new CocktailFormModel()
 			{
@@ -87,8 +87,8 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		public async Task Delete_ShouldSetIsDeletedToTrue()
 		{
-			this.repo = new CocktailHeavenRepository(dbContext);
-			this.cocktailService = new CocktailService(repo);
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.cocktailService = new CocktailService(this.repo);
 
 			await this.cocktailService.Delete(1);
 			var deletedCocktail = await this.repo.AllReadonly<Cocktail>(c => c.Id == 1)
@@ -106,8 +106,8 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		public void Delete_ShouldThrowAnExceptionWithInvalidId()
 		{
-			this.repo = new CocktailHeavenRepository(dbContext);
-			this.cocktailService = new CocktailService(repo);
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.cocktailService = new CocktailService(this.repo);
 
 			int nonExistentId = 3;
 
@@ -117,8 +117,8 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		public async Task Edit_ShouldUpdateCocktailPropertiesAndIngredients()
 		{
-			this.repo = new CocktailHeavenRepository(dbContext);
-			this.cocktailService = new CocktailService(repo);
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.cocktailService = new CocktailService(this.repo);
 
 			var newCocktailDetails = new CocktailEditModel()
 			{
@@ -179,8 +179,8 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		public async Task ExistsByIdAsync_ShouldReturnTrueWithValidId()
 		{
-			this.repo = new CocktailHeavenRepository(dbContext);
-			this.cocktailService = new CocktailService(repo);
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.cocktailService = new CocktailService(this.repo);
 
 			var result = await this.cocktailService.ExistsByIdAsync(1);
 
@@ -190,8 +190,8 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		public async Task ExistsByIdAsync_ShouldReturnFalseWithInvalidId()
 		{
-			this.repo = new CocktailHeavenRepository(dbContext);
-			this.cocktailService = new CocktailService(repo);
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.cocktailService = new CocktailService(this.repo);
 
 			var nonExistentId = 3;
 			var result = await this.cocktailService.ExistsByIdAsync(nonExistentId);
@@ -202,8 +202,8 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		public async Task GetCocktailCategoryAsync_ShouldReturnValidCategoryId()
 		{
-			this.repo = new CocktailHeavenRepository(dbContext);
-			this.cocktailService = new CocktailService(repo);
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.cocktailService = new CocktailService(this.repo);
 
 			var categoryId = await this.cocktailService.GetCocktailCategoryAsync(1);
 			var expectedResult = 1;
@@ -215,8 +215,8 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		public async Task GetCocktailDetailsAsync_ShouldReturnCorrectCount()
 		{
-			this.repo = new CocktailHeavenRepository(dbContext);
-			this.cocktailService = new CocktailService(repo);
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.cocktailService = new CocktailService(this.repo);
 
 			var pageNum = 1;
 			var itemsPerPage = 1;
@@ -230,8 +230,8 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		public async Task GetRandomCocktailAsync_ReturnsCocktail()
 		{
-			this.repo = new CocktailHeavenRepository(dbContext);
-			this.cocktailService = new CocktailService(repo);
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.cocktailService = new CocktailService(this.repo);
 
 			var result = await this.cocktailService.GetRandomCocktailAsync();
 
@@ -241,8 +241,8 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		public async Task GetTopRatedCocktailAsync_ReturnsTopThreeHighestRated()
 		{
-			this.repo = new CocktailHeavenRepository(dbContext);
-			this.cocktailService = new CocktailService(repo);
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.cocktailService = new CocktailService(this.repo);
 
 			var result = await this.cocktailService.GetTopRatedCocktailsAsync();
 			var resultList = result.ToList();
@@ -256,8 +256,8 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		public async Task GetCocktailByIdAsync_ShouldReturnCorrectCocktail()
 		{
-			this.repo = new CocktailHeavenRepository(dbContext);
-			this.cocktailService = new CocktailService(repo);
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.cocktailService = new CocktailService(this.repo);
 
 			var cocktail = await this.cocktailService.GetCocktailByIdAsync(1);
 			var expectedCocktailName = "Mojito";
@@ -270,8 +270,8 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		public async Task Search_ShouldReturnCorrectCocktailWithValidCriteria()
 		{
-			this.repo = new CocktailHeavenRepository(dbContext);
-			this.cocktailService = new CocktailService(repo);
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.cocktailService = new CocktailService(this.repo);
 
 			var pageNum = 1;
 			var itemsPerPage = 1;
@@ -290,8 +290,8 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		public async Task Search_ShouldReturnEmptyCollectionWithInvalidCriteria()
 		{
-			this.repo = new CocktailHeavenRepository(dbContext);
-			this.cocktailService = new CocktailService(repo);
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.cocktailService = new CocktailService(this.repo);
 
 			var pageNum = 1;
 			var itemsPerPage = 1;

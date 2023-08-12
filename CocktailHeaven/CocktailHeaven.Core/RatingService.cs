@@ -80,7 +80,7 @@ namespace CocktailHeaven.Core
 		public async Task<bool> RatingExistsAsync(int ratingId)
 		{
 			var rating = await this.repo
-				.AllReadonly<Rating>(r => r.IsDeleted == false)
+				.AllReadonly<Rating>(r => r.IsDeleted == false && r.Id == ratingId)
 				.FirstOrDefaultAsync();
 
 			return rating != null;
