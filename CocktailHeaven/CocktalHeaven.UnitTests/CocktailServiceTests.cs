@@ -2,6 +2,7 @@
 using CocktailHeaven.Core.Contracts;
 using CocktailHeaven.Core.Models.Cocktail;
 using CocktailHeaven.Core.Models.Ingredient;
+using CocktailHeaven.Core.Models.Search;
 using CocktailHeaven.Infrastructure.Data;
 using CocktailHeaven.Infrastructure.Data.Common;
 using CocktailHeaven.Infrastructure.Models;
@@ -264,6 +265,42 @@ namespace CocktalHeaven.UnitTests
 
 			Assert.That(cocktail.Id, Is.EqualTo(expectedId));
 			Assert.That(cocktail.Name, Is.EqualTo(expectedCocktailName));
+		}
+
+		[Test]
+		public async Task Search_ShouldReturnCorrectCocktailWithValidCriteria()
+		{
+			this.repo = new CocktailHeavenRepository(dbContext);
+			this.cocktailService = new CocktailService(repo);
+
+			var pageNum = 1;
+			var itemsPerPage = 1;
+
+			var result = await this.cocktailService.Search("Bloody Mary", SearchCriteria.CocktailName, null, pageNum, itemsPerPage);
+			var resultCocktail = result.Cocktails.FirstOrDefault();
+
+			var expectedCocktailName = "Bloody Mary";
+			var expectedCocktailCount = 1;
+
+			Assert.That(result.Cocktails.Count(), Is.EqualTo(expectedCocktailCount));
+			Assert.NotNull(resultCocktail);
+			Assert.That(resultCocktail.Name, Is.EqualTo(expectedCocktailName));
+		}
+
+		[Test]
+		public async Task Search_ShouldReturnEmptyCollectionWithInvalidCriteria()
+		{
+			this.repo = new CocktailHeavenRepository(dbContext);
+			this.cocktailService = new CocktailService(repo);
+
+			var pageNum = 1;
+			var itemsPerPage = 1;
+			var searchCriteria = SearchCriteria.CocktailName;
+			var nonExistentCocktail = "Pina Colada";
+			var result = await this.cocktailService.Search(nonExistentCocktail, searchCriteria, null, pageNum, itemsPerPage);
+
+			Assert.NotNull(result.Cocktails);
+			Assert.That(result.Cocktails.Count(), Is.EqualTo(0));
 		}
 
 		[TearDown]
