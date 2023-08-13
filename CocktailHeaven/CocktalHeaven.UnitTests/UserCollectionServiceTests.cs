@@ -30,14 +30,11 @@ namespace CocktalHeaven.UnitTests
 		}
 
 		[Test]
-		public async Task AddToFavouriteAsync_ShouldChangeIsFavouriteToTrue()
+		[TestCase("ee0a373c-0c2b-4ea9-a9f4-6e3dece011a5", 2, 3)]
+		public async Task AddToFavouriteAsync_ShouldChangeIsFavouriteToTrue(Guid userId, int cocktailId, int userCollectionId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.userCollectionService = new UserCollectionService(this.repo);
-
-			var userId = Guid.Parse("d79def98-a398-4562-bdaf-656e891d95ca");
-			var cocktailId = 2;
-			var userCollectionId = 2;
 
 			await this.userCollectionService.AddToFavouriteAsync(userId, cocktailId);
 
@@ -47,14 +44,11 @@ namespace CocktalHeaven.UnitTests
 		}
 
 		[Test]
-		public async Task AddToTriedAsync_ShouldChangeHasTriedToTrue()
+		[TestCase("d79def98-a398-4562-bdaf-656e891d95ca", 2, 2)]
+		public async Task AddToTriedAsync_ShouldChangeHasTriedToTrue(Guid userId, int cocktailId, int userCollectionId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.userCollectionService = new UserCollectionService(this.repo);
-
-			var userId = Guid.Parse("d79def98-a398-4562-bdaf-656e891d95ca");
-			var cocktailId = 2;
-			var userCollectionId = 2;
 
 			await this.userCollectionService.AddToTriedAsync(userId, cocktailId);
 
@@ -63,16 +57,12 @@ namespace CocktalHeaven.UnitTests
 			Assert.True(collection.HasTried);
 		}
 
-
 		[Test]
-		public async Task AddToWishlist_ShouldChangeWishlistToTrue()
+		[TestCase("ee0a373c-0c2b-4ea9-a9f4-6e3dece011a5", 2, 3)]
+		public async Task AddToWishlist_ShouldChangeWishlistToTrue(Guid userId, int cocktailId, int userCollectionId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.userCollectionService = new UserCollectionService(this.repo);
-
-			var userId = Guid.Parse("ee0a373c-0c2b-4ea9-a9f4-6e3dece011a5");
-			var cocktailId = 2;
-			var userCollectionId = 3;
 
 			await this.userCollectionService.AddToWishListAsync(userId, cocktailId);
 
@@ -82,134 +72,116 @@ namespace CocktalHeaven.UnitTests
 		}
 
 		[Test]
-		public async Task GetFavouriteCocktailsAsync_ShouldReturnCorrectCount()
+		[TestCase("d79def98-a398-4562-bdaf-656e891d95ca", 1)]
+		[TestCase("ee0a373c-0c2b-4ea9-a9f4-6e3dece011a5", 1)]
+		public async Task GetFavouriteCocktailsAsync_ShouldReturnCorrectCount(Guid userId, int cocktailCount)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.userCollectionService = new UserCollectionService(this.repo);
-
-			var userId = Guid.Parse("d79def98-a398-4562-bdaf-656e891d95ca");
 
 			var favouriteCocktails = await this.userCollectionService.GetFavouriteCocktailsAsync(userId);
-			var expectedCount = 1;
 
-			Assert.That(favouriteCocktails.Count(), Is.EqualTo(expectedCount));
+			Assert.That(favouriteCocktails.Count(), Is.EqualTo(cocktailCount));
 		}
 
 		[Test]
-		public async Task GetTriedCocktailsAsync_ShouldReturnCorrectCount()
+		[TestCase("d79def98-a398-4562-bdaf-656e891d95ca", 1)]
+		[TestCase("ee0a373c-0c2b-4ea9-a9f4-6e3dece011a5", 1)]
+		public async Task GetTriedCocktailsAsync_ShouldReturnCorrectCount(Guid userId, int cocktailCount)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.userCollectionService = new UserCollectionService(this.repo);
-
-			var userId = Guid.Parse("d79def98-a398-4562-bdaf-656e891d95ca");
 
 			var favouriteCocktails = await this.userCollectionService.GetTriedCocktailsAsync(userId);
-			var expectedCount = 1;
 
-			Assert.That(favouriteCocktails.Count(), Is.EqualTo(expectedCount));	
+			Assert.That(favouriteCocktails.Count(), Is.EqualTo(cocktailCount));	
 		}
 
 		[Test]
-		public async Task GetWishlistCocktailsAsync_ShouldReturnCorrectCount()
+		[TestCase("d79def98-a398-4562-bdaf-656e891d95ca", 0)]
+		[TestCase("ee0a373c-0c2b-4ea9-a9f4-6e3dece011a5", 1)]
+		public async Task GetWishlistCocktailsAsync_ShouldReturnCorrectCount(Guid userId, int cocktailCount)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.userCollectionService = new UserCollectionService(this.repo);
-
-			var userId = Guid.Parse("d79def98-a398-4562-bdaf-656e891d95ca");
 
 			var favouriteCocktails = await this.userCollectionService.GetWishlistCocktailsAsync(userId);
-			var expectedCount = 0;
 
-			Assert.That(favouriteCocktails.Count(), Is.EqualTo(expectedCount));
+			Assert.That(favouriteCocktails.Count(), Is.EqualTo(cocktailCount));
 		}
 
 		[Test]
-		public async Task IsCocktailInFavourites_ShouldReturnTrueWhenInCollection()
+		[TestCase("d79def98-a398-4562-bdaf-656e891d95ca", 1)]
+		[TestCase("ee0a373c-0c2b-4ea9-a9f4-6e3dece011a5", 2)]
+		public async Task IsCocktailInFavourites_ShouldReturnTrueWhenInCollection(Guid userId, int cocktailId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.userCollectionService = new UserCollectionService(this.repo);
 
-			var userId = Guid.Parse("d79def98-a398-4562-bdaf-656e891d95ca");
-			var cocktailId = 1;
-			var result = await this.userCollectionService.IsCocktailInFavouritesAsync(userId, cocktailId);
-
-			Assert.True(result);
+			Assert.True(await this.userCollectionService.IsCocktailInFavouritesAsync(userId, cocktailId));
 		
 		}
 
 		[Test]
-		public async Task IsCocktailInTried_ShouldReturnTrueWhenInCollection()
+		[TestCase("d79def98-a398-4562-bdaf-656e891d95ca", 1)]
+		public async Task IsCocktailInTried_ShouldReturnTrueWhenInCollection(Guid userId, int cocktailId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.userCollectionService = new UserCollectionService(this.repo);
 
-			var userId = Guid.Parse("d79def98-a398-4562-bdaf-656e891d95ca");
-			var cocktailId = 1;
-
-			var result = await this.userCollectionService.IsCocktailInTriedAsync(userId, cocktailId);
-
-			Assert.True(result);
+			Assert.True(await this.userCollectionService.IsCocktailInTriedAsync(userId, cocktailId));
 		}
 
 
 		[Test]
-		public async Task IsCocktailInWishlist_ShouldReturnFalseWhenNotInCollection()
+		[TestCase("d79def98-a398-4562-bdaf-656e891d95ca", 1)]
+		public async Task IsCocktailInWishlist_ShouldReturnFalseWhenNotInCollection(Guid userId, int cocktailId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.userCollectionService = new UserCollectionService(this.repo);
 
-			var userId = Guid.Parse("d79def98-a398-4562-bdaf-656e891d95ca");
-			var cocktailId = 1;
-
-			var result = await this.userCollectionService.IsCocktailInWishListAsync(userId, cocktailId);
-
-			Assert.False(result);
+			Assert.False(await this.userCollectionService.IsCocktailInWishListAsync(userId, cocktailId));
 		}
 
 		[Test]
-		public async Task RemoveFromFavouriteAsync_ShouldSetBooleanToNull()
+		[TestCase("d79def98-a398-4562-bdaf-656e891d95ca", 1, 1)]
+		[TestCase("ee0a373c-0c2b-4ea9-a9f4-6e3dece011a5", 2, 3)]
+		public async Task RemoveFromFavouriteAsync_ShouldSetBooleanToNull(Guid userId, int cocktailId, int userCollectionId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.userCollectionService = new UserCollectionService(this.repo);
-
-			var userId = Guid.Parse("d79def98-a398-4562-bdaf-656e891d95ca");
-			var cocktailId = 1;
 
 			await this.userCollectionService.RemoveFromFavouriteAsync(userId, cocktailId);
 
-			var collection = await this.repo.GetByIdAsync<UserCollection>(1);
+			var collection = await this.repo.GetByIdAsync<UserCollection>(userCollectionId);
 
 			Assert.Null(collection.IsFavourite); 
 		}
 
 		[Test]
-		public async Task RemoveFromTriedAsync_ShouldSetBooleanToNull()
+		[TestCase("d79def98-a398-4562-bdaf-656e891d95ca", 1, 1)]
+		public async Task RemoveFromTriedAsync_ShouldSetBooleanToNull(Guid userId, int cocktailId, int userCollectionId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.userCollectionService = new UserCollectionService(this.repo);
 
-			var userId = Guid.Parse("d79def98-a398-4562-bdaf-656e891d95ca");
-			var cocktailId = 1;
-
 			await this.userCollectionService.RemoveFromTriedAsync(userId, cocktailId);
 
-			var collection = await this.repo.GetByIdAsync<UserCollection>(1);
+			var collection = await this.repo.GetByIdAsync<UserCollection>(userCollectionId);
 
 			Assert.Null(collection.HasTried);
 		}
 
 		[Test]
-		public async Task RemoveFromWishList_ShouldSetBooleanToNull()
+		[TestCase("ee0a373c-0c2b-4ea9-a9f4-6e3dece011a5", 2, 3)]
+		public async Task RemoveFromWishList_ShouldSetBooleanToNull(Guid userId, int cocktailId, int userCollectionId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.userCollectionService = new UserCollectionService(this.repo);
 
-			var userId = Guid.Parse("ee0a373c-0c2b-4ea9-a9f4-6e3dece011a5");
-			var cocktailId = 2;
-
 			await this.userCollectionService.RemoveFromWishListAsync(userId, cocktailId);
 
-			var collection = await this.repo.GetByIdAsync<UserCollection>(3);
+			var collection = await this.repo.GetByIdAsync<UserCollection>(userCollectionId);
 
 			Assert.Null(collection.WishList);
 		}

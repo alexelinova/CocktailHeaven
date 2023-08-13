@@ -35,10 +35,9 @@ namespace CocktalHeaven.UnitTests
 			this.repo = new CocktailHeavenRepository(dbContext);
 			this.categoryService = new CategoryService(repo);
 
-			var categories = await this.categoryService.GetAllCategoriesAsync();
 			var expectedCategoriesCount = 2;
 			
-			Assert.That(categories.Count(), Is.EqualTo(expectedCategoriesCount));
+			Assert.That((await categoryService.GetAllCategoriesAsync()).Count(), Is.EqualTo(expectedCategoriesCount));
 		}
 
 		[TearDown]

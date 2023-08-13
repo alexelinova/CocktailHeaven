@@ -7,6 +7,7 @@ using CocktailHeaven.Infrastructure.Data;
 using CocktailHeaven.Infrastructure.Data.Common;
 using CocktailHeaven.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Primitives;
 
 namespace CocktalHeaven.UnitTests
 {
@@ -37,10 +38,9 @@ namespace CocktalHeaven.UnitTests
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.cocktailService = new CocktailService(this.repo);
 
-			var count = await this.cocktailService.CocktailCountAsync();
 			var expectedResult = 2;
 
-			Assert.That(count, Is.EqualTo(expectedResult));
+			Assert.That(await this.cocktailService.CocktailCountAsync(), Is.EqualTo(expectedResult));
 		}
 
 		[Test]
@@ -104,14 +104,15 @@ namespace CocktalHeaven.UnitTests
 		}
 
 		[Test]
-		public void Delete_ShouldThrowAnExceptionWithInvalidId()
+		[TestCase(100)]
+		[TestCase(101)]
+		public void Delete_ShouldThrowAnExceptionWithInvalidId(int cocktailId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.cocktailService = new CocktailService(this.repo);
 
-			int nonExistentId = 3;
 
-			Assert.ThrowsAsync<ArgumentException>(async () => await this.cocktailService.Delete(nonExistentId));
+			Assert.ThrowsAsync<ArgumentException>(async () => await this.cocktailService.Delete(cocktailId));
 		}
 
 		[Test]
@@ -177,54 +178,48 @@ namespace CocktalHeaven.UnitTests
 		}
 
 		[Test]
-		public async Task ExistsByIdAsync_ShouldReturnTrueWithValidId()
+		[TestCase(1)]
+		[TestCase(2)]
+		public async Task ExistsByIdAsync_ShouldReturnTrueWithValidId(int cocktailId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.cocktailService = new CocktailService(this.repo);
 
-			var result = await this.cocktailService.ExistsByIdAsync(1);
-
-			Assert.True(result);
+			Assert.True(await this.cocktailService.ExistsByIdAsync(cocktailId));
 		}
 
 		[Test]
-		public async Task ExistsByIdAsync_ShouldReturnFalseWithInvalidId()
+		[TestCase(100)]
+		[TestCase(101)]
+		public async Task ExistsByIdAsync_ShouldReturnFalseWithInvalidId(int cocktailId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.cocktailService = new CocktailService(this.repo);
 
-			var nonExistentId = 3;
-			var result = await this.cocktailService.ExistsByIdAsync(nonExistentId);
-
-			Assert.False(result);
+			Assert.False(await this.cocktailService.ExistsByIdAsync(cocktailId));
 		}
 
 		[Test]
-		public async Task GetCocktailCategoryAsync_ShouldReturnValidCategoryId()
+		[TestCase(1, 1)]
+		[TestCase(2, 1)]
+		public async Task GetCocktailCategoryAsync_ShouldReturnValidCategoryId(int cocktailId, int categoryId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.cocktailService = new CocktailService(this.repo);
 
-			var categoryId = await this.cocktailService.GetCocktailCategoryAsync(1);
-			var expectedResult = 1;
-
-			Assert.That(categoryId, Is.EqualTo(expectedResult));
+			Assert.That(await this.cocktailService.GetCocktailCategoryAsync(cocktailId), Is.EqualTo(categoryId));
 		}
 
 
 		[Test]
-		public async Task GetCocktailDetailsAsync_ShouldReturnCorrectCount()
+		[TestCase(1, 1, 1)]
+		[TestCase(2, 2, 0)]
+		public async Task GetCocktailDetailsAsync_ShouldReturnCorrectCount(int pageNum, int itemsPerPage, int count)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.cocktailService = new CocktailService(this.repo);
 
-			var pageNum = 1;
-			var itemsPerPage = 1;
-
-			var cocktails = await this.cocktailService.GetCocktailDetailsAsync(pageNum, itemsPerPage);
-			var expectedResult = 1;
-
-			Assert.That(cocktails.Count(), Is.EqualTo(expectedResult));
+			Assert.That((await this.cocktailService.GetCocktailDetailsAsync(pageNum, itemsPerPage)).Count(), Is.EqualTo(count));
 		}
 
 		[Test]
@@ -233,9 +228,7 @@ namespace CocktalHeaven.UnitTests
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.cocktailService = new CocktailService(this.repo);
 
-			var result = await this.cocktailService.GetRandomCocktailAsync();
-
-			Assert.NotNull(result);
+			Assert.NotNull(await this.cocktailService.GetRandomCocktailAsync());
 		}
 
 		[Test]
@@ -254,37 +247,35 @@ namespace CocktalHeaven.UnitTests
 		}
 
 		[Test]
-		public async Task GetCocktailByIdAsync_ShouldReturnCorrectCocktail()
+		[TestCase(1, "Mojito")]
+		[TestCase(2, "Bloody Mary")]
+		public async Task GetCocktailByIdAsync_ShouldReturnCorrectCocktail(int cocktailId, string cocktailName)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.cocktailService = new CocktailService(this.repo);
 
-			var cocktail = await this.cocktailService.GetCocktailByIdAsync(1);
-			var expectedCocktailName = "Mojito";
-			var expectedId = 1;
+			var cocktail = await this.cocktailService.GetCocktailByIdAsync(cocktailId);
 
-			Assert.That(cocktail.Id, Is.EqualTo(expectedId));
-			Assert.That(cocktail.Name, Is.EqualTo(expectedCocktailName));
+			Assert.That(cocktail.Id, Is.EqualTo(cocktailId));
+			Assert.That(cocktail.Name, Is.EqualTo(cocktailName));
 		}
 
 		[Test]
-		public async Task Search_ShouldReturnCorrectCocktailWithValidCriteria()
+		public async Task Search_ShouldReturnCocktailByCocktailName()
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.cocktailService = new CocktailService(this.repo);
 
+			var queryString = "Bloody Mary";
+			var searchCriteria = SearchCriteria.CocktailName;
 			var pageNum = 1;
 			var itemsPerPage = 1;
 
-			var result = await this.cocktailService.Search("Bloody Mary", SearchCriteria.CocktailName, null, pageNum, itemsPerPage);
-			var resultCocktail = result.Cocktails.FirstOrDefault();
+			var result = await this.cocktailService.Search(queryString, searchCriteria, null, pageNum, itemsPerPage);
 
-			var expectedCocktailName = "Bloody Mary";
-			var expectedCocktailCount = 1;
-
-			Assert.That(result.Cocktails.Count(), Is.EqualTo(expectedCocktailCount));
-			Assert.NotNull(resultCocktail);
-			Assert.That(resultCocktail.Name, Is.EqualTo(expectedCocktailName));
+			Assert.NotNull(result.Cocktails);
+			Assert.That(result.Cocktails.Count(), Is.EqualTo(1));
+			Assert.That(result.Cocktails.First().Name, Is.EqualTo(queryString));
 		}
 
 		[Test]
@@ -295,9 +286,9 @@ namespace CocktalHeaven.UnitTests
 
 			var pageNum = 1;
 			var itemsPerPage = 1;
-			var searchCriteria = SearchCriteria.CocktailName;
-			var nonExistentCocktail = "Pina Colada";
-			var result = await this.cocktailService.Search(nonExistentCocktail, searchCriteria, null, pageNum, itemsPerPage);
+			var searchCriteria = SearchCriteria.Ingredient;
+			var nonExistentIngredient = "Soda";
+			var result = await this.cocktailService.Search(nonExistentIngredient, searchCriteria, null, pageNum, itemsPerPage);
 
 			Assert.NotNull(result.Cocktails);
 			Assert.That(result.Cocktails.Count(), Is.EqualTo(0));

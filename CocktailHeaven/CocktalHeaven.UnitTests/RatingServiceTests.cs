@@ -51,76 +51,63 @@ namespace CocktalHeaven.UnitTests
 			rating!.IsDeleted = true;
 			await this.repo.SaveChangesAsync();
 
-			var ratings = await this.ratingService.GetAllRatingsAsync();
 			var expectedCount = 2;
 
-			Assert.That(ratings.Count(), Is.EqualTo(expectedCount));
+			Assert.That((await this.ratingService.GetAllRatingsAsync()).Count(), Is.EqualTo(expectedCount));
 		}
 
 		[Test]
-		public async Task RateAsync_ShouldChangeExistingRatingIfAny()
+		[TestCase(2, "6ca0143e-aa95-4956-a0c5-def1ec3394e2", 4, "no comment", 1, 3 )]
+		[TestCase(1, "6ca0143e-aa95-4956-a0c5-def1ec3394e2", 5, "no comment", 3, 3)]
+		public async Task RateAsync_ShouldChangeExistingRatingIfAny(int cocktailId, Guid userId, int value, string? comment, int ratingId, int ratingCount)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.ratingService = new RatingService(this.repo);
 
-			var userId = Guid.Parse("6ca0143e-aa95-4956-a0c5-def1ec3394e2");
-			var cocktaiId = 2;
+			await this.ratingService.RateAsync(cocktailId, userId, value, comment);
+			var rating = await this.repo.GetByIdAsync<Rating>(ratingId);
 
-			await this.ratingService.RateAsync(cocktaiId, userId, 4, "no comment");
-
-			var rating = await this.repo.GetByIdAsync<Rating>(1);
-			var expectedValue = 4;
-			var expectedComment = "no comment";
-			var expectedRatingCount = 3;
-
-			Assert.That(rating.Value, Is.EqualTo(expectedValue));
-			Assert.That(rating.Comment, Is.EqualTo(expectedComment));
-			Assert.That(this.repo.AllReadonly<Rating>().Count, Is.EqualTo(expectedRatingCount));
+			Assert.That(rating.Value, Is.EqualTo(value));
+			Assert.That(rating.Comment, Is.EqualTo(comment));
+			Assert.That(this.repo.AllReadonly<Rating>().Count, Is.EqualTo(ratingCount));
 		}
 
 		[Test]
-		public async Task RateAsync_ShouldCreateRatingIfNoneExists()
+		[TestCase(10, "6ca0143e-aa95-4956-a0c5-def1ec3394e2", 2, "Amazing", 4, 4)]
+		[TestCase(9, "6ca0143e-aa95-4956-a0c5-def1ec3394e2", 5, "no comment", 4, 4)]
+		public async Task RateAsync_ShouldCreateRatingIfNoneExists(int cocktailId, Guid userId, int value, string? comment, int ratingId, int ratingCount)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.ratingService = new RatingService(this.repo);
 
-			var userId = Guid.Parse("6ca0143e-aa95-4956-a0c5-def1ec3394e2");
-			var cocktaiId = 10;
+			await this.ratingService.RateAsync(cocktailId, userId, value, comment);
+			var rating = await this.repo.GetByIdAsync<Rating>(ratingId);
 
-			await this.ratingService.RateAsync(cocktaiId, userId, 1, "new Rating");
-
-			var rating = await this.repo.GetByIdAsync<Rating>(4);
-			var expectedValue = 1;
-			var expectedComment = "new Rating";
-			var expectedRatingCount = 4;
-
-			Assert.That(rating.Value, Is.EqualTo(expectedValue));
-			Assert.That(rating.Comment, Is.EqualTo(expectedComment));
-			Assert.That(this.repo.AllReadonly<Rating>().Count, Is.EqualTo(expectedRatingCount));
+			Assert.That(rating.Value, Is.EqualTo(value));
+			Assert.That(rating.Comment, Is.EqualTo(comment));
+			Assert.That(this.repo.AllReadonly<Rating>().Count, Is.EqualTo(ratingCount));
 		}
 
 		[Test]
-		public async Task RatingExistsAsync_ShouldReturnTrueWithValidId()
+		[TestCase(1)]
+		[TestCase(3)]
+		public async Task RatingExistsAsync_ShouldReturnTrueWithValidId(int ratingId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.ratingService = new RatingService(this.repo);
 
-			var existingId = 1;
-			var result = await this.ratingService.RatingExistsAsync(existingId);
-
-			Assert.True(result);
+			Assert.True(await this.ratingService.RatingExistsAsync(ratingId));
 		}
 
 		[Test]
-		public async Task RatingExistsAsync_ShouldReturnFalseWithInvalidId()
+		[TestCase(100)]
+		[TestCase(-5)]
+		public async Task RatingExistsAsync_ShouldReturnFalseWithInvalidId(int ratingId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.ratingService = new RatingService(this.repo);
 
-			var nonExistentId = 5;
-			var result = await this.ratingService.RatingExistsAsync(nonExistentId);
-
-			Assert.False(result);
+			Assert.False(await this.ratingService.RatingExistsAsync(ratingId));
 		}
 
 		[TearDown]
