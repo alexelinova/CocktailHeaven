@@ -85,7 +85,7 @@ namespace CocktalHeaven.UnitTests
 		}
 
 		[Test]
-		public async Task Delete_ShouldSetIsDeletedToTrue()
+		public async Task DeleteAsync_ShouldSetIsDeletedToTrue()
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.cocktailService = new CocktailService(this.repo);
@@ -106,7 +106,7 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		[TestCase(100)]
 		[TestCase(101)]
-		public void Delete_ShouldThrowAnExceptionWithInvalidId(int cocktailId)
+		public void DeleteAsync_ShouldThrowAnExceptionWithInvalidId(int cocktailId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.cocktailService = new CocktailService(this.repo);
@@ -116,7 +116,7 @@ namespace CocktalHeaven.UnitTests
 		}
 
 		[Test]
-		public async Task Edit_ShouldUpdateCocktailPropertiesAndIngredients()
+		public async Task EditAync_ShouldUpdateCocktailPropertiesAndIngredients()
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.cocktailService = new CocktailService(this.repo);
@@ -200,6 +200,28 @@ namespace CocktalHeaven.UnitTests
 		}
 
 		[Test]
+		[TestCase("Bloody Mary")]
+		[TestCase("Mojito")]
+		public async Task ExistsByNameAsync_ShouldReturnTrueWithValidName(string cocktailName)
+		{
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.cocktailService = new CocktailService(this.repo);
+
+			Assert.True(await this.cocktailService.ExistsByNameAsync(cocktailName));
+		}
+
+		[Test]
+		[TestCase("Irish Coffee")]
+		[TestCase("Margarita")]
+		public async Task ExistsByNameAsync_ShouldReturnFalseWithInValidName(string cocktailName)
+		{
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.cocktailService = new CocktailService(this.repo);
+
+			Assert.False(await this.cocktailService.ExistsByNameAsync(cocktailName));
+		}
+
+		[Test]
 		[TestCase(1, 1)]
 		[TestCase(2, 1)]
 		public async Task GetCocktailCategoryAsync_ShouldReturnValidCategoryId(int cocktailId, int categoryId)
@@ -261,7 +283,7 @@ namespace CocktalHeaven.UnitTests
 		}
 
 		[Test]
-		public async Task Search_ShouldReturnCocktailByCocktailName()
+		public async Task SearchAsync_ShouldReturnCocktailByCocktailName()
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.cocktailService = new CocktailService(this.repo);
@@ -279,7 +301,7 @@ namespace CocktalHeaven.UnitTests
 		}
 
 		[Test]
-		public async Task Search_ShouldReturnEmptyCollectionWithInvalidCriteria()
+		public async Task SearchAsync_ShouldReturnEmptyCollectionWithInvalidCriteria()
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.cocktailService = new CocktailService(this.repo);
