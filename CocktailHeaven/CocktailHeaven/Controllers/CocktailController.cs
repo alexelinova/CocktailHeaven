@@ -40,8 +40,16 @@ namespace CocktailHeaven.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Cocktail Editor")]
 		public async Task<IActionResult> Create(CocktailFormModel model)
 		{
+			if (await this.cocktailService.ExistsByNameAsync(model.Name))
+			{
+				this.TempData[ErrorMessage] = ErrorMessageCocktailExists;
+				model.Categories = await this.categoryService.GetAllCategoriesAsync();
+				return this.View(model);
+			}
+
 			if (!this.ModelState.IsValid)
 			{
 				model.Categories = await this.categoryService.GetAllCategoriesAsync();
@@ -49,9 +57,9 @@ namespace CocktailHeaven.Controllers
 			}
 
 			var userId = this.User.Id();
-			await this.cocktailService.CreateCocktailAsync(model, userId);
+			var id = await this.cocktailService.CreateCocktailAsync(model, userId);
 
-			return this.RedirectToAction("Index", "Home");
+			return this.RedirectToAction(nameof(ShowMore), new { id });
 		}
 
 		[Authorize(Roles = "Cocktail Editor")]
@@ -98,7 +106,7 @@ namespace CocktailHeaven.Controllers
 				return this.View(model);
 			}
 
-			await this.cocktailService.Edit(model, model.Id);
+			await this.cocktailService.EditAsync(model, model.Id);
 
 			return this.RedirectToAction(nameof(ShowMore), new { model.Id });
 		}
@@ -113,7 +121,7 @@ namespace CocktailHeaven.Controllers
 				return this.RedirectToAction(nameof(All));
 			}
 
-			await this.cocktailService.Delete(id);
+			await this.cocktailService.DeleteAsync(id);
 
 			return this.RedirectToAction(nameof(All));
 		}

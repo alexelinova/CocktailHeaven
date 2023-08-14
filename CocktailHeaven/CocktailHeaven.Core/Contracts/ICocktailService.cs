@@ -5,9 +5,11 @@ namespace CocktailHeaven.Core.Contracts
 {
 	public interface ICocktailService
 	{
-		Task CreateCocktailAsync(CocktailFormModel model, Guid userId);
+		Task<int> CreateCocktailAsync(CocktailFormModel model, Guid userId);
 
 		Task<bool> ExistsByIdAsync(int cocktailId);
+
+		Task<bool> ExistsByNameAsync(string cocktailName);
 
 		Task<CocktailFullModel> GetRandomCocktailAsync();
 
@@ -21,10 +23,10 @@ namespace CocktailHeaven.Core.Contracts
 
 		Task<int> GetCocktailCategoryAsync(int cocktailId);
 
-		Task Edit(CocktailEditModel model, int cocktailId);
+		Task EditAsync(CocktailEditModel model, int cocktailId);
 
-		Task Delete(int cocktailId);
+		Task DeleteAsync(int cocktailId);
 
-		Task<SearchViewModel> Search(string? queryString, SearchCriteria? searchCriteria, string? categoryName, int currentPage, int itemsPerPage);
+		Task<SearchViewModel> SearchAsync(string? queryString, SearchCriteria? searchCriteria, string? categoryName, int currentPage, int itemsPerPage);
 	}
 }

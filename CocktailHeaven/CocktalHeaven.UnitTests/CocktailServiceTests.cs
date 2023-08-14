@@ -18,7 +18,7 @@ namespace CocktalHeaven.UnitTests
 		private CocktailHeavenDbContext dbContext;
 
 		[SetUp]
-		public void Setup()
+		public async Task Setup()
 		{
 			var contextOptions = new DbContextOptionsBuilder<CocktailHeavenDbContext>()
 				.UseInMemoryDatabase("CocktailDb")
@@ -29,7 +29,7 @@ namespace CocktalHeaven.UnitTests
 			this.dbContext.Database.EnsureDeleted();
 			this.dbContext.Database.EnsureCreated();
 
-			SeedTestData();
+			await this.SeedTestData();
 		}
 
 		[Test]
@@ -90,7 +90,7 @@ namespace CocktalHeaven.UnitTests
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.cocktailService = new CocktailService(this.repo);
 
-			await this.cocktailService.Delete(1);
+			await this.cocktailService.DeleteAsync(1);
 			var deletedCocktail = await this.repo.AllReadonly<Cocktail>(c => c.Id == 1)
 				.Include(c => c.Image)
 				.Include(c => c.Ratings)
@@ -112,7 +112,7 @@ namespace CocktalHeaven.UnitTests
 			this.cocktailService = new CocktailService(this.repo);
 
 
-			Assert.ThrowsAsync<ArgumentException>(async () => await this.cocktailService.Delete(cocktailId));
+			Assert.ThrowsAsync<ArgumentException>(async () => await this.cocktailService.DeleteAsync(cocktailId));
 		}
 
 		[Test]
@@ -146,7 +146,7 @@ namespace CocktalHeaven.UnitTests
 
 			await this.repo.SaveChangesAsync();
 
-			await this.cocktailService.Edit(newCocktailDetails, 1);
+			await this.cocktailService.EditAsync(newCocktailDetails, 1);
 
 			var updatedCocktail = await this.repo
 				.AllReadonly<Cocktail>(uc => uc.Id == 1)
@@ -271,7 +271,7 @@ namespace CocktalHeaven.UnitTests
 			var pageNum = 1;
 			var itemsPerPage = 1;
 
-			var result = await this.cocktailService.Search(queryString, searchCriteria, null, pageNum, itemsPerPage);
+			var result = await this.cocktailService.SearchAsync(queryString, searchCriteria, null, pageNum, itemsPerPage);
 
 			Assert.NotNull(result.Cocktails);
 			Assert.That(result.Cocktails.Count(), Is.EqualTo(1));
@@ -288,7 +288,7 @@ namespace CocktalHeaven.UnitTests
 			var itemsPerPage = 1;
 			var searchCriteria = SearchCriteria.Ingredient;
 			var nonExistentIngredient = "Soda";
-			var result = await this.cocktailService.Search(nonExistentIngredient, searchCriteria, null, pageNum, itemsPerPage);
+			var result = await this.cocktailService.SearchAsync(nonExistentIngredient, searchCriteria, null, pageNum, itemsPerPage);
 
 			Assert.NotNull(result.Cocktails);
 			Assert.That(result.Cocktails.Count(), Is.EqualTo(0));
@@ -300,7 +300,7 @@ namespace CocktalHeaven.UnitTests
 			dbContext.Dispose();
 		}
 
-		private async void SeedTestData()
+		private async Task SeedTestData()
 		{
 			var categories = new List<Category>()
 			{

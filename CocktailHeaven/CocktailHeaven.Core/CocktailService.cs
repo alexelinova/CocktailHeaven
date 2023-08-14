@@ -24,7 +24,7 @@ namespace CocktailHeaven.Core
 			return await this.repo.AllReadonly<Cocktail>().CountAsync();
 		}
 
-		public async Task CreateCocktailAsync(CocktailFormModel model, Guid userId)
+		public async Task<int> CreateCocktailAsync(CocktailFormModel model, Guid userId)
 		{
 			var cocktail = new Cocktail()
 			{
@@ -61,13 +61,20 @@ namespace CocktailHeaven.Core
 
 			await this.repo.AddAsync(cocktail);
 			await this.repo.SaveChangesAsync();
+
+			var id = await this.repo
+				.AllReadonly<Cocktail>(c => c.Name == cocktail.Name && c.IsDeleted == false)
+				.Select(c => c.Id).FirstOrDefaultAsync();
+
+			return id;
 		}
 
-		public async Task Delete(int cocktailId)
+		public async Task DeleteAsync(int cocktailId)
 		{
 			var cocktail = await this.repo
 				.All<Cocktail>(c => c.Id == cocktailId && c.IsDeleted == false)
 				.Include(c => c.Image)
+				.Include(c => c.Ingredients)
 				.Include(c => c.Ratings)
 				.FirstOrDefaultAsync();
 
@@ -85,6 +92,11 @@ namespace CocktailHeaven.Core
 				cocktail.Image.IsDeleted = true;
 			}
 
+			foreach (var cocktailIngredient in cocktail.Ingredients)
+			{
+				cocktailIngredient.isDeleted = true;
+			}
+
 			foreach (var rating in cocktail.Ratings)
 			{
 				rating.IsDeleted = true;
@@ -94,7 +106,7 @@ namespace CocktailHeaven.Core
 			await this.repo.SaveChangesAsync();
 		}
 
-		public async Task Edit(CocktailEditModel model, int cocktailId)
+		public async Task EditAsync(CocktailEditModel model, int cocktailId)
 		{
 			var cocktail = await this.repo.All<Cocktail>(c => c.Id == cocktailId)
 				.Include(c => c.Image)
@@ -166,6 +178,12 @@ namespace CocktailHeaven.Core
 		{
 			return await this.repo.AllReadonly<Cocktail>()
 				.AnyAsync(c => c.IsDeleted == false && c.Id == cocktailId);
+		}
+
+		public async Task<bool> ExistsByNameAsync(string cocktailName)
+		{
+			return await this.repo.AllReadonly<Cocktail>()
+				.AnyAsync(c => c.IsDeleted == false && c.Name == cocktailName);
 		}
 
 		public async Task<CocktailFullModel> GetCocktailByIdAsync(int id)
@@ -285,7 +303,7 @@ namespace CocktailHeaven.Core
 				.ToListAsync();
 		}
 
-		public async Task<SearchViewModel> Search(string? queryString, SearchCriteria? searchCriteria, string? categoryName, int currentPage, int itemsPerPage)
+		public async Task<SearchViewModel> SearchAsync(string? queryString, SearchCriteria? searchCriteria, string? categoryName, int currentPage, int itemsPerPage)
 		{
 			var result = new SearchViewModel();
 

@@ -47,7 +47,7 @@
 	<div class="d-flex flex-row">
 		@if (User.IsInRole("Cocktail Editor"))
 		{
-			<form asp-controller="Cocktail" asp-action="Delete" asp-route-id="@Model.Cocktail.Id" method="post">
+			<form asp-controller="Cocktail" asp-action="Delete" asp-route-id="@Model.Cocktail.Id" method="post" onclick="return confirm('Are you sure you want to delete: @(Model.Cocktail.Name)?')">
 				<button type="submit" class="me-2 mb-3 btn btn-warning">Delete</button>
 			</form>
 			<a asp-controller="Cocktail" asp-action="Edit" asp-route-id="@Model.Cocktail.Id" class="me-2 mb-3 btn btn-success">Edit</a>

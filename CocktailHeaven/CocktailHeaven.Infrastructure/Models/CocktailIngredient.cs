@@ -21,5 +21,7 @@ namespace CocktailHeaven.Infrastructure.Models
 
         [MaxLength(MaxNoteLength)]
         public string? Note { get; set; }
+
+        public bool isDeleted { get; set; } = false;
     }
 }

@@ -69,6 +69,7 @@
 			public const string SuccessMessage = "SuccessMessage";
 
             public const string ErrorMessageCocktail = "Cocktail does not exist";
+            public const string ErrorMessageCocktailExists = "A cocktail with the same name already exists. The cocktail cannot be saved";
             public const string ErrorMessageRandomCocktail = "Could not find a cocktail";
             public const string ErrorMessageRating = "Rating does not exist";
 			public const string ErrorMessageUser = "User does not exist";

@@ -29,9 +29,9 @@ namespace CocktalHeaven.UnitTests
 			this.dbContext.Database.EnsureDeleted();
 			this.dbContext.Database.EnsureCreated();
 
-			SeedTestData();
+			await this.SeedTestData();
 
-			mockUserManager = new Mock<UserManager<ApplicationUser>>(
+			this.mockUserManager = new Mock<UserManager<ApplicationUser>>(
 			   Mock.Of<IUserStore<ApplicationUser>>(), null, null, null, null, null, null, null, null);
 		}
 
@@ -98,7 +98,7 @@ namespace CocktalHeaven.UnitTests
 			dbContext.Dispose();
 		}
 
-		private void SeedTestData()
+		private async Task SeedTestData()
 		{
 			var users = new List<ApplicationUser>()
 		   {
@@ -125,8 +125,8 @@ namespace CocktalHeaven.UnitTests
 			   }
 		   };
 
-			this.dbContext.AddRangeAsync(users);
-			this.dbContext.SaveChangesAsync();
+			await this.dbContext.AddRangeAsync(users);
+			await this.dbContext.SaveChangesAsync();
 		}
 	}
 }

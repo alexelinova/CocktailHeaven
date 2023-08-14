@@ -15,7 +15,7 @@ namespace CocktalHeaven.UnitTests
 		private CocktailHeavenDbContext dbContext;
 
 		[SetUp]
-		public void Setup()
+		public async Task Setup()
 		{
 			var contextOptions = new DbContextOptionsBuilder<CocktailHeavenDbContext>()
 				.UseInMemoryDatabase("CocktailDb")
@@ -26,7 +26,7 @@ namespace CocktalHeaven.UnitTests
 			this.dbContext.Database.EnsureDeleted();
 			this.dbContext.Database.EnsureCreated();
 
-			SeedTestData();
+			await this.SeedTestData();
 		}
 
 		[Test]
@@ -46,7 +46,7 @@ namespace CocktalHeaven.UnitTests
 			dbContext.Dispose();
 		}
 
-		private async void SeedTestData()
+		private async Task SeedTestData()
 		{
 			var categories = new List<Category>()
 			{

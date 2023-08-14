@@ -18,7 +18,7 @@ namespace CocktailHeaven.Controllers
 		{
 			const int itemsPerPage = 5;
 
-			var viewModel = await this.cocktailService.Search(model.SearchQuery, model.SearchCriteria, model.Category, model.PageNumber, itemsPerPage);
+			var viewModel = await this.cocktailService.SearchAsync(model.SearchQuery, model.SearchCriteria, model.Category, model.PageNumber, itemsPerPage);
 
 			viewModel.Categories = (await this.categoryService.GetAllCategoriesAsync()).Select(c => c.Name).ToList();
 			viewModel.SearchCriteria = model.SearchCriteria;
