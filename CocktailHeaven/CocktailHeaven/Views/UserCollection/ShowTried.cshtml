@@ -36,7 +36,7 @@
 				<h5 class="card-title text-center">@cocktail.Name</h5>
 				<div class="text-center">
 					<a asp-controller="Cocktail" asp-action="ShowMore" asp-route-id="@cocktail.Id" class="btn btn-primary">Details</a>
-					<a asp-controller="UserCollection" asp-action="RemoveFromTriedAsync" asp-route-id="@cocktail.Id" class="btn btn-primary">Remove</a>
+					<a asp-controller="UserCollection" asp-action="RemoveFromTried" asp-route-id="@cocktail.Id" class="btn btn-primary">Remove</a>
 				</div>
 			</div>
 		</div>

@@ -135,7 +135,7 @@ namespace CocktailHeaven.Core
 
 			if (IsEmptyCollectionAsync(userCollection))
 			{
-				await this.repo.DeleteAsync<UserCollection>(userCollection);
+				await this.repo.DeleteAsync<UserCollection>(userCollection.Id);
 			}
 
 			await this.repo.SaveChangesAsync();
@@ -155,7 +155,7 @@ namespace CocktailHeaven.Core
 
 			if (IsEmptyCollectionAsync(userCollection))
 			{
-				await this.repo.DeleteAsync<UserCollection>(userCollection);
+				await this.repo.DeleteAsync<UserCollection>(userCollection.Id);
 			}
 
 			await this.repo.SaveChangesAsync();
@@ -175,7 +175,7 @@ namespace CocktailHeaven.Core
 
 			if (IsEmptyCollectionAsync(userCollection))
 			{
-				await this.repo.DeleteAsync<UserCollection>(userCollection);
+				await this.repo.DeleteAsync<UserCollection>(userCollection.Id);
 			}
 
 			await this.repo.SaveChangesAsync();

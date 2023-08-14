@@ -164,9 +164,17 @@ namespace CocktailHeaven.Controllers
 		[AllowAnonymous]
 		public async Task<IActionResult> RandomCocktail()
 		{
-			var model = await this.cocktailService.GetRandomCocktailAsync();
+			try
+			{
+				var model = await this.cocktailService.GetRandomCocktailAsync();
+				return this.View(model);
+			}
+			catch (ArgumentException ex)
+			{
 
-			return this.View(model);
+				TempData[ErrorMessage] = ex.Message;
+				return RedirectToAction("Home", "Index");
+			}
 		}
 	}
 }
