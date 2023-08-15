@@ -87,3 +87,17 @@ User Management Page - all users are listed in alphabetical order with a Delete 
 
 Role Assignment Page
 ![Role Assignment Page](https://raw.githubusercontent.com/alexelinova/CocktailHeaven/main/Screenshots/AdminAreaAssignandDeleteRoles.png)
+
+## Database Diagram
+
+![DatabaseDiagram](https://raw.githubusercontent.com/alexelinova/CocktailHeaven/main/Screenshots/DataBaseDiagram.png)
+
+
+## Technologies Used
+
+- ASP.NET Core MVC 6.0
+- Entity Framework Core 6.0.14
+- Microsoft SQL Server 
+- HTML, CSS, JavaScript
+- Bootstrap 5, Toastr, Fontawesome
+- NUnit 3.13.3
