@@ -6,6 +6,7 @@ using CocktailHeaven.Core;
 using CocktailHeaven.Infrastructure.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Moq;
+using CocktailHeaven.Infrastructure.Models;
 
 namespace CocktalHeaven.UnitTests
 {
@@ -53,6 +54,17 @@ namespace CocktalHeaven.UnitTests
 			Assert.Null(user.PasswordHash);
 			Assert.Null(user.SecurityStamp);
 			Assert.Null(user.ConcurrencyStamp);
+		}
+
+		[Test]
+		[TestCase("7e7e8760-9c39-406b-9900-5c4f5998815b")]
+		[TestCase("6a727895-2b59-495f-8961-d29fa4c2e28c")]
+		public void DeleteUserAsync_ShouldThrowAnError_WhenIdIsNotValid(Guid userId)
+		{
+			this.repo = new CocktailHeavenRepository(dbContext);
+			this.userService = new UserService(this.repo, mockUserManager.Object);
+
+			Assert.ThrowsAsync<ArgumentException>(async () => await this.userService.DeleteUserAsync(userId));
 		}
 
 		[Test]

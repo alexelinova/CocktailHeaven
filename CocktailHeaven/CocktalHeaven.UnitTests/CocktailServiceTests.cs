@@ -265,6 +265,19 @@ namespace CocktalHeaven.UnitTests
 			Assert.NotNull(await this.cocktailService.GetRandomCocktailAsync());
 		}
 
+
+		[Test]
+		public void GetRandomCocktailAsync_ShouldThrowAnError_WhenCollectionIsEmpty()
+		{
+			this.dbContext.Database.EnsureDeleted();
+			this.dbContext.Database.EnsureCreated();
+
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.cocktailService = new CocktailService(this.repo);
+
+			Assert.ThrowsAsync<ArgumentException>(async () => await this.cocktailService.GetRandomCocktailAsync());
+		}
+
 		[Test]
 		public async Task GetTopRatedCocktailAsync_ReturnsTopThreeHighestRated()
 		{
@@ -295,6 +308,15 @@ namespace CocktalHeaven.UnitTests
 		}
 
 		[Test]
+		public void GetCocktailByIdAsync_ShouldThrowAnError_WhenIdIsNotValid()
+		{ 
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.cocktailService = new CocktailService(this.repo);
+
+			Assert.ThrowsAsync<ArgumentException>(async () => await this.cocktailService.GetCocktailByIdAsync(5));
+		}
+
+		[Test]
 		public async Task SearchAsync_ShouldReturnCocktailByCocktailName()
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
@@ -310,6 +332,22 @@ namespace CocktalHeaven.UnitTests
 			Assert.NotNull(result.Cocktails);
 			Assert.That(result.Cocktails.Count(), Is.EqualTo(1));
 			Assert.That(result.Cocktails.First().Name, Is.EqualTo(queryString));
+		}
+
+		[Test]
+		public async Task SearchAsync_ShouldReturnCocktailsByCategory_WhenSelected()
+		{
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.cocktailService = new CocktailService(this.repo);
+
+			var category = "New Category";
+			var pageNum = 1;
+			var itemsPerPage = 2;
+
+			var result = await this.cocktailService.SearchAsync(null, null, category, pageNum, itemsPerPage);
+
+			Assert.NotNull(result.Cocktails);
+			Assert.That(result.Cocktails.Count(), Is.EqualTo(2));
 		}
 
 		[Test]
@@ -341,13 +379,13 @@ namespace CocktalHeaven.UnitTests
 				new Category()
 				{
 					Id = 1,
-					Name = "NewCategory"
+					Name = "New Category"
 				},
 
 				new Category()
 				{
 					Id = 2,
-					Name = "OldCategory"
+					Name = "Old Category"
 				}
 			};
 

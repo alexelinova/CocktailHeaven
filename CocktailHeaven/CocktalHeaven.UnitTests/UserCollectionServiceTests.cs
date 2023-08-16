@@ -44,6 +44,39 @@ namespace CocktalHeaven.UnitTests
 		}
 
 		[Test]
+		[TestCase("dee00d59-8449-4e75-9594-b2950a0c9d37", 10, 4)]
+		public async Task AddToFavouriteAsync_CreatesUserCollection_WhenNoneExists(Guid userId, int cocktailId, int usercollectionCount)
+		{
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.userCollectionService = new UserCollectionService(this.repo);
+
+			await this.userCollectionService.AddToFavouriteAsync(userId, cocktailId);
+			Assert.That(this.repo.AllReadonly<UserCollection>().Count(), Is.EqualTo(usercollectionCount));
+		}
+
+		[Test]
+		[TestCase("dee00d59-8449-4e75-9594-b2950a0c9d37", 10, 4)]
+		public async Task AddToTried_CreatesUserCollection_WhenNoneExists(Guid userId, int cocktailId, int usercollectionCount)
+		{
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.userCollectionService = new UserCollectionService(this.repo);
+
+			await this.userCollectionService.AddToTriedAsync(userId, cocktailId);
+			Assert.That(this.repo.AllReadonly<UserCollection>().Count(), Is.EqualTo(usercollectionCount));
+		}
+
+		[Test]
+		[TestCase("dee00d59-8449-4e75-9594-b2950a0c9d37", 10, 4)]
+		public async Task AddWishlist_CreatesUserCollection_WhenNoneExists(Guid userId, int cocktailId, int usercollectionCount)
+		{
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.userCollectionService = new UserCollectionService(this.repo);
+
+			await this.userCollectionService.AddToWishListAsync(userId, cocktailId);
+			Assert.That(this.repo.AllReadonly<UserCollection>().Count(), Is.EqualTo(usercollectionCount));
+		}
+
+		[Test]
 		[TestCase("d79def98-a398-4562-bdaf-656e891d95ca", 2, 2)]
 		public async Task AddToTriedAsync_ShouldChangeHasTriedToTrue(Guid userId, int cocktailId, int userCollectionId)
 		{
@@ -119,7 +152,6 @@ namespace CocktalHeaven.UnitTests
 			this.userCollectionService = new UserCollectionService(this.repo);
 
 			Assert.True(await this.userCollectionService.IsCocktailInFavouritesAsync(userId, cocktailId));
-		
 		}
 
 		[Test]
@@ -188,6 +220,36 @@ namespace CocktalHeaven.UnitTests
 			var collection = await this.repo.GetByIdAsync<UserCollection>(userCollectionId);
 
 			Assert.Null(collection.IsFavourite); 
+		}
+
+		[Test]
+		[TestCase("dee00d59-8449-4e75-9594-b2950a0c9d37", 10, 4)]
+		public void RemoveFromFavouriteAsync_ThrowsAnError_WhenCollectionNonExistent(Guid userId, int cocktailId, int userCollectionId)
+		{
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.userCollectionService = new UserCollectionService(this.repo);
+			
+			Assert.ThrowsAsync<ArgumentException>(async () => await this.userCollectionService.RemoveFromFavouriteAsync(userId, cocktailId));
+		}
+
+		[Test]
+		[TestCase("dee00d59-8449-4e75-9594-b2950a0c9d37", 10, 4)]
+		public void RemoveFromTriedAsync_ThrowsAnError_WhenCollectionNonExistent(Guid userId, int cocktailId, int userCollectionId)
+		{
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.userCollectionService = new UserCollectionService(this.repo);
+
+			Assert.ThrowsAsync<ArgumentException>(async () => await this.userCollectionService.RemoveFromTriedAsync(userId, cocktailId));
+		}
+
+		[Test]
+		[TestCase("dee00d59-8449-4e75-9594-b2950a0c9d37", 10, 4)]
+		public void RemoveFromWishlist_ThrowsAnError_WhenCollectionNonExistent(Guid userId, int cocktailId, int userCollectionId)
+		{
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.userCollectionService = new UserCollectionService(this.repo);
+
+			Assert.ThrowsAsync<ArgumentException>(async () => await this.userCollectionService.RemoveFromWishListAsync(userId, cocktailId));
 		}
 
 		[Test]
