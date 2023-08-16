@@ -6,7 +6,6 @@ using CocktailHeaven.Core;
 using CocktailHeaven.Infrastructure.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Moq;
-using CocktailHeaven.Infrastructure.Models;
 
 namespace CocktalHeaven.UnitTests
 {
@@ -14,7 +13,6 @@ namespace CocktalHeaven.UnitTests
 	{
 		private IRepository repo;
 		private IUserService userService;
-		private Mock<UserManager<ApplicationUser>> mockUserManager;
 		private CocktailHeavenDbContext dbContext;
 
 
@@ -31,16 +29,13 @@ namespace CocktalHeaven.UnitTests
 			this.dbContext.Database.EnsureCreated();
 
 			await this.SeedTestData();
-
-			this.mockUserManager = new Mock<UserManager<ApplicationUser>>(
-			   Mock.Of<IUserStore<ApplicationUser>>(), null, null, null, null, null, null, null, null);
 		}
 
 		[Test]
 		public async Task DeleteUserAsync_ShouldSetIsDeletedToTrueAndEraseCustomerData()
 		{
 			this.repo = new CocktailHeavenRepository(dbContext);
-			this.userService = new UserService(this.repo, mockUserManager.Object);
+			this.userService = new UserService(this.repo);
 
 			var userId = Guid.Parse("f79430b5-8b18-41a4-a2de-ce6de80327e8");
 
@@ -62,7 +57,7 @@ namespace CocktalHeaven.UnitTests
 		public void DeleteUserAsync_ShouldThrowAnError_WhenIdIsNotValid(Guid userId)
 		{
 			this.repo = new CocktailHeavenRepository(dbContext);
-			this.userService = new UserService(this.repo, mockUserManager.Object);
+			this.userService = new UserService(this.repo);
 
 			Assert.ThrowsAsync<ArgumentException>(async () => await this.userService.DeleteUserAsync(userId));
 		}
@@ -71,7 +66,7 @@ namespace CocktalHeaven.UnitTests
 		public async Task GetAllUsers_ShouldReturnUsersCorrectCountAndOrder()
 		{
 			this.repo = new CocktailHeavenRepository(dbContext);
-			this.userService = new UserService(this.repo, mockUserManager.Object);
+			this.userService = new UserService(this.repo);
 
 			var users = await this.userService.GetAllUsersAsync();
 			var firstUser = users.First();
@@ -88,7 +83,7 @@ namespace CocktalHeaven.UnitTests
 		public async Task UserExistsAsync_ReturnsTrue_WhenDataIsValid(Guid userId)
 		{
 			this.repo = new CocktailHeavenRepository(dbContext);
-			this.userService = new UserService(this.repo, mockUserManager.Object);
+			this.userService = new UserService(this.repo);
 
 			Assert.True(await this.userService.UserExistsAsync(userId));
 		}
@@ -99,7 +94,7 @@ namespace CocktalHeaven.UnitTests
 		public async Task UserExistsAsync_ReturnsFalse_WithIdIsInvalidOrWhenIsDeletedIsTrue(Guid userId)
 		{
 			this.repo = new CocktailHeavenRepository(dbContext);
-			this.userService = new UserService(this.repo, mockUserManager.Object);
+			this.userService = new UserService(this.repo);
 
 			Assert.False(await this.userService.UserExistsAsync(userId));
 		}
