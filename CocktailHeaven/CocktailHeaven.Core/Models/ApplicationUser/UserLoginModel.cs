@@ -5,6 +5,7 @@ namespace CocktailHeaven.Core.Models.ApplicationUser
     public class UserLoginModel
     {
         [Required]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; } = null!;
 
         [Required]

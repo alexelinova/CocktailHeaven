@@ -9,7 +9,5 @@ namespace CocktailHeaven.Core.Contracts
         Task<IEnumerable<UserViewModel>> GetAllUsersAsync();
 
         Task<bool> UserExistsAsync(Guid userId);
-
-        Task<bool> UserIsInRoleAsync(Guid userId, string roleName);
     }
 }

@@ -21,11 +21,11 @@ namespace CocktailHeaven.Core
 			this.roleManager = roleManager;
 		}
 
-		public async Task AssignRoleAsync(Guid userId, string roleName)
+		public async Task<IdentityResult> AssignRoleAsync(Guid userId, string roleName)
 		{
 			var user = await this.repo.GetByIdAsync<ApplicationUser>(userId);
-
-			await this.userManager.AddToRoleAsync(user, roleName);
+		
+			return await this.userManager.AddToRoleAsync(user, roleName);
 		}
 
 		public async Task<IEnumerable<string>> GetRolesAsync()
@@ -35,11 +35,11 @@ namespace CocktailHeaven.Core
 			return roles;
 		}
 
-		public async Task RemoveUserFromRoleAsync(Guid userId, string roleName)
+		public async Task<IdentityResult> RemoveUserFromRoleAsync(Guid userId, string roleName)
 		{
 			var user = await this.repo.GetByIdAsync<ApplicationUser>(userId);
-
-			await this.userManager.RemoveFromRoleAsync(user, roleName);
+		
+			return await this.userManager.RemoveFromRoleAsync(user, roleName);
 		}
 
 		public async Task<bool> RoleExists(string roleName)

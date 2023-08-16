@@ -36,52 +36,54 @@ namespace CocktailHeaven.Areas.Admin.Controllers
         [HttpPost]
 		public async Task<IActionResult> AssignRole(Guid id, string roleName)
 		{
-            if (await this.userService.UserExistsAsync(id) == false)
-            {
-                TempData[ErrorMessage] = ErrorMessageUser;
-                return this.RedirectToAction(nameof(All));
-            }
-
-            if (await this.roleService.RoleExists(roleName) == false)
-            {
-                TempData[ErrorMessage] = ErrorMessageRole;
+			if (!await this.roleService.RoleExists(roleName))
+			{
+				this.TempData[ErrorMessage] = ErrorMessageRole;
 				return this.RedirectToAction(nameof(All));
 			}
 
-            if(await this.userService.UserIsInRoleAsync(id, roleName))
-            {
-				TempData[ErrorMessage] = ErrorMessageUserInRole;
-				return this.RedirectToAction(nameof(All));
+			try
+			{
+				var result = await this.roleService.AssignRoleAsync(id, roleName);
+
+				if (!result.Succeeded)
+				{
+					this.TempData[ErrorMessage] = string.Join(", ", result.Errors.Select(e => e.Description));
+				}
 			}
+			catch (ArgumentException ex)
+			{
 
-            await this.roleService.AssignRoleAsync(id, roleName);
-
-            return this.RedirectToAction(nameof(All));
+				this.TempData[ErrorMessage] = ex.Message;
+			}
+			
+			return RedirectToAction(nameof(All));
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> DeleteRole(Guid id, string roleName)
 		{
-			if (await this.userService.UserExistsAsync(id) == false)
+			if (!await this.roleService.RoleExists(roleName))
 			{
-				TempData[ErrorMessage] = ErrorMessageUser;
+				this.TempData[ErrorMessage] = ErrorMessageRole;
 				return this.RedirectToAction(nameof(All));
 			}
 
-			if (await this.roleService.RoleExists(roleName) == false)
+			try
 			{
-				TempData[ErrorMessage] = ErrorMessageRole;
-				return this.RedirectToAction(nameof(All));
-			}
+				var result = await this.roleService.RemoveUserFromRoleAsync(id, roleName);
 
-			if (!await this.userService.UserIsInRoleAsync(id, roleName))
+				if (!result.Succeeded)
+				{
+					this.TempData[ErrorMessage] = string.Join(", ", result.Errors.Select(e => e.Description));
+				}
+			}
+			catch (ArgumentException ex)
 			{
-				TempData[ErrorMessage] = ErrorMessageUserNotInRole;
-				return this.RedirectToAction(nameof(All));
-			}
 
-			await this.roleService.RemoveUserFromRoleAsync(id, roleName);
-            
+				this.TempData[ErrorMessage] = ex.Message;
+			}
+			
 			return this.RedirectToAction(nameof(All));
 		}
 	}

@@ -26,18 +26,18 @@ namespace CocktailHeaven.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(UserLoginModel model)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
                 return this.View(model);
             }
 
-            var result = await accountService.SignInUserAsync(model.Email, model.Password);
+            var result = await this.accountService.SignInUserAsync(model.Email, model.Password);
             if (result.Succeeded)
             {
-                return RedirectToAction("Index", "Home");
+                return this.RedirectToAction("Index", "Home");
             }
 
-            ModelState.AddModelError(string.Empty, "Invalid login!");
+            this.ModelState.AddModelError(string.Empty, "Invalid login!");
 
             return this.View(model);
         }
@@ -62,12 +62,12 @@ namespace CocktailHeaven.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register(UserRegisterModel model)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
                 return this.View(model);
             }
 
-            var result = await accountService.RegisterUserAsync(model.UserName, model.Email, model.Password);
+            var result = await this.accountService.RegisterUserAsync(model.UserName, model.Email, model.Password);
 
             if (result.Succeeded)
             {
@@ -76,7 +76,7 @@ namespace CocktailHeaven.Controllers
 
             foreach (var item in result.Errors)
             {
-                ModelState.AddModelError(string.Empty, item.Description);
+                this.ModelState.AddModelError(string.Empty, item.Description);
             }
 
             return this.View(model);

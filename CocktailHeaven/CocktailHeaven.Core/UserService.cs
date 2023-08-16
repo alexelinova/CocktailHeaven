@@ -30,8 +30,12 @@ namespace CocktailHeaven.Core
              .Include(au => au.Ratings)
              .FirstOrDefaultAsync();
 
+            if (user == null)
+            {
+                throw new ArgumentException(ErrorMessageUser);
+            }
 
-            foreach (var userCollection in user!.UserCollection)
+            foreach (var userCollection in user.UserCollection)
             {
                 this.repo.Delete<UserCollection>(userCollection);
             }
@@ -59,7 +63,7 @@ namespace CocktailHeaven.Core
 
         public async Task<IEnumerable<UserViewModel>> GetAllUsersAsync()
         {
-            return await repo.AllReadonly<ApplicationUser>()
+            return await this.repo.AllReadonly<ApplicationUser>()
                 .Where(au => au.IsDeleted == false)
                 .Select(au => new UserViewModel()
                 {
@@ -79,19 +83,5 @@ namespace CocktailHeaven.Core
 
             return user != null;
         }
-
-		public async Task<bool> UserIsInRoleAsync(Guid userId, string roleName)
-		{
-			var user = await this.repo
-			 .AllReadonly<ApplicationUser>(au => au.IsDeleted == false && au.Id == userId)
-			 .FirstOrDefaultAsync();
-
-            if (user == null)
-            {
-                throw new ArgumentException(ErrorMessageUser);
-            }
-
-            return await this.manager.IsInRoleAsync(user, roleName);
-		}
 	}
 }

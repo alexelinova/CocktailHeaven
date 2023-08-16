@@ -12,6 +12,7 @@ namespace CocktailHeaven.Core.Models.ApplicationUser
         [Required]
         [EmailAddress]
         [StringLength(MaxEmailLength, MinimumLength = MinEmailLength)]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; } = null!;
 
         [Required]

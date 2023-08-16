@@ -81,7 +81,7 @@ namespace CocktailHeaven.Controllers
 
 			await this.userCollectionService.AddToWishListAsync(userId, id);
 
-			return RedirectToAction(nameof(ShowWishlist));
+			return this.RedirectToAction(nameof(ShowWishlist));
 		}
 
 	

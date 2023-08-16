@@ -94,7 +94,7 @@ namespace CocktailHeaven.Controllers
 		[Authorize(Roles = "Cocktail Editor")]
 		public async Task<IActionResult> Edit(CocktailEditModel model)
 		{
-			if (!ModelState.IsValid)
+			if (!this.ModelState.IsValid)
 			{
 				model.Categories = await this.categoryService.GetAllCategoriesAsync();
 				return this.View(model);
@@ -172,7 +172,7 @@ namespace CocktailHeaven.Controllers
 			catch (ArgumentException ex)
 			{
 
-				TempData[ErrorMessage] = ex.Message;
+				this.TempData[ErrorMessage] = ex.Message;
 				return RedirectToAction("Home", "Index");
 			}
 		}
