@@ -59,7 +59,7 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		[TestCase(2, "6ca0143e-aa95-4956-a0c5-def1ec3394e2", 4, "no comment", 1, 3 )]
 		[TestCase(1, "6ca0143e-aa95-4956-a0c5-def1ec3394e2", 5, "no comment", 3, 3)]
-		public async Task RateAsync_ShouldChangeExistingRatingIfAny(int cocktailId, Guid userId, int value, string? comment, int ratingId, int ratingCount)
+		public async Task RateAsync_ShouldChangeExistingRating_WhenAnyExists(int cocktailId, Guid userId, int value, string? comment, int ratingId, int ratingCount)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.ratingService = new RatingService(this.repo);
@@ -75,7 +75,7 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		[TestCase(10, "6ca0143e-aa95-4956-a0c5-def1ec3394e2", 2, "Amazing", 4, 4)]
 		[TestCase(9, "6ca0143e-aa95-4956-a0c5-def1ec3394e2", 5, "no comment", 4, 4)]
-		public async Task RateAsync_ShouldCreateRatingIfNoneExists(int cocktailId, Guid userId, int value, string? comment, int ratingId, int ratingCount)
+		public async Task RateAsync_ShouldCreateRating_WhenNoneExists(int cocktailId, Guid userId, int value, string? comment, int ratingId, int ratingCount)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.ratingService = new RatingService(this.repo);
@@ -91,7 +91,7 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		[TestCase(1)]
 		[TestCase(3)]
-		public async Task RatingExistsAsync_ShouldReturnTrueWithValidId(int ratingId)
+		public async Task RatingExistsAsync_ShouldReturnTrue_WhenIdIsValid(int ratingId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.ratingService = new RatingService(this.repo);
@@ -102,7 +102,7 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		[TestCase(100)]
 		[TestCase(-5)]
-		public async Task RatingExistsAsync_ShouldReturnFalseWithInvalidId(int ratingId)
+		public async Task RatingExistsAsync_ShouldReturnFalse_WhenIdIsNotValid(int ratingId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.ratingService = new RatingService(this.repo);

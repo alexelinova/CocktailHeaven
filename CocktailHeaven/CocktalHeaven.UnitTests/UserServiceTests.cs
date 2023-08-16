@@ -73,7 +73,7 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		[TestCase("f79430b5-8b18-41a4-a2de-ce6de80327e8")]
 		[TestCase("af453050-445f-4568-8191-2959dbdfd0ab")]
-		public async Task UserExistsAsync_ReturnsTrueWithValidData(Guid userId)
+		public async Task UserExistsAsync_ReturnsTrue_WhenDataIsValid(Guid userId)
 		{
 			this.repo = new CocktailHeavenRepository(dbContext);
 			this.userService = new UserService(this.repo, mockUserManager.Object);
@@ -84,7 +84,7 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		[TestCase("4a890480-eb7c-4b19-aa0f-c444f2286df9")]
 		[TestCase("9e495133-4a0a-44e8-8482-7249cb2e67bb")]
-		public async Task UserExistsAsync_ReturnsFalseWithInvalidIdOrWhenIsDeletedIsTrue(Guid userId)
+		public async Task UserExistsAsync_ReturnsFalse_WithIdIsInvalidOrWhenIsDeletedIsTrue(Guid userId)
 		{
 			this.repo = new CocktailHeavenRepository(dbContext);
 			this.userService = new UserService(this.repo, mockUserManager.Object);

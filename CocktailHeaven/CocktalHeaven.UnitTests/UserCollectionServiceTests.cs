@@ -113,7 +113,7 @@ namespace CocktalHeaven.UnitTests
 		[Test]
 		[TestCase("d79def98-a398-4562-bdaf-656e891d95ca", 1)]
 		[TestCase("ee0a373c-0c2b-4ea9-a9f4-6e3dece011a5", 2)]
-		public async Task IsCocktailInFavourites_ShouldReturnTrueWhenInCollection(Guid userId, int cocktailId)
+		public async Task IsCocktailInFavourites_ShouldReturnTrue_WhenInCollection(Guid userId, int cocktailId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.userCollectionService = new UserCollectionService(this.repo);
@@ -124,7 +124,7 @@ namespace CocktalHeaven.UnitTests
 
 		[Test]
 		[TestCase("d79def98-a398-4562-bdaf-656e891d95ca", 1)]
-		public async Task IsCocktailInTried_ShouldReturnTrueWhenInCollection(Guid userId, int cocktailId)
+		public async Task IsCocktailInTried_ShouldReturnTrue_WhenInCollection(Guid userId, int cocktailId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.userCollectionService = new UserCollectionService(this.repo);
@@ -132,10 +132,42 @@ namespace CocktalHeaven.UnitTests
 			Assert.True(await this.userCollectionService.IsCocktailInTriedAsync(userId, cocktailId));
 		}
 
+		[Test]
+		[TestCase("ee0a373c-0c2b-4ea9-a9f4-6e3dece011a5", 2)]
+		public async Task IsCocktailInWishlist_ShouldReturnTrue_WhenInCollection(Guid userId, int cocktailId)
+		{
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.userCollectionService = new UserCollectionService(this.repo);
+
+			Assert.True(await this.userCollectionService.IsCocktailInWishListAsync(userId, cocktailId));
+		}
 
 		[Test]
-		[TestCase("d79def98-a398-4562-bdaf-656e891d95ca", 1)]
-		public async Task IsCocktailInWishlist_ShouldReturnFalseWhenNotInCollection(Guid userId, int cocktailId)
+		[TestCase("d79def98-a398-4562-bdaf-656e891d95ca", 10)]
+		[TestCase("ee0a373c-0c2b-4ea9-a9f4-6e3dece011a5", 3)]
+		public async Task IsCocktailInTried_ShouldReturnFalse_WhenNotInCollection(Guid userId, int cocktailId)
+		{
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.userCollectionService = new UserCollectionService(this.repo);
+
+			Assert.False(await this.userCollectionService.IsCocktailInTriedAsync(userId, cocktailId));
+		}
+
+		[Test]
+		[TestCase("d79def98-a398-4562-bdaf-656e891d95ca", 10)]
+		[TestCase("ee0a373c-0c2b-4ea9-a9f4-6e3dece011a5", 1)]
+		public async Task IsCocktailInFavourite_ShouldReturnFalse_WhenNotInCollection(Guid userId, int cocktailId)
+		{
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.userCollectionService = new UserCollectionService(this.repo);
+
+			Assert.False(await this.userCollectionService.IsCocktailInFavouritesAsync(userId, cocktailId));
+		}
+
+		[Test]
+		[TestCase("d79def98-a398-4562-bdaf-656e891d95ca", 10)]
+		[TestCase("ee0a373c-0c2b-4ea9-a9f4-6e3dece011a5", 1)]
+		public async Task IsCocktailInWishlist_ShouldReturnFalse_WhenNotInCollection(Guid userId, int cocktailId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.userCollectionService = new UserCollectionService(this.repo);
