@@ -77,6 +77,10 @@
             public const string ErrorMessageUserInRole = "The user is already in this role";
 			public const string ErrorMessageUserNotInRole = "The user is not in this role";
             public const string ErrorMessageUserCollection = "You don't have this cocktail in your collections";
-		}
+
+            public const string SuccessMessageUserToRole = "User successfully added to {0} role";
+            public const string SuccessMessageUserRemovedFromRole = "User successfully removed from {0} role";
+
+        }
 	}
 }

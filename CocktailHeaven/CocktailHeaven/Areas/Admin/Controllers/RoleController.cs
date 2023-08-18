@@ -50,6 +50,10 @@ namespace CocktailHeaven.Areas.Admin.Controllers
 				{
 					this.TempData[ErrorMessage] = string.Join(", ", result.Errors.Select(e => e.Description));
 				}
+				else
+				{
+                    this.TempData[SuccessMessage] = string.Format(SuccessMessageUserToRole, roleName);
+                }
 			}
 			catch (ArgumentException ex)
 			{
@@ -77,7 +81,11 @@ namespace CocktailHeaven.Areas.Admin.Controllers
 				{
 					this.TempData[ErrorMessage] = string.Join(", ", result.Errors.Select(e => e.Description));
 				}
-			}
+                else
+                {
+                    this.TempData[SuccessMessage] = string.Format(SuccessMessageUserRemovedFromRole, roleName);
+                }
+            }
 			catch (ArgumentException ex)
 			{
 

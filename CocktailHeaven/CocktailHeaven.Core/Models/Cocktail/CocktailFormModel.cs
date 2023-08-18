@@ -29,6 +29,7 @@ namespace CocktailHeaven.Core.Models.Cocktail
 		public int CategoryId { get; set; }
 
 		[Url]
+		[Required]
         public string? ImageURL { get; set; }
 
 		public List<IngredientFormModel> Ingredients { get; set; } = null!;

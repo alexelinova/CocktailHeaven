@@ -24,7 +24,7 @@
                     <div class="card mb-3">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <span class="fw-bold">Username: @rating.UserEmail</span>
-                            <form asp-area="Admin" asp-controller="Rating" asp-action="DeleteRating" asp-route-id="@rating.Id" method="post" class="d-inline">
+                            <form asp-area="Admin" asp-controller="Rating" asp-action="DeleteRating" asp-route-id="@rating.Id" onclick="return confirm('Are you sure you want to delete this rating?')" method="post" class="d-inline">
                                 <button type="submit" class=" btn btn-warning btn-sm">Delete</button>
                             </form>
                         </div>
