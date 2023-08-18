@@ -92,6 +92,10 @@ Role Assignment Page
 
 ![DatabaseDiagram](https://raw.githubusercontent.com/alexelinova/CocktailHeaven/main/Screenshots/DataBaseDiagram.png)
 
+## Tests Code Coverage
+
+![CodeCoverage](https://raw.githubusercontent.com/alexelinova/CocktailHeaven/main/Screenshots/CodeCoverageResharper.png)
+
 
 ## Technologies Used
 
