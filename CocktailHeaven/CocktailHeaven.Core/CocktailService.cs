@@ -259,6 +259,7 @@ namespace CocktailHeaven.Core
 
 			var randomCocktail = await repo.AllReadonly<Cocktail>()
 				.Include(c => c.Image)
+				.Include(c => c.Category)
 				.Include(c => c.Ingredients)
 				.ThenInclude(i => i.Ingredient)
 				.Where(c => !c.IsDeleted)
@@ -277,6 +278,8 @@ namespace CocktailHeaven.Core
 				Name = randomCocktail.Name,
 				Description = randomCocktail.Description,
 				Instructions = randomCocktail.Instruction,
+				CategoryName = randomCocktail.Category.Name,
+				Garnish = randomCocktail.Garnish,
 				Image = randomCocktail.Image.ExternalURL ?? string.Empty,
 				Ingredients = randomCocktail.Ingredients.Select(i => new IngredientFormModel()
 				{
