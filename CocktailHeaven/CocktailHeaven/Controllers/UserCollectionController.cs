@@ -149,5 +149,14 @@ namespace CocktailHeaven.Controllers
 
 			return this.RedirectToAction(nameof(ShowFavourite));
 		}
+
+		public async Task<IActionResult> ShowShoppingList()
+		{
+			var userId = User.Id();
+
+			var model = await this.userCollectionService.GetWishlistIngredientsAsync(userId);
+
+			return this.View(model);
+		}
 	}
 }

@@ -223,8 +223,8 @@ namespace CocktalHeaven.UnitTests
 		}
 
 		[Test]
-		[TestCase("dee00d59-8449-4e75-9594-b2950a0c9d37", 10, 4)]
-		public void RemoveFromFavouriteAsync_ThrowsAnError_WhenCollectionNonExistent(Guid userId, int cocktailId, int userCollectionId)
+		[TestCase("dee00d59-8449-4e75-9594-b2950a0c9d37", 10)]
+		public void RemoveFromFavouriteAsync_ThrowsAnError_WhenCollectionNonExistent(Guid userId, int cocktailId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.userCollectionService = new UserCollectionService(this.repo);
@@ -233,8 +233,8 @@ namespace CocktalHeaven.UnitTests
 		}
 
 		[Test]
-		[TestCase("dee00d59-8449-4e75-9594-b2950a0c9d37", 10, 4)]
-		public void RemoveFromTriedAsync_ThrowsAnError_WhenCollectionNonExistent(Guid userId, int cocktailId, int userCollectionId)
+		[TestCase("dee00d59-8449-4e75-9594-b2950a0c9d37", 10)]
+		public void RemoveFromTriedAsync_ThrowsAnError_WhenCollectionNonExistent(Guid userId, int cocktailId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.userCollectionService = new UserCollectionService(this.repo);
@@ -243,8 +243,8 @@ namespace CocktalHeaven.UnitTests
 		}
 
 		[Test]
-		[TestCase("dee00d59-8449-4e75-9594-b2950a0c9d37", 10, 4)]
-		public void RemoveFromWishlist_ThrowsAnError_WhenCollectionNonExistent(Guid userId, int cocktailId, int userCollectionId)
+		[TestCase("dee00d59-8449-4e75-9594-b2950a0c9d37", 10)]
+		public void RemoveFromWishlist_ThrowsAnError_WhenCollectionNonExistent(Guid userId, int cocktailId)
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.userCollectionService = new UserCollectionService(this.repo);
@@ -285,7 +285,6 @@ namespace CocktalHeaven.UnitTests
 		{
 			dbContext.Dispose();
 		}
-
 
 		private async Task SeedTestData()
 		{

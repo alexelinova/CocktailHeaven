@@ -1,0 +1,25 @@
+﻿@using CocktailHeaven.Core.Models.Ingredient;
+
+@model IEnumerable<IngredientCocktailModel>
+
+<h2 class="text-center"><i class="fa-solid fa-cart-shopping"></i> Shopping List</h2>
+<hr />
+
+@if (Model.Any())
+{
+    @foreach (var cocktail in Model)
+    {
+        <h3><i class="fa-solid fa-martini-glass-citrus"></i> @cocktail.CocktailName</h3>
+        <ul>
+            @foreach (var ingredient in cocktail.Ingredients)
+            {
+                <li>@ingredient.IngredientName - @ingredient.Quantity @(ingredient.Note != null ? $" - {ingredient.Note}" : string.Empty)</li>
+            }
+        </ul>
+        <hr />
+    }
+}
+else
+{
+    <p class="text-center h5">To see ingredients here, you need to have cocktails in your wishlist collection.</p>
+}

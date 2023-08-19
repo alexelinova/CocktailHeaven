@@ -1,5 +1,6 @@
 ﻿using CocktailHeaven.Core.Contracts;
 using CocktailHeaven.Core.Models.Cocktail;
+using CocktailHeaven.Core.Models.Ingredient;
 using CocktailHeaven.Core.Models.NewFolder;
 using CocktailHeaven.Infrastructure.Data.Common;
 using CocktailHeaven.Infrastructure.Models;
@@ -209,5 +210,24 @@ namespace CocktailHeaven.Core
 				&& userCollection.IsFavourite == null
 				&& userCollection.HasTried == null;
 		}
-	}
+
+        public async Task<IEnumerable<IngredientCocktailModel>> GetWishlistIngredientsAsync(Guid userId)
+        {
+			return await this.repo
+				.AllReadonly<UserCollection>(uc => uc.AddedByUserId == userId && uc.WishList == true)
+				.Select(uc => new IngredientCocktailModel()
+				{
+					CocktailName = uc.Cocktail.Name,
+					Ingredients = uc.Cocktail.Ingredients.Select(i => new IngredientFormModel()
+					{
+						IngredientName = i.Ingredient.Name,
+						Quantity = i.Quantity,
+						Note = i.Note,
+					})
+					.ToList()
+				})
+				.OrderBy(c => c.CocktailName)
+				.ToListAsync();
+        }
+    }
 }

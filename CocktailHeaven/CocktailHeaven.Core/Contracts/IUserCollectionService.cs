@@ -1,4 +1,5 @@
 ﻿using CocktailHeaven.Core.Models.Cocktail;
+using CocktailHeaven.Core.Models.Ingredient;
 using CocktailHeaven.Infrastructure.Models;
 
 namespace CocktailHeaven.Core.Contracts
@@ -28,5 +29,7 @@ namespace CocktailHeaven.Core.Contracts
         Task<IEnumerable<CocktailTriedRatingModel>> GetTriedCocktailsAsync(Guid userId);
 
         Task<IEnumerable<CocktailCollectionModel>> GetWishlistCocktailsAsync(Guid userId);
+
+		Task<IEnumerable<IngredientCocktailModel>> GetWishlistIngredientsAsync(Guid userId);
     }
 }
