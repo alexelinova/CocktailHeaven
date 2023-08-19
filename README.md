@@ -26,6 +26,7 @@ Login/Register - To use the rest of the functionalities all users have to Login/
 
 - **Review Full Cocktail Details:** Access complete cocktail details, including ingredients and instructions.
 - **Collections: Organize cocktails in different collections:** tried, favorites, and wishlist. 
+- **Shopping List** - Review the needed ingredients for all cocktals they have in their Whishlist collection.
 - **Rating and Commenting:** Rate and comment on cocktails that have been tried.
 - **Search Functionality:** Use a dedicated Search page to find cocktails by name, ingredient and category.
 
@@ -47,6 +48,9 @@ Tried User Collection - The collection shows all cocktails added to the specific
 ![Rate Tried Collection](https://raw.githubusercontent.com/alexelinova/CocktailHeaven/main/Screenshots/TriedUserCollectionRatepng.png)
 
 ![Edit Tried Collection](https://raw.githubusercontent.com/alexelinova/CocktailHeaven/main/Screenshots/TriedUserCollectionEditRating.png)
+
+Shopping List Page - Shows all ingredients needed in one place - only for the cocktails that are currently present in the whishlist collection.
+![Shopping List](https://raw.githubusercontent.com/alexelinova/CocktailHeaven/main/Screenshots/ShoppingList.png)
 
 Search Cocktails Page - the user can search cocktails by name or by ingredient. They can also review the cocktails in the different categories. By default all cocktails appear on the page.
 ![Search Cocktails Page](https://raw.githubusercontent.com/alexelinova/CocktailHeaven/main/Screenshots/SearchPage.png)
