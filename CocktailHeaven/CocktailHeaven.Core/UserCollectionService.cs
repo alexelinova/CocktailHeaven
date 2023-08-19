@@ -182,6 +182,25 @@ namespace CocktailHeaven.Core
 			await this.repo.SaveChangesAsync();
 		}
 
+		public async Task<IEnumerable<IngredientCocktailModel>> GetWishlistIngredientsAsync(Guid userId)
+		{
+			return await this.repo
+				.AllReadonly<UserCollection>(uc => uc.AddedByUserId == userId && uc.WishList == true)
+				.Select(uc => new IngredientCocktailModel()
+				{
+					CocktailName = uc.Cocktail.Name,
+					Ingredients = uc.Cocktail.Ingredients.Select(i => new IngredientFormModel()
+					{
+						IngredientName = i.Ingredient.Name,
+						Quantity = i.Quantity,
+						Note = i.Note,
+					})
+					.ToList()
+				})
+				.OrderBy(c => c.CocktailName)
+				.ToListAsync();
+		}
+
 		private async Task<UserCollection?> GetUserCollectionAsync(Guid userId, int cocktailId)
 		{
 			var userCollection = await this.repo
@@ -210,24 +229,5 @@ namespace CocktailHeaven.Core
 				&& userCollection.IsFavourite == null
 				&& userCollection.HasTried == null;
 		}
-
-        public async Task<IEnumerable<IngredientCocktailModel>> GetWishlistIngredientsAsync(Guid userId)
-        {
-			return await this.repo
-				.AllReadonly<UserCollection>(uc => uc.AddedByUserId == userId && uc.WishList == true)
-				.Select(uc => new IngredientCocktailModel()
-				{
-					CocktailName = uc.Cocktail.Name,
-					Ingredients = uc.Cocktail.Ingredients.Select(i => new IngredientFormModel()
-					{
-						IngredientName = i.Ingredient.Name,
-						Quantity = i.Quantity,
-						Note = i.Note,
-					})
-					.ToList()
-				})
-				.OrderBy(c => c.CocktailName)
-				.ToListAsync();
-        }
     }
 }

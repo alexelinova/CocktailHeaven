@@ -127,7 +127,7 @@ namespace CocktalHeaven.UnitTests
 
 			var favouriteCocktails = await this.userCollectionService.GetTriedCocktailsAsync(userId);
 
-			Assert.That(favouriteCocktails.Count(), Is.EqualTo(cocktailCount));	
+			Assert.That(favouriteCocktails.Count(), Is.EqualTo(cocktailCount));
 		}
 
 		[Test]
@@ -219,7 +219,7 @@ namespace CocktalHeaven.UnitTests
 
 			var collection = await this.repo.GetByIdAsync<UserCollection>(userCollectionId);
 
-			Assert.Null(collection.IsFavourite); 
+			Assert.Null(collection.IsFavourite);
 		}
 
 		[Test]
@@ -228,7 +228,7 @@ namespace CocktalHeaven.UnitTests
 		{
 			this.repo = new CocktailHeavenRepository(this.dbContext);
 			this.userCollectionService = new UserCollectionService(this.repo);
-			
+
 			Assert.ThrowsAsync<ArgumentException>(async () => await this.userCollectionService.RemoveFromFavouriteAsync(userId, cocktailId));
 		}
 
@@ -280,6 +280,22 @@ namespace CocktalHeaven.UnitTests
 			Assert.Null(collection.WishList);
 		}
 
+		[Test]
+		[TestCase("ee0a373c-0c2b-4ea9-a9f4-6e3dece011a5", "Vodka", 1, 1)]
+		public async Task GetWishlistIngredientsAsync_ShouldReturnCorrectCountAndIngredients(Guid userId, string ingredientName, int expectedCocktailCount, int expectedIngredientCount)
+		{
+			this.repo = new CocktailHeavenRepository(this.dbContext);
+			this.userCollectionService = new UserCollectionService(this.repo);
+
+			var cocktails = await this.userCollectionService.GetWishlistIngredientsAsync(userId);
+			Assert.That(cocktails.Count, Is.EqualTo(expectedCocktailCount));
+			foreach (var cocktail in cocktails)
+			{
+				Assert.That(cocktail.Ingredients.Count, Is.EqualTo(expectedIngredientCount));
+				Assert.True(cocktail.Ingredients.Any(i => i.IngredientName == ingredientName));
+			}
+		}
+
 		[TearDown]
 		public void TearDown()
 		{
@@ -311,11 +327,28 @@ namespace CocktalHeaven.UnitTests
 					Image = new Image()
 					{
 						ExternalURL = "BloodyMaryImage"
+					},
+					Ingredients = new List<CocktailIngredient>()
+					{
+						new CocktailIngredient()
+						{
+							CocktailId = 2,
+							IngredientId = 1,
+							Quantity = "50 ml"
+						}
 					}
 				}
 			};
 
 			await this.dbContext.AddRangeAsync(Cocktails);
+
+			var ingredient = new Ingredient()
+			{
+				Id = 1,
+				Name = "Vodka"
+			};
+		
+			await this.dbContext.AddAsync(ingredient);
 
 			var userCollections = new List<UserCollection>()
 			{
@@ -333,7 +366,7 @@ namespace CocktalHeaven.UnitTests
 					AddedByUserId = Guid.Parse("d79def98-a398-4562-bdaf-656e891d95ca"),
 					CocktailId = 2,
 				},
-				
+
 				new UserCollection
 				{
 					Id = 3,
