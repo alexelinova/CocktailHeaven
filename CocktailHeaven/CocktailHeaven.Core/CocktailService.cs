@@ -257,7 +257,7 @@ namespace CocktailHeaven.Core
 			var rand = new Random();
 			int skipper = rand.Next(0, repo.AllReadonly<Cocktail>().Count());
 
-			var randomCocktail = await repo.AllReadonly<Cocktail>()
+			var randomCocktail = await repo.AllReadonly<Cocktail>(c => c.IsDeleted == false)
 				.Include(c => c.Image)
 				.Include(c => c.Category)
 				.Include(c => c.Ingredients)

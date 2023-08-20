@@ -3,6 +3,7 @@ using CocktailHeaven.Infrastructure.Data.Common;
 using CocktailHeaven.Infrastructure.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using static CocktailHeaven.Infrastructure.Models.DataConstants.MessageConstant;
 
 namespace CocktailHeaven.Core
 {
@@ -29,7 +30,7 @@ namespace CocktailHeaven.Core
 
 			if (emailExists)
 			{
-				return IdentityResult.Failed(new IdentityError { Code = "DuplicateEmail", Description = "Email address is already registered." });
+				return IdentityResult.Failed(new IdentityError { Code = ErrorMessageEmailCode, Description = ErrorMessageEmail });
 			}
 
 			var user = new ApplicationUser()

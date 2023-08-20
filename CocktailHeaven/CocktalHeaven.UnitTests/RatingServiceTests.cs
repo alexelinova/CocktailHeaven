@@ -1,10 +1,10 @@
 ﻿using CocktailHeaven.Core;
-using CocktailHeaven.Infrastructure.Data.Common;
-using CocktailHeaven.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
 using CocktailHeaven.Core.Contracts;
+using CocktailHeaven.Infrastructure.Data;
+using CocktailHeaven.Infrastructure.Data.Common;
 using CocktailHeaven.Infrastructure.Models;
 using CocktailHeaven.Infrastructure.Models.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace CocktalHeaven.UnitTests
 {

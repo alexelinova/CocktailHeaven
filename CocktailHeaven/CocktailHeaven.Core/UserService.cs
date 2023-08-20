@@ -9,7 +9,7 @@ using static CocktailHeaven.Infrastructure.Models.DataConstants.MessageConstant;
 
 namespace CocktailHeaven.Core
 {
-    public class UserService : IUserService
+	public class UserService : IUserService
     {
         private readonly IRepository repo;
 

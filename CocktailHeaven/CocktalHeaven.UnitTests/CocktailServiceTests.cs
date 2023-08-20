@@ -7,7 +7,6 @@ using CocktailHeaven.Infrastructure.Data;
 using CocktailHeaven.Infrastructure.Data.Common;
 using CocktailHeaven.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Primitives;
 
 namespace CocktalHeaven.UnitTests
 {

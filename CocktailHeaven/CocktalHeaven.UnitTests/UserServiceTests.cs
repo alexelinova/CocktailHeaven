@@ -1,11 +1,9 @@
-﻿using CocktailHeaven.Core.Contracts;
-using CocktailHeaven.Infrastructure.Data.Common;
+﻿using CocktailHeaven.Core;
+using CocktailHeaven.Core.Contracts;
 using CocktailHeaven.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using CocktailHeaven.Core;
+using CocktailHeaven.Infrastructure.Data.Common;
 using CocktailHeaven.Infrastructure.Models.Identity;
-using Microsoft.AspNetCore.Identity;
-using Moq;
+using Microsoft.EntityFrameworkCore;
 
 namespace CocktalHeaven.UnitTests
 {

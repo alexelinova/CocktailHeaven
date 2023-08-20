@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CocktailHeaven.Controllers
 {
-    public class AccountController : BaseController
+	public class AccountController : BaseController
     {
         private readonly IAccountService accountService;
 

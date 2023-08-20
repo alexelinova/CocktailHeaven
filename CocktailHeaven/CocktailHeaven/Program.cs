@@ -3,6 +3,7 @@ using CocktailHeaven.Infrastructure.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static CocktailHeaven.Infrastructure.Models.DataConstants.PasswordConstants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {
 	options.SignIn.RequireConfirmedAccount = false;
 	options.Password.RequireNonAlphanumeric = false;
-	options.Password.RequiredLength = 5;
+	options.Password.RequiredLength = MinPasswordLength;
 	options.Password.RequireUppercase = false;
 })
 	.AddRoles<IdentityRole<Guid>>()

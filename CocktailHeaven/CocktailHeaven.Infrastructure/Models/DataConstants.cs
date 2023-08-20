@@ -50,7 +50,13 @@
 			public const int MaxExtensionLength = 3;
 		}
 
-        public class UserLoginModel
+		public class PasswordConstants
+		{
+			public const int MinPasswordLength = 5;
+		}
+
+
+		public class UserLoginModel
         {
 			public const int MinUserNameLength = 5;
 			public const int MaxUserNameLength = 20;
@@ -78,7 +84,11 @@
 			public const string ErrorMessageUserNotInRole = "The user is not in this role";
             public const string ErrorMessageUserCollection = "You don't have this cocktail in your collections";
 
-            public const string SuccessMessageUserToRole = "User successfully added to {0} role";
+            public const string ErrorMessageEmail = "Email address is already registered.";
+            public const string ErrorMessageEmailCode = "DuplicateEmail";
+
+
+			public const string SuccessMessageUserToRole = "User successfully added to {0} role";
             public const string SuccessMessageUserRemovedFromRole = "User successfully removed from {0} role";
 
         }
